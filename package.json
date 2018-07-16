@@ -29,5 +29,8 @@
   "bugs": {
     "url": "https://github.com/struggling-bird/clever-mock/issues"
   },
-  "homepage": "https://github.com/struggling-bird/clever-mock#readme"
+  "homepage": "https://github.com/struggling-bird/clever-mock#readme",
+  "devDependencies": {
+    "http-proxy": "^1.17.0"
+  }
 }

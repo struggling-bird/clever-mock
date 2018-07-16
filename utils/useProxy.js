@@ -1,4 +1,4 @@
-const HttpProxy = require('./http-proxy/index')
+const HttpProxy = require('http-proxy')
 const bodyParser = require('koa-bodyparser')
 const config = require('../config')
 

@@ -1,0 +1,33 @@
+{
+  "name": "clever-mock",
+  "version": "1.0.0",
+  "description": "请求代理与数据模拟平台",
+  "main": "app.js",
+  "scripts": {
+    "start": "node_modules/nodemon/bin/nodemon.js app.js --config .nodemonconf.json"
+  },
+  "dependencies": {
+    "eventemitter3": "^3.0.0",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.3.0",
+    "nodemon": "^1.12.7",
+    "querystring": "^0.2.0",
+    "requires-port": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/struggling-bird/clever-mock.git"
+  },
+  "keywords": [
+    "mock",
+    "clever",
+    "proxy"
+  ],
+  "author": "dongyongqiang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/struggling-bird/clever-mock/issues"
+  },
+  "homepage": "https://github.com/struggling-bird/clever-mock#readme"
+}

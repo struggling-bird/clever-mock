@@ -1,4 +1,4 @@
-# clever-mock
+# web
 
 ## Project setup
 ```

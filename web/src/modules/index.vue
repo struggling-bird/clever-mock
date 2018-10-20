@@ -1,17 +1,22 @@
 <template>
-  <div id="app">
+  <div class="index">
     <router-view/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'layout',
+  data () {
+    return {
+      msg: 'index'
+    }
+  }
 }
 </script>
 
 <style lang="sass">
-@import "./assets/reset"
-#app
+.index
+  width: 100%
   height: 100%
 </style>

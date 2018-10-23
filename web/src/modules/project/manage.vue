@@ -8,14 +8,14 @@
     <div class="project-list">
       <div class="project-item"
            v-for="project in projectList"
-           :key="project" @click="onClickProject(project)">
+           :key="project.id" @click="onClickProject(project)">
         <div class="project-logo">
           <i class="mock-package"></i>
         </div>
         <div class="project-desc">
-          <c-tooltip placement="right" content="项目名称">cleverMock</c-tooltip><br/>
-          <c-tooltip placement="right" content="创建人">admin</c-tooltip><br/>
-          <c-tooltip placement="right" content="创建时间">2018.10.25 14:30</c-tooltip>
+          <c-tooltip placement="right" content="项目名称">{{project.name}}</c-tooltip><br/>
+          <c-tooltip placement="right" content="创建人">{{project.username}}</c-tooltip><br/>
+          <c-tooltip placement="right" content="创建时间">{{timeFormat(project.create_time)}}</c-tooltip>
         </div>
       </div>
 
@@ -30,6 +30,7 @@
 import {router} from '../../router/constants'
 import {actions} from '../../store/constants'
 import {mapState} from 'vuex'
+import {util} from '../../util'
 export default {
   name: 'projectManage',
   computed: {
@@ -64,6 +65,10 @@ export default {
           id: project.id
         }
       })
+    },
+    timeFormat (time) {
+      let date = new Date(time)
+      return util.dateFormat(date) + ' ' + util.timeFormat(date, 'hh:mm')
     }
   }
 }

@@ -10,6 +10,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       pool.query(sql, params, function (err, results, fields) {
         if (err) {
+          console.error('执行sql错误', err)
           reject(err)
         } else {
           resolve(results)

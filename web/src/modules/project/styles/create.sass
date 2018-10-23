@@ -1,2 +1,40 @@
 @import "../../../assets/constants"
 .project-create
+  height: 100%
+  position: relative
+  background: $color-bg-normal
+  overflow: auto
+  .brand
+    position: absolute
+    top: 20px
+    left: 20px
+    font-size: $size-font-subtitle-large
+    color: $color-bg-normal
+  .title-panel
+    height: 200px
+    line-height: 200px
+    text-align: center
+    font-size: 36px
+    color: $color-bg-normal
+    background: $color-brand-black
+    .title
+      margin-bottom: 10px
+  .form-panel
+    width: 600px
+    margin: 0 auto
+    padding: 40px 0 40px 40px
+    li
+      font-size: $size-font-content-medium
+      color: $color-font-content
+      margin-bottom: 20px
+      &:last-of-type
+        text-align: center
+      &>span
+        display: inline-block
+        width: 80px
+        text-align: right
+        margin-right: 10px
+      textarea
+        vertical-align: text-top
+        width: 400px
+        resize: none

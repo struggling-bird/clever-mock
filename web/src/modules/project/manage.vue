@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'manage',
+  name: 'projectManage',
   data () {
     return {
       msg: 'manage'

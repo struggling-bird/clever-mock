@@ -3,6 +3,9 @@ import {util} from '../../util'
 const actions = {
   demo: {
     queryData: ''
+  },
+  user: {
+    login: ''
   }
 }
 

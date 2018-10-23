@@ -6,8 +6,9 @@
  */
 import util from './util'
 import ajax from './ajax'
-
+import cookie from 'js-cookie'
 export {
   util,
+  cookie,
   ajax
 }

@@ -6,7 +6,13 @@
  */
 import {util} from '../../util'
 let router = {
-  index: ''
+  index: '',
+  project: {
+    detail: '',
+    create: '',
+    manage: ''
+  },
+  login: ''
 }
 util.initializeConstants(router, 'router')
 export default router

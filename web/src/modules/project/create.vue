@@ -5,7 +5,7 @@
 
 <script>
 export default {
-  name: 'create',
+  name: 'projectCreate',
   data () {
     return {
       msg: 'create'

@@ -11,6 +11,9 @@ export default {
     return {
       msg: 'index'
     }
+  },
+  beforeCreate () {
+    // 检查登录状态
   }
 }
 </script>

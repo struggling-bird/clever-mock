@@ -19,9 +19,9 @@ let store = new Store({
       return new Promise((resolve, reject) => {
         ajax({
           url: apis.user.login,
-          method: 'get',
           data: param
         }).then(res => {
+          context.commit(mutations.user.setUser, res.data)
           resolve()
         }).catch(error => {
           reject(error)

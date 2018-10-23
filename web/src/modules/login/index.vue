@@ -16,6 +16,7 @@
 
 <script>
 import {actions} from '../../store/constants'
+import {router} from '../../router/constants'
 export default {
   name: 'login',
   data () {
@@ -29,6 +30,16 @@ export default {
       this.$store.dispatch(actions.user.login, {
         username: this.username,
         password: this.password
+      }).then(() => {
+        this.$router.replace({
+          name: router.project.manage
+        })
+      }).catch(err => {
+        this.$message({
+          type: 'error',
+          message: '用户名或密码错误'
+        })
+        console.error('登录失败', err)
       })
     }
   }

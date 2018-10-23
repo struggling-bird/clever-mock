@@ -27,6 +27,19 @@ let store = new Store({
           reject(error)
         })
       })
+    },
+    [actions.user.getUser] (context) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.user.getCurrent,
+          method: 'get'
+        }).then(res => {
+          context.commit(mutations.user.setUser, res.data)
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
     }
   }
 })

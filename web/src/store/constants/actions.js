@@ -5,7 +5,12 @@ const actions = {
     queryData: ''
   },
   user: {
-    login: ''
+    login: '',
+    getUser: ''
+  },
+  project: {
+    query: '',
+    getById: ''
   }
 }
 

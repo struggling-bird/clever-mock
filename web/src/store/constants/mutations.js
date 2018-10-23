@@ -6,6 +6,10 @@ const mutations = {
   },
   user: {
     setUser: ''
+  },
+  project: {
+    setList: '',
+    setCurrrent: ''
   }
 }
 

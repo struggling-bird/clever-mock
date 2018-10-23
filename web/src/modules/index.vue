@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import {router} from '../router/constants'
+import {actions} from '../store/constants'
 export default {
   name: 'layout',
   data () {
@@ -14,6 +16,14 @@ export default {
   },
   beforeCreate () {
     // 检查登录状态
+    if (this.$route.name !== router.login) {
+      this.$store.dispatch(actions.user.getUser).catch(err => {
+        this.$router.push({
+          name: router.login
+        })
+        console.error('用户未登录', err)
+      })
+    }
   }
 }
 </script>

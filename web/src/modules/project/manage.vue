@@ -1,15 +1,69 @@
 <template>
   <div class="project-manage">
-    project list
+    <span class="brand">cleverMock</span>
+    <div class="title-panel">
+      <div class="title">项目列表</div>
+      <c-button type="primary" size="large" @click="onCreateProject">创建项目</c-button>
+    </div>
+    <div class="project-list">
+      <div class="project-item"
+           v-for="project in projectList"
+           :key="project" @click="onClickProject(project)">
+        <div class="project-logo">
+          <i class="mock-package"></i>
+        </div>
+        <div class="project-desc">
+          <c-tooltip placement="right" content="项目名称">cleverMock</c-tooltip><br/>
+          <c-tooltip placement="right" content="创建人">admin</c-tooltip><br/>
+          <c-tooltip placement="right" content="创建时间">2018.10.25 14:30</c-tooltip>
+        </div>
+      </div>
+
+      <c-loading v-if="loading"></c-loading>
+      <c-reload v-if="queryField" @reload="query"></c-reload>
+      <div v-if="!loading && !queryField && !projectList.length" class="empty-tip">暂无数据</div>
+    </div>
   </div>
 </template>
 
 <script>
+import {router} from '../../router/constants'
+import {actions} from '../../store/constants'
+import {mapState} from 'vuex'
 export default {
   name: 'projectManage',
-  data () {
-    return {
-      msg: 'manage'
+  computed: {
+    ...mapState({
+      projectList (state) {
+        return state.project.list
+      },
+      queryField (state) {
+        return state.project.error.list
+      },
+      loading (state) {
+        return !state.project.ready.list
+      }
+    })
+  },
+  created () {
+    this.query()
+  },
+  methods: {
+    query () {
+      this.$store.dispatch(actions.project.query)
+    },
+    onCreateProject () {
+      this.$router.push({
+        name: router.project.create
+      })
+    },
+    onClickProject (project) {
+      this.$router.push({
+        name: router.project.detail,
+        params: {
+          id: project.id
+        }
+      })
     }
   }
 }

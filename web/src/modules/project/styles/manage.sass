@@ -1,2 +1,48 @@
 @import "../../../assets/constants"
 .project-manage
+  height: 100%
+  position: relative
+  background: $color-bg-normal
+  overflow: auto
+  .brand
+    position: absolute
+    top: 20px
+    left: 20px
+    font-size: $size-font-subtitle-large
+    color: $color-bg-normal
+  .title-panel
+    height: 200px
+    text-align: center
+    font-size: 36px
+    color: $color-bg-normal
+    background: $color-brand-black
+    padding-top: 50px
+    .title
+      margin-bottom: 10px
+  .project-list
+    width: 1000px
+    margin: 0 auto
+    padding: 40px 0 40px 40px
+    .project-item
+      display: inline-block
+      width: 200px
+      height: 200px
+      border: 1px solid $color-border
+      border-radius: $border-radius
+      margin: 0 40px 20px 0
+      text-align: center
+      cursor: pointer
+      .project-logo
+        font-size: 45px
+        line-height: 110px
+      .project-desc
+        font-size: $size-font-content-medium
+        color: $color-font-content
+        line-height: 25px
+        .c-tooltip-trigger
+          padding: 0 10px
+
+    .empty-tip
+      font-size: $size-font-content-medium
+      color: $color-font-tip
+      text-align: center

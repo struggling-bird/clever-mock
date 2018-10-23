@@ -7,12 +7,11 @@
 import axios from 'axios'
 import util from './util'
 const resCode = {
-  SUCCESS: 10001,
-  Error: 500,
-  NO_PERMISSION: -10001,
-  NOT_LOGIN: -10002,
-  PARAM_NULL: -20001,
-  OUT_LIMIT: -10025
+  SUCCESS: 100,
+  Error: 101,
+  NO_PERMISSION: 103,
+  NOT_LOGIN: 102,
+  PARAM_NULL: 104
 }
 let CancelToken = axios.CancelToken
 let preQueryOption
@@ -96,12 +95,12 @@ export default function (option) {
       if (checkRequestCode(res.status) && resCodeFilter(res)) {
         resolve(res.data)
       } else {
-        /* if (window.vue) { // 数据接口返回错误信息一致的话，可以打开注释，在这里一并做提示处理
-          window.vue.$message({
-            type: 'error',
-            message: res.data.data
-          })
-        } */
+        // if (window.vue) {
+        //   window.vue.$message({
+        //     type: 'error',
+        //     message: res.msg
+        //   })
+        // }
         reject(new Error(JSON.stringify({
           message: '请求状态或接口状态码错误',
           request: res.request.responseURL,

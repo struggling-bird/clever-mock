@@ -27,11 +27,17 @@
       display: inline-block
       width: 200px
       height: 200px
-      border: 1px solid $color-border
+      border: 2px solid $color-border
       border-radius: $border-radius
       margin: 0 40px 20px 0
       text-align: center
       cursor: pointer
+      transition: all ease .5s 0s
+      &:hover
+        border-color: $color-brand
+        transform: translateY(-5px)
+        .project-logo
+          color: $color-brand
       .project-logo
         font-size: 45px
         line-height: 110px

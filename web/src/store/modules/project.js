@@ -4,8 +4,8 @@ import {ajax} from '../../util'
 
 let store = new Store({
   state: {
-    list: [],
-    currentProject: null
+    list: [], // 列表每次进入项目管理页面都查询
+    currentProject: null // 保存当前项目，是为了方便数据处理,跟列表没啥关系
   },
   mutations: {
     [mutations.project.setList] (state, list) {
@@ -44,6 +44,18 @@ let store = new Store({
         }).then(res => {
           context.commit(mutations.project.setCurrrent, res.data)
           resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    [actions.project.create] (context, param) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.project.create,
+          data: param
+        }).then(res => {
+          resolve(res.data)
         }).catch(err => {
           reject(err)
         })

@@ -10,7 +10,8 @@ const actions = {
   },
   project: {
     query: '',
-    getById: ''
+    getById: '',
+    create: ''
   }
 }
 

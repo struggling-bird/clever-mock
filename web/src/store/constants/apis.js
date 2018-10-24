@@ -8,7 +8,8 @@ const aips = {
   },
   project: {
     query: '/api/project/query',
-    getById: '/api/project/{id}'
+    getById: '/api/project/{id}',
+    create: '/api/project/add'
   }
 }
 

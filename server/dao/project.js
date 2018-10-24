@@ -1,4 +1,5 @@
 const db = require('./pool')
+const uuid = require('uuid/v1')
 
 module.exports = {
   query (userId) {
@@ -8,11 +9,33 @@ module.exports = {
       'where up.user_id = ?'
     return db.query(sql, [userId])
   },
-  add () {
+  add (userId, project = {
+    name: '',
+    proxyUrl: '',
+    desc: ''
+  }) {
     const sql = {
-      addProject: 'INSERT INTO "project" ("name", "proxy_url", "desc") VALUES (?, ?, ?)',
-      ref: 'INSERT INTO "user_project" ("user_id", "project_id", "is_admin") VALUES (?, ?, ?)'
+      addProject: 'INSERT INTO project (id, name, proxy_url, description, create_time) VALUES (?, ?, ?, ?, ?)',
+      addLink: 'INSERT INTO user_project (user_id, project_id, is_admin) VALUES (?, ?, ?)'
     }
+    return new Promise((resolve, reject) => {
+      let id = uuid()
+      let connection = null
+      db.beginTransaction().then(conn => {
+        connection = conn
+        return db.queryInTransaction(connection, sql.addProject,
+          [id, project.name, project.proxyUrl, project.desc, new Date().getTime()])
+      }).then(() => {
+        return db.queryInTransaction(connection, sql.addLink, [userId, id, 1])
+      }).then(() => {
+        return db.commit(connection)
+      }).then(() => {
+        resolve(id)
+      }).catch(err => {
+        db.rollback(connection)
+        reject(err)
+      })
+    })
   }
 }
 //

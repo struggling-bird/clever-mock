@@ -8,10 +8,29 @@ router.post('/query', (req, res) => {
       code: constants.code.success,
       data: list
     })
-  }).catch(() => {
+  }).catch(err => {
+    console.error('查询项目列表失败', err)
     res.json({
       code: constants.code.error,
       msg: '查询项目列表失败'
+    })
+  })
+})
+
+router.post('/add', (req, res) => {
+  let userId = req.session.currentUser.id
+  projectService.add(userId, req.body).then(id => {
+    res.json({
+      code: constants.code.success,
+      data: {
+        id
+      }
+    })
+  }).catch(err => {
+    console.error('创建项目失败', err)
+    res.json({
+      code: constants.code.error,
+      msg: '新建项目失败'
     })
   })
 })

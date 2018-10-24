@@ -34,4 +34,20 @@ router.post('/add', (req, res) => {
     })
   })
 })
+
+router.get('/:id', (req, res) => {
+  let userId = req.session.currentUser.id
+  projectService.getById(userId, req.params.id).then(project => {
+    res.json({
+      code: constants.code.success,
+      data: project
+    })
+  }).catch(err => {
+    console.error('获取项目信息失败', err)
+    res.json({
+      code: constants.code.error,
+      msg: '获取项目信息失败'
+    })
+  })
+})
 module.exports = router

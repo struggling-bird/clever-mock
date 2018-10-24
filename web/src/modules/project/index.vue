@@ -5,12 +5,16 @@
 </template>
 
 <script>
+import {actions} from '../../store/constants'
 export default {
   name: 'projectDetail',
   data () {
     return {
       msg: 'index'
     }
+  },
+  beforeCreate () {
+    this.$store.dispatch(actions.project.getById, this.$route.params.id)
   }
 }
 </script>

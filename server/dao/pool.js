@@ -1,20 +1,30 @@
 const mysql = require('mysql')
 const config = require('../config')
+const util = require('../utils/util')
 
 const pool = mysql.createPool({
   ...config.db
 })
-
+const formatRes = function (sql, res) {
+  if (/^select/.test(sql)) {
+    let list = []
+    res.forEach(item => {
+      list.push(util.toCamelObj(item))
+    })
+    return list
+  } else {
+    return res
+  }
+}
 module.exports = {
   query (sql, params = []) {
     return new Promise((resolve, reject) => {
-      pool.query(sql, params, function (err, results, fields) {
+      pool.query(sql, params, function (err, results) {
         if (err) {
           console.error('执行sql错误', err)
           reject(err)
         } else {
-          // todo 把返回结果中的字段名称，都转为驼峰形式
-          resolve(results)
+          resolve(formatRes(sql, results))
         }
       })
     })

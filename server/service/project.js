@@ -10,5 +10,9 @@ module.exports = {
     desc: ''
   }) {
     return await projectDao.add(userId, project)
+  },
+  async getById (userId, id) {
+    let project = await projectDao.getById(userId, id)
+    return project[0]
   }
 }

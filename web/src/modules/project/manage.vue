@@ -15,7 +15,7 @@
         <div class="project-desc">
           <c-tooltip placement="right" content="项目名称">{{project.name}}</c-tooltip><br/>
           <c-tooltip placement="right" content="创建人">{{project.username}}</c-tooltip><br/>
-          <c-tooltip placement="right" content="创建时间">{{timeFormat(project.create_time)}}</c-tooltip>
+          <c-tooltip placement="right" content="创建时间">{{timeFormat(project.createTime)}}</c-tooltip>
         </div>
       </div>
 

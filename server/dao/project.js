@@ -36,6 +36,12 @@ module.exports = {
         reject(err)
       })
     })
+  },
+  getById (userId, id) {
+    const sql = 'select p.* from project as p ' +
+      'left join user_project as up ' +
+      'on p.id = up.project_id ' +
+      'where up.user_id = ? and p.id = ?'
+    return db.query(sql, [userId, id])
   }
 }
-//

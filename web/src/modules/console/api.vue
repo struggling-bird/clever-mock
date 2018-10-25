@@ -24,7 +24,7 @@
 
     <div class="api-config">
       <c-tabs>
-        <c-tab-panel title="params">
+        <c-tab-panel title="请求参数">
           <table class="param-table">
             <thead>
             <tr>
@@ -49,10 +49,10 @@
             </tbody>
           </table>
         </c-tab-panel>
-        <c-tab-panel title="response">
+        <c-tab-panel title="响应体">
           this is response
         </c-tab-panel>
-        <c-tab-panel title="description">
+        <c-tab-panel title="说明">
 
         </c-tab-panel>
       </c-tabs>

@@ -1,6 +1,9 @@
 <template>
   <div class="console-index">
     <console-top></console-top>
+    <div class="console-center">
+      <router-view/>
+    </div>
   </div>
 </template>
 

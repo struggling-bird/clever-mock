@@ -12,7 +12,9 @@ let router = {
     manage: ''
   },
   console: {
-    index: ''
+    index: '',
+    devView: '',
+    docView: ''
   },
   login: ''
 }

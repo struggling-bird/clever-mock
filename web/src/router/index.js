@@ -7,6 +7,8 @@ import projectCreate from '../modules/project/create'
 import projectManage from '../modules/project/manage'
 import login from '../modules/login/index'
 import console from '../modules/console'
+import devView from '../modules/console/devView'
+import docView from '../modules/console/docView'
 
 Vue.use(Router)
 let output = new Router({
@@ -18,14 +20,14 @@ let output = new Router({
       component: index,
       children: [
         {
+          path: 'login',
+          name: router.login,
+          component: login
+        },
+        {
           path: 'project/manage',
           name: router.project.manage,
           component: projectManage
-        },
-        {
-          path: 'console/:id/mode/:mode?',
-          name: router.console.index,
-          component: console
         },
         {
           path: 'project/create',
@@ -33,9 +35,24 @@ let output = new Router({
           component: projectCreate
         },
         {
-          path: 'login',
-          name: router.login,
-          component: login
+          path: 'console/:id',
+          name: router.console.index,
+          component: console,
+          redirect: {
+            name: router.console.devView
+          },
+          children: [
+            {
+              path: 'dev',
+              name: router.console.devView,
+              component: devView
+            },
+            {
+              path: 'doc',
+              name: router.console.docView,
+              component: docView
+            }
+          ]
         }
       ]
     }

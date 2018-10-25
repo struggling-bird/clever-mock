@@ -1,0 +1,78 @@
+@import "../../../assets/constants"
+.dev-view
+  height: 100%
+  display: flex
+  flex-direction: row
+  .api-list-panel
+    flex: none
+    width: 200px
+    background: $color-brand-black
+    overflow: auto
+    padding: 15px 10px
+    text-align: center
+    display: flex
+    flex-direction: column
+    .api-search
+      border-radius: 20px
+      flex: none
+    .ctl-panel
+      flex: none
+      margin: 10px 0
+      color: $color-white
+      text-align: right
+      font-size: 18px
+      i
+        margin-right: 20px
+        cursor: pointer
+        &:hover
+          color: $color-status-normal
+        &.active
+          color: $color-status-normal
+    .api-list
+      flex: 1
+      overflow: auto
+      color: $color-white
+      font-size: $size-font-content-medium
+      .group
+        height: 35px
+        line-height: 35px
+        background: $color-font-content
+        border-radius: $border-radius
+        .group-title
+          padding: 0 15px
+          height: 35px
+          i
+            float: left
+          .desc
+            float: right
+          .btn-add
+            float: right
+            margin-left: 10px
+            cursor: pointer
+        .api
+          height: 30px
+          line-height: 30px
+          text-align: left
+          padding: 0 10px
+          background: $color-font-tip
+          border-radius: $border-radius
+          margin: 5px 0
+          .method
+            display: inline-block
+            padding: 3px 10px
+            font-size: $size-font-mark
+            line-height: $size-font-mark
+            border-radius: 20px
+            float: right
+            margin-top: 7px
+            background: $color-font-content
+            &.post
+              background: $color-status-normal
+            &.get
+              background: $color-status-warning
+            &.delete
+              background: $color-status-danger
+  .api-detail-panel
+    flex: 1
+    overflow: auto
+    padding: 15px 20px

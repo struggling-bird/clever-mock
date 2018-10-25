@@ -24,7 +24,7 @@ export default {
   name: 'consoleTop',
   data () {
     return {
-      mode: this.$route.params.mode || 'dev' // dev doc
+      mode: this.$route.name === router.console.devView ? 'dev' : 'doc' // dev doc
     }
   },
   computed: {
@@ -39,7 +39,7 @@ export default {
   },
   watch: {
     '$route' (route) {
-      this.mode = route.params.mode
+      this.mode = route.name === router.console.devView ? 'dev' : 'doc'
     }
   },
   methods: {

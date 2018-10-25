@@ -6,6 +6,7 @@ const actions = {
   },
   user: {
     login: '',
+    logout: '',
     getUser: ''
   },
   project: {

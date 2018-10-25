@@ -1,0 +1,39 @@
+@import "../../../assets/constants"
+.console-top
+  height: 75px
+  line-height: 75px
+  background: $color-brand-black
+  padding: 0 20px
+  text-align: center
+  .logo
+    font-size: $size-font-title-large
+    color: $color-bg-normal
+    float: left
+  .project-name
+    color: $color-bg-normal
+    font-size: $size-font-content-medium
+    float: left
+    margin: 5px 0 0 15px
+  .tab-bar
+    display: inline-block
+    color: $color-font-content
+    .btn-tab
+      display: inline-block
+      width: 120px
+      height: 75px
+      font-size: $size-font-subtitle-large
+      margin-right: 15px
+      cursor: pointer
+      i
+        margin-right: 10px
+      &.active
+        color: $color-bg-normal
+        border-bottom: 5px solid $color-brand
+
+  .logout
+    color: $color-bg-normal
+    font-size: $size-font-content-medium
+    float: right
+    cursor: pointer
+    i
+      margin-left: 5px

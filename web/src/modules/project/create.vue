@@ -45,7 +45,7 @@ export default {
         desc: this.desc
       }).then(project => {
         this.$router.replace({
-          name: router.project.detail,
+          name: router.console.index,
           params: {
             id: project.id
           }

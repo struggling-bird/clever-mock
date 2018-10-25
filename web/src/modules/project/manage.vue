@@ -61,7 +61,7 @@ export default {
     },
     onClickProject (project) {
       this.$router.push({
-        name: router.project.detail,
+        name: router.console.index,
         params: {
           id: project.id
         }

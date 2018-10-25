@@ -4,9 +4,9 @@ import {router} from './constants'
 
 import index from '../modules/index'
 import projectCreate from '../modules/project/create'
-import projectDetail from '../modules/project/index'
 import projectManage from '../modules/project/manage'
 import login from '../modules/login/index'
+import console from '../modules/console'
 
 Vue.use(Router)
 let output = new Router({
@@ -23,9 +23,9 @@ let output = new Router({
           component: projectManage
         },
         {
-          path: 'project/detail/:id',
-          name: router.project.detail,
-          component: projectDetail
+          path: 'console/:id/mode/:mode?',
+          name: router.console.index,
+          component: console
         },
         {
           path: 'project/create',

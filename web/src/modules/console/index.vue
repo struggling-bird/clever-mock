@@ -1,13 +1,15 @@
 <template>
-  <div class="project-detail">
-    project detail
+  <div class="console-index">
+    <console-top></console-top>
   </div>
 </template>
 
 <script>
+import ConsoleTop from './top'
 import {actions} from '../../store/constants'
 export default {
-  name: 'projectDetail',
+  name: 'consoleIndex',
+  components: {ConsoleTop},
   data () {
     return {
       msg: 'index'

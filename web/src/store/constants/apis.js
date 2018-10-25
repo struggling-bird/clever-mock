@@ -4,6 +4,7 @@ const aips = {
   },
   user: {
     login: '/api/user/login',
+    logout: '/api/user/logout',
     getCurrent: '/api/user/getCurrent'
   },
   project: {

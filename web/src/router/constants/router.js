@@ -8,9 +8,11 @@ import {util} from '../../util'
 let router = {
   index: '',
   project: {
-    detail: '',
     create: '',
     manage: ''
+  },
+  console: {
+    index: ''
   },
   login: ''
 }

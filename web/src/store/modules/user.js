@@ -28,6 +28,19 @@ let store = new Store({
         })
       })
     },
+    [actions.user.logout] (context) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.user.logout,
+          method: 'get'
+        }).then(() => {
+          context.commit(mutations.user.setUser, null)
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
     [actions.user.getUser] (context) {
       return new Promise((resolve, reject) => {
         ajax({

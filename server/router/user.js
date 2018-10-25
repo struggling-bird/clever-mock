@@ -20,6 +20,22 @@ router.post('/login', (req, res) => {
   })
 })
 
+router.get('/logout', (req, res) => {
+  req.session.destroy(function (err) {
+    if (err) {
+      res.json({
+        code: constants.code.error,
+        msg: '退出账号失败'
+      })
+      console.error('退出账号失败', err)
+    } else {
+      res.json({
+        code: constants.code.success
+      })
+    }
+  })
+})
+
 router.get('/getCurrent', (req, res) => {
   res.json({
     code: constants.code.success,

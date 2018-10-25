@@ -42,6 +42,18 @@
       .project-logo
         font-size: 45px
         line-height: 110px
+        position: relative
+        .project-status
+          position: absolute
+          top: 80px
+          left: 93px
+          width: 10px
+          height: 10px
+          border-radius: 100%
+          &.running
+            background: $color-status-success
+          &.stop
+            background: $color-status-disable
       .project-desc
         font-size: $size-font-content-medium
         color: $color-font-content

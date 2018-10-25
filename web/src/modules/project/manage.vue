@@ -11,6 +11,7 @@
            :key="project.id" @click="onClickProject(project)">
         <div class="project-logo">
           <i class="mock-package"></i>
+          <span class="project-status running"></span>
         </div>
         <div class="project-desc">
           <c-tooltip placement="right" content="项目名称">{{project.name}}</c-tooltip><br/>

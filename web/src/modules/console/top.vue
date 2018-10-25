@@ -46,10 +46,9 @@ export default {
     redirect (mode) {
       if (mode === this.mode) return
       this.$router.push({
-        name: this.$route.name,
+        name: mode === 'dev' ? router.console.devView : router.console.docView,
         params: {
-          id: this.$route.params.id,
-          mode: mode
+          id: this.$route.params.id
         }
       })
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="dev-view">
     <div class="api-list-panel">
-      <c-input class="api-search" :width="170" clearAble placeholder="搜索" icon="mock-search"/>
+      <c-input class="api-search" :width="310" clearAble placeholder="搜索" icon="mock-search"/>
       <div class="ctl-panel">
         <i class="btn-sort mock-sort-alpha-desc"></i>
         <i class="btn-add mock-wenjianjia"></i>

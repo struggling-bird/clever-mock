@@ -1,2 +1,38 @@
 @import "../../../assets/constants"
 .api-detail
+  .url-line
+    .c-button
+      padding: 0
+      width: 80px
+      margin: 0 10px
+      &:first-of-type
+        margin-left: 20px
+    .method-select .c-select-handle
+      border-top-right-radius: 0
+      border-bottom-right-radius: 0
+      border-right: none
+    .url-input
+      border-radius: 0
+    .run-type-select .c-select-handle
+      border-top-left-radius: 0
+      border-bottom-left-radius: 0
+      border-left: none
+    &>*
+      vertical-align: bottom
+  .api-config
+    background: $color-bg-normal
+    margin-top: 20px
+    border-radius: $border-radius
+    padding: 0 10px
+    .param-table
+      border-collapse: collapse
+      border: 1px solid red
+      width: 100%
+      thead
+        background: $color-bg-dark
+      td
+        padding: 10px 10px
+        text-align: right
+        border: 1px solid $color-border
+        .btn-del
+          margin-right: 10px

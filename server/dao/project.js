@@ -12,10 +12,11 @@ module.exports = {
   add (userId, project = {
     name: '',
     proxyUrl: '',
+    serverHost: '',
     desc: ''
   }) {
     const sql = {
-      addProject: 'INSERT INTO project (id, name, proxy_url, description, create_time) VALUES (?, ?, ?, ?, ?)',
+      addProject: 'INSERT INTO project (id, name, server_host, proxy_url, description, create_time) VALUES (?, ?, ?, ?, ?, ?)',
       addLink: 'INSERT INTO user_project (user_id, project_id, is_admin) VALUES (?, ?, ?)'
     }
     return new Promise((resolve, reject) => {
@@ -24,7 +25,7 @@ module.exports = {
       db.beginTransaction().then(conn => {
         connection = conn
         return db.queryInTransaction(connection, sql.addProject,
-          [id, project.name, project.proxyUrl, project.desc, new Date().getTime()])
+          [id, project.name, project.serverHost, project.proxyUrl, project.desc, new Date().getTime()])
       }).then(() => {
         return db.queryInTransaction(connection, sql.addLink, [userId, id, 1])
       }).then(() => {
@@ -43,5 +44,9 @@ module.exports = {
       'on p.id = up.project_id ' +
       'where up.user_id = ? and p.id = ?'
     return db.query(sql, [userId, id])
+  },
+  queryByHost (host) {
+    const sql = 'select * from project where project.server_host = ?'
+    return db.query(sql, [host])
   }
 }

@@ -14,9 +14,9 @@
       <c-selector :store="runTypeList"
                   class="run-type-select"
                   v-model="runType"
-                  :width="80"
+                  :width="120"
                   size="big"
-                  keyField="value"
+                  keyField="name"
                   labelField="name"></c-selector>
       <c-button size="large" type="primary" theme="border" v-if="runType.name === 'test'">发送</c-button>
       <c-button size="large" type="primary">保存</c-button>
@@ -69,10 +69,10 @@ export default {
       methodList: ['get', 'post', 'delete', 'put'].map(name => {
         return {name: name}
       }),
-      runTypeList: ['mock', 'proxy', 'auto', 'test'].map((type, i) => {
-        return {name: type, value: i}
+      runTypeList: ['staticMock', 'scriptMock', 'proxy', 'auto', 'test'].map(type => {
+        return {name: type}
       }),
-      runType: {value: 0}
+      runType: {name: 'proxy'}
     }
   }
 }

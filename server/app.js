@@ -14,12 +14,13 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000 // 24小时
   }
 }))
-
+app.use(require('./middleware/proxyMock'))
 const api = require('./router/api')
 
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})) // parsing application/x-www-form-urlencoded
 
+// todo 更新查询参数
 app.use('/api', api)
 
 app.listen(config.port, () => {

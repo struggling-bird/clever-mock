@@ -14,5 +14,9 @@ module.exports = {
   async getById (userId, id) {
     let project = await projectDao.getById(userId, id)
     return project[0]
+  },
+  async queryByHost (host) {
+    let list = await projectDao.queryByHost(host)
+    return list[0]
   }
 }

@@ -55,7 +55,7 @@ module.exports = {
           console.error('事务中执行sql失败', err)
           reject(err)
         } else {
-          resolve(results)
+          resolve(formatRes(sql, results))
         }
       })
     })

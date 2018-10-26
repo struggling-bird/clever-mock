@@ -11,8 +11,12 @@
         <c-input size="big" :width="400" v-model="name" autoFocus></c-input>
       </li>
       <li>
+        <span>项目地址：</span>
+        <c-input size="big" :width="400" v-model="serverHost" placeholder="http://server.domail.com"/>
+      </li>
+      <li>
         <span>代理地址：</span>
-        <c-input size="big" :width="400" v-model="proxyUrl"/>
+        <c-input size="big" :width="400" v-model="proxyUrl" placeholder="http://proxy.domain.com"/>
       </li>
       <li>
         <span>描述：</span>
@@ -34,6 +38,7 @@ export default {
     return {
       name: '',
       proxyUrl: '',
+      serverHost: '',
       desc: ''
     }
   },
@@ -42,6 +47,7 @@ export default {
       this.$store.dispatch(actions.project.create, {
         name: this.name,
         proxyUrl: this.proxyUrl,
+        serverHost: this.serverHost,
         desc: this.desc
       }).then(project => {
         this.$router.replace({

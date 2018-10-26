@@ -1,5 +1,6 @@
 const db = require('./pool')
 const uuid = require('uuid/v1')
+const util = require('../utils/util')
 
 module.exports = {
   queryByProjectId (projectId) {
@@ -44,7 +45,7 @@ module.exports = {
       }
     }
     params.push(api.id)
-    const sql = `update api set ${params.join(',')} where api.id = ?`
+    const sql = `update api set ${props.join(',')} where api.id = ?`
     db.query(sql, params)
   }
 }

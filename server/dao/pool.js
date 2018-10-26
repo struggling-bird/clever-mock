@@ -19,6 +19,7 @@ const formatRes = function (sql, res) {
 module.exports = {
   query (sql, params = []) {
     return new Promise((resolve, reject) => {
+      console.log('执行sql', sql, params)
       pool.query(sql, params, function (err, results) {
         if (err) {
           console.error('执行sql错误', err)
@@ -50,6 +51,7 @@ module.exports = {
   },
   queryInTransaction (connect, sql, params = []) {
     return new Promise((resolve, reject) => {
+      console.log('执行sql', sql, params)
       connect.query(sql, params, function (err, results) {
         if (err) {
           console.error('事务中执行sql失败', err)

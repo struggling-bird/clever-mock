@@ -1,34 +1,30 @@
 const httpProxy = require('http-proxy')
 const projectService = require('../service/project')
 const apiService = require('../service/api')
-const apiGroupService = require('../service/apiGroup')
 
 const proxy = async function (req, res, proxyConfig) {
   let proxyServer = httpProxy.createProxyServer(proxyConfig)
-  
+  console.log(proxyConfig)
   return new Promise((resolve, reject) => {
     proxyServer.on('proxyRes', function (proxyRes, req, res) { // 代理完成
-      let data = ''
-      proxyRes.on('data', function (chunck) {
-        data += chunck
+      // todo 解决乱码问题
+      let arr = []
+      let size = 0
+      proxyRes.on('data', function (chunk) {
+        arr.push(chunk)
+        size += chunk.length
       })
       proxyRes.on('end', function () {
-        console.log(data)
-      })
-      resolve({
-        code: res.statusCode,
-        data
+        const data = Buffer.concat(arr, size)
+        resolve({
+          code: res.statusCode,
+          data: data.toString()
+        })
       })
     })
-    // proxyServer.on('open', e => {
-    //   console.log('>>>>open proxy')
-    // })
     proxyServer.on('error', e => {
       reject(e)
     })
-    // proxyServer.on('close', e => {
-    //   console.log('>>>>proxy closed')
-    // })
     proxyServer.web(req, res, e => {
       reject(e)
     })
@@ -59,27 +55,25 @@ const handle = async function (req, res, next) {
     if (matchApi) { // 如果有匹配的api配置项，则按该配置项代理或mock数据
       if (['proxy', 'auto', 'test'].includes(matchApi.runStyle)) { // 代理请求
         proxyConfig.target = matchApi.proxyUrl
-        proxy(req, res, proxyConfig).then(resCode => {
+        proxy(req, res, proxyConfig).then(result => {
           // 代理结束 记录请求日志
           apiService.addLog({
             api: matchApi,
+            method: req.method,
             project,
             callTime,
             path,
-            resCode
+            resCode: result.code,
+            resData: result.data
           })
-        })
-        if (proxyConfig.autoUpdate) {
-          apiService.update({
-            id: matchApi.id,
-            params: JSON.stringify({
-            
-            }),
-            mockData: JSON.stringify({
-            
+          // 如果api配置为自动更新mock数据
+          if (matchApi.autoUpdate) {
+            apiService.update({
+              id: matchApi.id,
+              mockData: result.data
             })
-          })
-        }
+          }
+        })
       } else {
         switch (matchApi.runStyle) {
           case 'staticMock':

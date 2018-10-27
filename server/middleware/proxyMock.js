@@ -1,6 +1,7 @@
 const httpProxy = require('http-proxy')
 const projectService = require('../service/project')
 const apiService = require('../service/api')
+const zlib = require('zlib')
 
 const proxy = async function (req, res, proxyConfig) {
   let proxyServer = httpProxy.createProxyServer(proxyConfig)
@@ -16,10 +17,23 @@ const proxy = async function (req, res, proxyConfig) {
       })
       proxyRes.on('end', function () {
         const data = Buffer.concat(arr, size)
-        resolve({
-          code: res.statusCode,
-          data: data.toString()
-        })
+        if (proxyRes.headers['content-encoding'] === 'gzip') { // 解压gzip
+          zlib.gunzip(data, function (error, result) {
+            if (error) {
+              reject(new Error('解压数据失败'))
+            } else {
+              resolve({
+                code: res.statusCode,
+                data: result.toString()
+              })
+            }
+          })
+        } else {
+          resolve({
+            code: res.statusCode,
+            data: data.toString()
+          })
+        }
       })
     })
     proxyServer.on('error', e => {

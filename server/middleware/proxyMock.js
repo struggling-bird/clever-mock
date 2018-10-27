@@ -8,7 +8,6 @@ const proxy = async function (req, res, proxyConfig) {
   console.log(proxyConfig)
   return new Promise((resolve, reject) => {
     proxyServer.on('proxyRes', function (proxyRes, req, res) { // 代理完成
-      // todo 解决乱码问题
       let arr = []
       let size = 0
       proxyRes.on('data', function (chunk) {

@@ -14,19 +14,27 @@ module.exports = {
     const duration = currentTime - param.callTime
     let apiId = param.api ? param.api.id : uuid()
     const sql = {
+      queryGroup: 'select * from apigroup where project_id = ?',
       addApi: 'insert into ' +
         'api(id, path, method, create_time, ' +
         'last_call_time, project_id, mock_data, ' +
-        'run_style, proxy_url, auto_update) values(?,?,?,?,?,?,?,?,?,?)',
+        'run_style, proxy_url, auto_update, group_id) values(?,?,?,?,?,?,?,?,?,?,?)',
       addLog: 'insert into call_history(api_id, call_time, duration, url, res_code) values(?,?,?,?,?)'
     }
     let connection = null
     db.beginTransaction().then(async conn => {
       connection = conn
       if (!param.api) {
+        let groupList = await db.queryInTransaction(connection, sql.queryGroup, [param.project.id])
+        let matchGroup = null
+        groupList.forEach(group => {
+          if (new RegExp(group.reg).test(param.path)) {
+            matchGroup = group
+          }
+        })
         await db.queryInTransaction(connection, sql.addApi,
           [apiId, param.path, param.method, currentTime, param.callTime, param.project.id,
-            param.resData, 'proxy', param.project.proxyUrl, 0])
+            param.resData, 'proxy', param.project.proxyUrl, 0, matchGroup ? matchGroup.id : null])
       }
       await db.queryInTransaction(connection, sql.addLog, [apiId, param.callTime, duration, param.path, param.resCode])
       db.commit(connection)

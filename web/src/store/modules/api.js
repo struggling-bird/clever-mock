@@ -12,13 +12,13 @@ let store = new Store({
     }
   },
   actions: {
-    [actions.api.queryGroup] (context, param = {
-      projectId: ''
-    }) {
+    [actions.api.queryGroup] (context, projectId) {
       return new Promise((resolve, reject) => {
         ajax({
           url: apis.api.queryGroup,
-          data: param
+          data: {
+            projectId
+          }
         }).then(res => {
           context.commit(mutations.api.setGroupList, res.data)
           resolve()

@@ -7,27 +7,17 @@
         <i class="btn-add mock-wenjianjia"></i>
       </div>
       <div class="api-list">
-        <ul class="group">
+        <ul class="group" v-for="group in groupList" :key="group.id">
           <li class="group-title">
             <i class="mock-folder"></i>
             <i class="btn-add mock-add"></i>
-            <span class="desc">未分组</span>
+            <span class="desc">{{group.name}}</span>
           </li>
-          <li class="api">
-            <span class="url">/zgsee/test</span>
-            <span class="method get">get</span>
-          </li>
-          <li class="api">
-            <span class="url">/zgsee/test</span>
-            <span class="method post">post</span>
-          </li>
-          <li class="api">
-            <span class="url">/zgsee/test</span>
-            <span class="method delete">delete</span>
-          </li>
-          <li class="api">
-            <span class="url">/zgsee/test</span>
-            <span class="method">put</span>
+          <li class="api" v-for="api in group.apiList" :key="api.id">
+            <c-tooltip :content="api.path" placement="right">
+              <span class="url">{{pathFormat(api.path)}}</span>
+            </c-tooltip>
+            <span class="method get">{{api.method}}</span>
           </li>
         </ul>
       </div>
@@ -42,6 +32,7 @@
 import ApiDetail from './api'
 import {actions} from '../../store/constants'
 import {mapState} from 'vuex'
+import {util} from '../../util'
 export default {
   name: 'devView',
   components: {ApiDetail},
@@ -58,7 +49,17 @@ export default {
     })
   },
   beforeCreate () {
-    this.$store.dispatch(actions.api.queryGroup)
+    this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
+  },
+  methods: {
+    pathFormat (path) {
+      return util.strMiddleSplit(path, {
+        maxLength: 30,
+        beginLength: 10,
+        endLength: 10,
+        replaceStr: '...'
+      })
+    }
   }
 }
 </script>

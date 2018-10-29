@@ -13,7 +13,7 @@ const apis = {
     create: '/api/project/add'
   },
   api: {
-    queryGroup: '/apiGroup/list'
+    queryGroup: '/api/apiGroup/list'
   }
 }
 

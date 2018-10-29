@@ -17,21 +17,24 @@ module.exports = {
   }) {
     const sql = {
       addProject: 'INSERT INTO project (id, name, server_host, proxy_url, description, create_time) VALUES (?, ?, ?, ?, ?, ?)',
-      addLink: 'INSERT INTO user_project (user_id, project_id, is_admin) VALUES (?, ?, ?)'
+      addLink: 'INSERT INTO user_project (user_id, project_id, is_admin) VALUES (?, ?, ?)',
+      addApiGroup: 'insert into apigroup (id, name, project_id) values (?,?,?)'
     }
     return new Promise((resolve, reject) => {
-      let id = uuid()
+      let projectId = uuid()
       let connection = null
       db.beginTransaction().then(conn => {
         connection = conn
         return db.queryInTransaction(connection, sql.addProject,
-          [id, project.name, project.serverHost, project.proxyUrl, project.desc, new Date().getTime()])
+          [projectId, project.name, project.serverHost, project.proxyUrl, project.desc, new Date().getTime()])
       }).then(() => {
-        return db.queryInTransaction(connection, sql.addLink, [userId, id, 1])
+        return db.queryInTransaction(connection, sql.addLink, [userId, projectId, 1])
+      }).then(() => {
+        return db.queryInTransaction(connection, sql.addApiGroup, [uuid(), '未分组', projectId])
       }).then(() => {
         return db.commit(connection)
       }).then(() => {
-        resolve(id)
+        resolve(projectId)
       }).catch(err => {
         db.rollback(connection)
         reject(err)

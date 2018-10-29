@@ -13,6 +13,9 @@ const actions = {
     query: '',
     getById: '',
     create: ''
+  },
+  api: {
+    queryGroup: ''
   }
 }
 

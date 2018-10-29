@@ -1,4 +1,4 @@
-const aips = {
+const apis = {
   demo: {
     queryData: '/data/queryDemoData'
   },
@@ -11,7 +11,10 @@ const aips = {
     query: '/api/project/query',
     getById: '/api/project/{id}',
     create: '/api/project/add'
+  },
+  api: {
+    queryGroup: '/apiGroup/list'
   }
 }
 
-export default aips
+export default apis

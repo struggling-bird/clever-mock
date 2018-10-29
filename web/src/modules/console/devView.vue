@@ -40,6 +40,8 @@
 
 <script>
 import ApiDetail from './api'
+import {actions} from '../../store/constants'
+import {mapState} from 'vuex'
 export default {
   name: 'devView',
   components: {ApiDetail},
@@ -47,6 +49,16 @@ export default {
     return {
       msg: 'develope'
     }
+  },
+  computed: {
+    ...mapState({
+      groupList (state) {
+        return state.api.groupList
+      }
+    })
+  },
+  beforeCreate () {
+    this.$store.dispatch(actions.api.queryGroup)
   }
 }
 </script>

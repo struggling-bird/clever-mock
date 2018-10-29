@@ -10,6 +10,9 @@ const mutations = {
   project: {
     setList: '',
     setCurrrent: ''
+  },
+  api: {
+    setGroupList: ''
   }
 }
 

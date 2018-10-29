@@ -46,6 +46,6 @@ module.exports = {
     }
     params.push(api.id)
     const sql = `update api set ${props.join(',')} where api.id = ?`
-    db.query(sql, params)
+    return db.query(sql, params)
   }
 }

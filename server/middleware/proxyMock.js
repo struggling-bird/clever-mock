@@ -5,7 +5,7 @@ const zlib = require('zlib')
 
 const proxy = async function (req, res, proxyConfig) {
   let proxyServer = httpProxy.createProxyServer(proxyConfig)
-  console.log(proxyConfig)
+  console.log('执行代理请求', req.url)
   return new Promise((resolve, reject) => {
     proxyServer.on('proxyRes', function (proxyRes, req, res) { // 代理完成
       let arr = []
@@ -42,6 +42,19 @@ const proxy = async function (req, res, proxyConfig) {
       reject(e)
     })
   })
+}
+
+const scriptMock = function (req, res, requestParam, mockScript) {
+  let result = new Function(
+    'params',
+    'util',
+    'uuid',
+    mockScript)(
+    requestParam,
+    require('../utils/util'),
+    require('uuid/v1')
+  )
+  res.json(result)
 }
 
 const handle = async function (req, res, next) {
@@ -86,16 +99,34 @@ const handle = async function (req, res, next) {
               mockData: result.data
             })
           }
+        }).catch(err => {
+          console.error('代理请求失败', req.url, err)
+          if (matchApi.runStyle === 'auto' && matchApi.mockData) {
+            res.json(JSON.parse(matchApi.mockData))
+          } else {
+            res.json({
+              msg: '接口代理请求失败'
+            })
+          }
         })
       } else {
-        switch (matchApi.runStyle) {
-          case 'staticMock':
-            res.json(JSON.parse(matchApi.mockData))
-            break
-          case 'scriptMock':
-            // todo scriptMock
-            break
-        }
+        let data = []
+        let size = 0
+        req.on('data', chunk => {
+          data.push(chunk)
+          size += chunk.length
+        })
+        req.on('end', () => {
+          let param = Buffer.concat(data, size).toString()
+          switch (matchApi.runStyle) {
+            case 'staticMock':
+              res.json(JSON.parse(matchApi.mockData))
+              break
+            case 'scriptMock':
+              scriptMock(req, res, JSON.parse(param), matchApi.mockScript)
+              break
+          }
+        })
       }
     } else { // 没有匹配的api配置项，则直接开始代理
       proxy(req, res, proxyConfig).then(result => {
@@ -119,7 +150,8 @@ module.exports = function (req, res, next) {
   const path = req.url
   const host = req.headers.origin
   console.log('got request: ', host, path, methodName)
-  if (/api/.test(path)) { // 如果不是平台内部请求
+  if (/^\/api/.test(path)) { // 如果不是平台内部请求
+    console.log('代理平台内部接口', path)
     next()
   } else {
     handle(req, res, next)

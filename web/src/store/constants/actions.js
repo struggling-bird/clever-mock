@@ -15,7 +15,8 @@ const actions = {
     create: ''
   },
   api: {
-    queryGroup: ''
+    queryGroup: '',
+    getById: ''
   }
 }
 

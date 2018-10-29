@@ -61,8 +61,13 @@
 </template>
 
 <script>
+import {actions} from '../../store/constants'
+import {mapState} from 'vuex'
 export default {
   name: 'apiDetail',
+  props: {
+    apiId: null
+  },
   data () {
     return {
       methodName: {name: 'get'},
@@ -72,7 +77,30 @@ export default {
       runTypeList: ['staticMock', 'scriptMock', 'proxy', 'auto', 'test'].map(type => {
         return {name: type}
       }),
-      runType: {name: 'proxy'}
+      runType: {name: 'proxy'},
+      api: null
+    }
+  },
+  computed: {
+    ...mapState({
+      ready (state) {
+        return state.api.ready.current
+      }
+    })
+  },
+  created () {
+    this.getById()
+  },
+  watch: {
+    apiId () {
+      this.getById()
+    }
+  },
+  methods: {
+    getById () {
+      this.$store.dispatch(actions.api.getById, this.apiId).then(api => {
+        this.api = api
+      })
     }
   }
 }

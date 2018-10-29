@@ -2,6 +2,7 @@ const httpProxy = require('http-proxy')
 const projectService = require('../service/project')
 const apiService = require('../service/api')
 const zlib = require('zlib')
+const pathToReg = require('path-to-regexp')
 
 const proxy = async function (req, res, proxyConfig) {
   let proxyServer = httpProxy.createProxyServer(proxyConfig)
@@ -65,7 +66,7 @@ const handle = async function (req, res, next) {
     const apiList = await apiService.queryByProjectId(project.id)
     let matchApi = null
     apiList.forEach(api => {
-      if (new RegExp(api.path).test(path)) {
+      if (pathToReg(api.path).test(path)) {
         matchApi = api
       }
     })

@@ -55,5 +55,11 @@ module.exports = {
     params.push(api.id)
     const sql = `update api set ${props.join(',')} where api.id = ?`
     return db.query(sql, params)
+  },
+  getById (id, userId) {
+    const sql = 'select a.* from api as a ' +
+      'left join user_project as up on up.project_id = a.project_id ' +
+      'where a.id = ? and up.user_id = ?'
+    return db.query(sql, [id, userId])
   }
 }

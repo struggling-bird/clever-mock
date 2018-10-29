@@ -26,6 +26,21 @@ let store = new Store({
           reject(err)
         })
       })
+    },
+    [actions.api.getById] (context, id) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.api.getById,
+          method: 'get',
+          data: {
+            id
+          }
+        }).then(res => {
+          resolve(res.data)
+        }).catch(err => {
+          reject(err)
+        })
+      })
     }
   }
 })

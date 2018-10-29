@@ -11,5 +11,13 @@ module.exports = {
   },
   async update (api) {
     return await apiDao.update(api)
+  },
+  async getById (id, userId) {
+    let list = await apiDao.getById(id, userId)
+    if (list.length) {
+      return list[0]
+    } else {
+      throw new Error('未查到id为' + id + '的api数据')
+    }
   }
 }

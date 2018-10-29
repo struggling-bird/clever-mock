@@ -13,7 +13,8 @@ const apis = {
     create: '/api/project/add'
   },
   api: {
-    queryGroup: '/api/apiGroup/list'
+    queryGroup: '/api/apiGroup/list',
+    getById: '/api/{id}'
   }
 }
 

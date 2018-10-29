@@ -13,17 +13,23 @@
             <i class="btn-add mock-add"></i>
             <span class="desc">{{group.name}}</span>
           </li>
-          <li class="api" v-for="api in group.apiList" :key="api.id">
+          <li v-for="api in group.apiList"
+              :key="api.id"
+              :class="{api: true, active: currentApi === api}"
+              @click="currentApi = api">
             <c-tooltip :content="api.path" placement="right">
               <span class="url">{{pathFormat(api.path)}}</span>
             </c-tooltip>
-            <span class="method get">{{api.method}}</span>
+            <span :class="{method: true, [api.method.toLowerCase()]: true}">{{api.method}}</span>
           </li>
         </ul>
       </div>
     </div>
     <div class="api-detail-panel">
-      <api-detail></api-detail>
+      <api-detail v-if="currentApi" :api-id="currentApi.id"></api-detail>
+      <div v-else class="empty-tip">
+        api引导页
+      </div>
     </div>
   </div>
 </template>
@@ -38,7 +44,7 @@ export default {
   components: {ApiDetail},
   data () {
     return {
-      msg: 'develope'
+      currentApi: null
     }
   },
   computed: {
@@ -55,8 +61,8 @@ export default {
     pathFormat (path) {
       return util.strMiddleSplit(path, {
         maxLength: 30,
-        beginLength: 10,
-        endLength: 10,
+        beginLength: 12,
+        endLength: 15,
         replaceStr: '...'
       })
     }

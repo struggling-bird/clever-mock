@@ -10,7 +10,13 @@
           label-field="name"
           keyField="name">
       </c-selector>
-      <c-input class="url-input" :width="400" clearAble autoFocus size="big" placeholder="URL"/>
+      <c-input class="url-input"
+               v-model="url"
+               :width="400"
+               clearAble
+               autoFocus
+               size="big"
+               placeholder="URL"/>
       <c-selector :store="runTypeList"
                   class="run-type-select"
                   v-model="runType"
@@ -23,39 +29,11 @@
     </div>
 
     <div class="api-config">
-      <c-tabs>
-        <c-tab-panel title="请求参数">
-          <table class="param-table">
-            <thead>
-            <tr>
-              <td>参数名</td>
-              <td>参数值</td>
-              <td>类型</td>
-              <td>说明</td>
-              <td>操作</td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td><c-input/></td>
-              <td><c-input/></td>
-              <td><c-input/></td>
-              <td><c-input/></td>
-              <td>
-                <c-button type="danger" class="btn-del">删除</c-button>
-                <c-button type="primary">添加</c-button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </c-tab-panel>
-        <c-tab-panel title="响应体">
-          this is response
-        </c-tab-panel>
-        <c-tab-panel title="说明">
-
-        </c-tab-panel>
-      </c-tabs>
+      <div class="language">
+        <pre class="language-json">
+          <code class="language-json" v-html="responseCode"></code>
+        </pre>
+      </div>
     </div>
   </div>
 </template>
@@ -63,6 +41,7 @@
 <script>
 import {actions} from '../../store/constants'
 import {mapState} from 'vuex'
+import Prism from 'prismjs'
 export default {
   name: 'apiDetail',
   props: {
@@ -78,6 +57,11 @@ export default {
         return {name: type}
       }),
       runType: {name: 'proxy'},
+      url: '',
+      params: [],
+      response: '',
+      responseCode: '',
+      description: '',
       api: null
     }
   },
@@ -88,18 +72,25 @@ export default {
       }
     })
   },
-  created () {
+  mounted () {
     this.getById()
   },
   watch: {
     apiId () {
       this.getById()
+    },
+    response (text) {
+      this.responseCode = Prism.highlight(text, Prism.languages.json, 'json')
     }
   },
   methods: {
     getById () {
       this.$store.dispatch(actions.api.getById, this.apiId).then(api => {
         this.api = api
+        this.methodName = {name: api.method.toLowerCase()}
+        this.runType = {name: api.runStyle}
+        this.url = api.path
+        this.response = api.mockData
       })
     }
   }

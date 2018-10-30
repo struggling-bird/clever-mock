@@ -1,5 +1,5 @@
 const apiDao = require('../dao/api')
-
+const beautify = require('../utils/beautify')
 module.exports = {
   async queryByProjectId (projectId) {
     return await apiDao.queryByProjectId(projectId)
@@ -13,9 +13,11 @@ module.exports = {
     return await apiDao.update(api)
   },
   async getById (id, userId) {
-    let list = await apiDao.getById(id, userId)
-    if (list.length) {
-      return list[0]
+    let apiList = await apiDao.getById(id, userId)
+    if (apiList.length) {
+      let api = apiList[0]
+      api.mockData = beautify.js(api.mockData)
+      return api
     } else {
       throw new Error('未查到id为' + id + '的api数据')
     }

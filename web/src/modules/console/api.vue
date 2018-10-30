@@ -29,11 +29,9 @@
     </div>
 
     <div class="api-config">
-      <div class="language">
-        <pre class="language-json">
-          <code class="language-json" v-html="responseCode"></code>
-        </pre>
-      </div>
+      <pre class="language-json">
+        <code v-html="responseCode"></code>
+      </pre>
     </div>
   </div>
 </template>
@@ -81,6 +79,7 @@ export default {
     },
     response (text) {
       this.responseCode = Prism.highlight(text, Prism.languages.json, 'json')
+      console.log(Prism)
     }
   },
   methods: {

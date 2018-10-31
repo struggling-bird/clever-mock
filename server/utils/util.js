@@ -385,5 +385,25 @@ module.exports = {
       return arr[0].replace(/\//g, '')
     }
     return ''
+  },
+  getStructure (data) {
+    let output = {}
+    if (this.isObject(data)) {
+      for (let key in data) {
+        const value = data[key]
+        if (this.isArray(value)) {
+          output[key] = [this.getStructure(value[0])]
+        } else if (this.isObject(value)) {
+          output[key] = this.getStructure(value)
+        } else {
+          output[key] = value
+        }
+      }
+    } else if (this.isArray(data)) {
+      output = data.length ? [this.getStructure(data[0])] : []
+    } else {
+      output = data
+    }
+    return output
   }
 }

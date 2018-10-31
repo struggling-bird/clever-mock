@@ -17,8 +17,8 @@ module.exports = {
       queryGroup: 'select * from apigroup where project_id = ?',
       addApi: 'insert into ' +
         'api(id, path, method, create_time, ' +
-        'last_call_time, project_id, mock_data, ' +
-        'run_style, proxy_url, auto_update, group_id) values(?,?,?,?,?,?,?,?,?,?,?)',
+        'last_call_time, project_id, mock_data, res_structure, ' +
+        'run_style, proxy_url, auto_update, group_id) values(?,?,?,?,?,?,?,?,?,?,?,?)',
       addLog: 'insert into call_history(api_id, call_time, duration, url, res_code) values(?,?,?,?,?)'
     }
     let connection = null
@@ -34,7 +34,7 @@ module.exports = {
         })
         await db.queryInTransaction(connection, sql.addApi,
           [apiId, param.path, param.method, currentTime, param.callTime, param.project.id,
-            param.resData, 'proxy', param.project.proxyUrl, 0, matchGroup ? matchGroup.id : null])
+            param.resData,JSON.stringify(util.getStructure(JSON.parse(param.resData))), 'proxy', param.project.proxyUrl, 0, matchGroup ? matchGroup.id : null])
       }
       await db.queryInTransaction(connection, sql.addLog, [apiId, param.callTime, duration, param.path, param.resCode])
       db.commit(connection)

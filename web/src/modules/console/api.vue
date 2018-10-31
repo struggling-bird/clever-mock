@@ -29,9 +29,7 @@
     </div>
 
     <div class="api-config">
-      <pre class="language-json">
-        <code v-html="responseCode"></code>
-      </pre>
+
     </div>
   </div>
 </template>

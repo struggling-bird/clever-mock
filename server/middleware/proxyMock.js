@@ -118,6 +118,7 @@ const handle = async function (req, res, next) {
           size += chunk.length
         })
         req.on('end', () => {
+          // todo 参数获取方式细化，支持get请求参数获取
           let param = Buffer.concat(data, size).toString()
           switch (matchApi.runStyle) {
             case 'staticMock':

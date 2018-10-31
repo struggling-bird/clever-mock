@@ -29,7 +29,7 @@ function resCodeFilter (res) {
       break
     case resCode.NOT_LOGIN:
       flag = false
-      // location.href = `/app/login?destination=${location.href}`
+      location.href = `/login`
       break
     case resCode.Error:
       flag = false

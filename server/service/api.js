@@ -18,6 +18,7 @@ module.exports = {
       let api = apiList[0]
       api.mockData = beautify.js(api.mockData)
       api.resStructure = beautify.js(api.resStructure)
+      api.params = JSON.parse(api.params)
       return api
     } else {
       throw new Error('未查到id为' + id + '的api数据')

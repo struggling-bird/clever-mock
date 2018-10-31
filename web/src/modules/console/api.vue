@@ -1,52 +1,53 @@
 <template>
   <div class="api-detail">
-    <c-loading v-show="loading"></c-loading>
-    <c-reload v-show="reload" @reload="getById"></c-reload>
-    <c-input v-model="name" placeholder="接口名称" clearAble :width="300" style="margin-bottom: 20px"/><br/>
-    <div class="url-line">
-      <c-selector
-          class="method-select"
-          size="big"
-          :width="80"
-          :store="methodList"
-          v-model="methodName"
-          label-field="name"
-          keyField="name">
-      </c-selector>
-      <c-input class="url-input"
-               v-model="url"
-               :width="400"
-               clearAble
-               autoFocus
-               size="big"
-               placeholder="URL"/>
-      <c-selector :store="runTypeList"
-                  class="run-type-select"
-                  v-model="runType"
-                  :width="120"
-                  size="big"
-                  keyField="name"
-                  labelField="name"></c-selector>
-      <c-button size="large" type="primary" theme="border" v-if="runType.name === 'test'">发送</c-button>
-      <c-button size="large" type="primary">保存</c-button>
-    </div>
-    <div class="api-config">
-      <c-tabs>
-        <c-tab-panel title="参数结构">
-          <param-view></param-view>
-        </c-tab-panel>
-        <c-tab-panel title="返回结构">
-          <res-view></res-view>
-        </c-tab-panel>
-        <c-tab-panel title="接口描述"></c-tab-panel>
-      </c-tabs>
-    </div>
+    <c-loading v-if="loading"></c-loading>
+    <c-reload v-if="reload" @reload="getById"></c-reload>
+    <template v-if="!loading && !reload">
+      <c-input v-model="name" placeholder="接口名称" clearAble :width="300" style="margin-bottom: 20px"/><br/>
+      <div class="url-line">
+        <c-selector
+            class="method-select"
+            size="big"
+            :width="80"
+            :store="methodList"
+            v-model="methodName"
+            label-field="name"
+            keyField="name">
+        </c-selector>
+        <c-input class="url-input"
+                 v-model="url"
+                 :width="400"
+                 clearAble
+                 autoFocus
+                 size="big"
+                 placeholder="URL"/>
+        <c-selector :store="runTypeList"
+                    class="run-type-select"
+                    v-model="runType"
+                    :width="120"
+                    size="big"
+                    keyField="name"
+                    labelField="name"></c-selector>
+        <c-button size="large" type="primary" theme="border" v-if="runType.name === 'test'">发送</c-button>
+        <c-button size="large" type="primary">保存</c-button>
+      </div>
+      <div class="api-config">
+        <c-tabs cleanMode>
+          <c-tab-panel title="参数结构">
+            <param-view v-model="api.params"></param-view>
+          </c-tab-panel>
+          <c-tab-panel title="返回结构">
+            <res-view v-model="api.resStructure"></res-view>
+          </c-tab-panel>
+          <c-tab-panel title="接口描述"></c-tab-panel>
+        </c-tabs>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import {actions} from '../../store/constants'
-import Prism from 'prismjs'
 import ParamView from './paramView'
 import ResView from './resView'
 export default {
@@ -82,9 +83,6 @@ export default {
   watch: {
     apiId () {
       this.getById()
-    },
-    response (text) {
-      this.responseCode = Prism.highlight(text, Prism.languages.json, 'json')
     }
   },
   methods: {

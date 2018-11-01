@@ -39,7 +39,15 @@
           <c-tab-panel title="返回结构">
             <res-view v-model="api.resStructure"></res-view>
           </c-tab-panel>
-          <c-tab-panel title="接口描述"></c-tab-panel>
+          <c-tab-panel title="接口描述">
+            <api-desc v-model="api.description"></api-desc>
+          </c-tab-panel>
+          <c-tab-panel title="mock数据">
+            <mock-data></mock-data>
+          </c-tab-panel>
+          <c-tab-panel title="mock脚本">
+            <mock-script></mock-script>
+          </c-tab-panel>
         </c-tabs>
       </div>
     </template>
@@ -50,9 +58,12 @@
 import {actions} from '../../store/constants'
 import ParamView from './paramView'
 import ResView from './resView'
+import ApiDesc from './styles/apiDesc'
+import MockData from './mockData'
+import MockScript from './mockScript'
 export default {
   name: 'apiDetail',
-  components: {ResView, ParamView},
+  components: {MockScript, MockData, ApiDesc, ResView, ParamView},
   props: {
     apiId: null
   },

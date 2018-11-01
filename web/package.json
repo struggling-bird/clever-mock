@@ -24,6 +24,8 @@
     "node-sass": "^4.9.0",
     "prismjs": "^1.15.0",
     "sass-loader": "^7.0.1",
+    "showdown": "^1.8.7",
+    "simplemde": "^1.11.2",
     "vue-template-compiler": "^2.5.17"
   }
 }

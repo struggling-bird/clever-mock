@@ -34,7 +34,7 @@
       <div class="api-config">
         <c-tabs cleanMode>
           <c-tab-panel title="参数结构">
-            <param-view v-model="api.params"></param-view>
+            <param-view :params="params" @change="onChangeParam"></param-view>
           </c-tab-panel>
           <c-tab-panel title="返回结构">
             <res-view v-model="api.resStructure"></res-view>
@@ -116,6 +116,9 @@ export default {
         })
         console.error('获取接口信息失败', err)
       })
+    },
+    onChangeParam (params) {
+      this.params = params
     }
   }
 }

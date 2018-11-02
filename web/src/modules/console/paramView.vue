@@ -54,7 +54,7 @@ import {util} from '../../util'
 export default {
   name: 'paramView',
   props: {
-    value: {
+    params: {
       type: Array,
       default () {
         return []
@@ -62,6 +62,7 @@ export default {
     }
   },
   data () {
+    console.log('>>>>>', this.params)
     return {
       typeList: [
         {name: '字符串', value: 'string'},
@@ -69,7 +70,7 @@ export default {
         {name: '数组', value: 'array'},
         {name: '布尔值', value: 'boolean'}
       ],
-      paramList: this.value.map(param => {
+      paramList: this.params.map(param => {
         let res = util.clone(param)
         res.id = util.guid()
         res.type = {value: res.type}
@@ -89,7 +90,7 @@ export default {
             output.push(param)
           }
         })
-        this.$emit('input', output)
+        this.$emit('change', output)
       },
       deep: true
     }

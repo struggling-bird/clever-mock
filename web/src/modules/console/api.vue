@@ -4,6 +4,7 @@
     <c-reload v-if="reload" @reload="getById"></c-reload>
     <template v-if="!loading && !reload">
       <c-input v-model="api.name" placeholder="接口名称" clearAble :width="300" style="margin-bottom: 20px"/><br/>
+      <c-input v-model="api.proxyUrl" placeholder="代理地址" clearAble :width="300" style="margin-bottom: 20px"></c-input><br/>
       <div class="url-line">
         <c-selector
             class="method-select"
@@ -120,6 +121,8 @@ export default {
     onSave () {
       this.$store.dispatch(actions.api.update, this.api).then(() => {
         console.log('更新成功')
+        this.preApi = util.clone(this.api)
+        this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
       }).catch(err => {
         this.$message({
           type: 'error',

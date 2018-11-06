@@ -58,14 +58,14 @@ export default function (option) {
     data: null,
     baseURL: '/',
     unique: false, // 请求是否唯一，唯一的话，如果上一个请求的url与本次请求一致，则会取消上一个请求
-    withCredentials: true /*,
-    transformRequest (params) {
-      var arr = []
-      for (let key in params) {
-        arr.push(`${key}=${encodeURIComponent(params[key])}`)
-      }
-      return arr.join('&')
-    }*/
+    withCredentials: true
+    // transformRequest (params) {
+    //   var arr = []
+    //   for (let key in params) {
+    //     arr.push(`${key}=${encodeURIComponent(params[key])}`)
+    //   }
+    //   return arr.join('&')
+    // }
   }, option)
 
   // URL中如果含有{}则将data中的参数替换到url中

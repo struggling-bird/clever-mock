@@ -1,7 +1,5 @@
 <template>
   <div class="param-view">
-    <c-radio-button :store="[{value: 'table', icon: 'mock-table'}, {value: 'code', icon: 'mock-code'}]"
-                    type="primary" theme="border"></c-radio-button>
     <table class="param-table">
       <thead>
       <tr>
@@ -54,7 +52,7 @@ import {util} from '../../util'
 export default {
   name: 'paramView',
   props: {
-    params: {
+    value: {
       type: Array,
       default () {
         return []
@@ -62,7 +60,6 @@ export default {
     }
   },
   data () {
-    console.log('>>>>>', this.params)
     return {
       typeList: [
         {name: '字符串', value: 'string'},
@@ -70,7 +67,7 @@ export default {
         {name: '数组', value: 'array'},
         {name: '布尔值', value: 'boolean'}
       ],
-      paramList: this.params.map(param => {
+      paramList: this.value.map(param => {
         let res = util.clone(param)
         res.id = util.guid()
         res.type = {value: res.type}
@@ -90,7 +87,7 @@ export default {
             output.push(param)
           }
         })
-        this.$emit('change', output)
+        this.$emit('input', output)
       },
       deep: true
     }

@@ -9,8 +9,9 @@ module.exports = {
   }) {
     return await apiDao.addLog(param)
   },
-  async update (api) {
-    return await apiDao.update(api)
+  async update (userId, api) {
+    if (api.params) api.params = JSON.stringify(api.params)
+    return await apiDao.update(userId, api)
   },
   async getById (id, userId) {
     let apiList = await apiDao.getById(id, userId)

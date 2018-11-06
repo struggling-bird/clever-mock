@@ -41,6 +41,18 @@ let store = new Store({
           reject(err)
         })
       })
+    },
+    [actions.api.update] (context, api) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.api.update,
+          data: api
+        }).then(() => {
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
     }
   }
 })

@@ -18,15 +18,12 @@ import Prism from 'prismjs'
 export default {
   name: 'mockScript',
   props: {
-    value: {
-      type: String,
-      default: ''
-    }
+    value: null
   },
   data () {
     return {
       mockScript: this.value,
-      code: Prism.highlight(this.value, Prism.languages.javascript, 'javascript')
+      code: Prism.highlight(this.value || '', Prism.languages.javascript, 'javascript')
     }
   },
   watch: {

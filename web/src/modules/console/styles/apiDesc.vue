@@ -21,7 +21,7 @@ export default {
       element: this.$refs.dom,
       autofocus: true
     })
-    this.editor.value(this.value)
+    this.editor.value(this.value || '')
     this.editor.codemirror.on('change', () => {
       this.$emit('input', this.editor.value())
     })

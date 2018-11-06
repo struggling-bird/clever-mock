@@ -143,7 +143,9 @@ const handle = async function (req, res, next) {
       })
     }
   } else {
-    next()
+    res.json({
+      msg: 'cleverMock: unknow server host'
+    })
   }
 }
 

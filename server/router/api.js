@@ -26,4 +26,19 @@ router.get('/:id', (req, res) => {
     })
   })
 })
+
+router.post('/update', (req, res) => {
+  const user = req.session.currentUser
+  apiService.update(user.id, req.body).then(() => {
+    res.json({
+      code: constant.code.success
+    })
+  }).catch(err => {
+    console.error('更新api失败', err)
+    res.json({
+      code: constant.code.error,
+      msg: '更新api失败'
+    })
+  })
+})
 module.exports = router

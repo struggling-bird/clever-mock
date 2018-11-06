@@ -23,12 +23,13 @@ export default {
   data () {
     return {
       response: this.value,
-      code: Prism.highlight(this.value, Prism.languages.json, 'json')
+      code: Prism.highlight(this.value || '', Prism.languages.json, 'json')
     }
   },
   watch: {
     response (res) {
       this.code = Prism.highlight(res, Prism.languages.json, 'json')
+      this.$emit('input', this.res)
     }
   }
 }

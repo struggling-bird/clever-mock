@@ -15,7 +15,7 @@
         <ul class="group" v-for="group in groupList" :key="group.id">
           <li class="group-title">
             <i class="mock-folder"></i>
-            <i class="btn-add mock-add"></i>
+            <i class="btn-add mock-add" @click="addApi(group)"></i>
             <span class="desc">{{group.name}}</span>
           </li>
           <li v-for="api in group.apiList"
@@ -80,6 +80,9 @@ export default {
       } else {
         return true
       }
+    },
+    addApi (group) {
+      console.log('add api in group: ', group)
     }
   }
 }

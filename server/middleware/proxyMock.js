@@ -3,6 +3,7 @@ const projectService = require('../service/project')
 const apiService = require('../service/api')
 const zlib = require('zlib')
 const pathToReg = require('path-to-regexp')
+const util = require('../utils/util')
 
 const proxy = async function (req, res, proxyConfig) {
   let proxyServer = httpProxy.createProxyServer(proxyConfig)
@@ -61,7 +62,7 @@ const scriptMock = function (req, res, requestParam, mockScript) {
 const handle = async function (req, res, next) {
   // todo 数据做缓存维护，避免高频次操作数据库
   const path = req.url
-  const project = await projectService.queryByHost(req.headers.origin)
+  const project = await projectService.queryByHost(util.getHost(req))
   if (project) { // 查询是否有匹配项目
     const apiList = await apiService.queryByProjectId(project.id)
     let matchApi = null
@@ -152,7 +153,7 @@ const handle = async function (req, res, next) {
 module.exports = function (req, res, next) {
   const methodName = req.method
   const path = req.url
-  const host = req.headers.origin
+  const host = util.getHost(req)
   console.log('got request: ', host, path, methodName)
   if (/^\/api/.test(path)) { // 如果不是平台内部请求
     console.log('代理平台内部接口', path)

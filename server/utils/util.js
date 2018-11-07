@@ -405,5 +405,8 @@ module.exports = {
       output = data
     }
     return output
+  },
+  getHost (req) {
+    return `${req.headers['x-forwarded-proto']}://${req.headers['x-forwarded-host']}`
   }
 }

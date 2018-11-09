@@ -1,4 +1,5 @@
 const db = require('./pool')
+const uuid = require('uuid/v1')
 
 module.exports = {
   async queryByProjectId (projectId) {
@@ -17,5 +18,27 @@ module.exports = {
     })
     
     return groupList
+  },
+  async addGroup (group) {
+    const sql = 'insert into apigroup(id, name, reg, project_id, description) values(?, ?, ?, ?, ?)'
+    const id = uuid()
+    const conn = await db.beginTransaction()
+    await db.queryInTransaction(conn, sql, [id, group.name, group.reg, group.projectId, group.description])
+    // 添加分组成功后，自动从接口列表中遍历符合条件的api并进行关联
+    const apiList = await db.queryInTransaction(conn, 'select * from api where project_id = ?', [group.projectId])
+    let matchApi = []
+    let code = []
+    apiList.forEach(api => {
+      if (new RegExp(group.reg).test(api.path)) {
+        matchApi.push(api.id)
+        code.push('?')
+      }
+    })
+    if (matchApi.length) {
+      db.queryInTransaction(conn, `update api set group_id = ? where id in(${code.join(',')})`, [id, ...matchApi])
+    }
+    db.commit(conn)
+    const addedGroup = await db.queryInTransaction(conn, 'select * from apigroup where id = ?', [id])
+    return addedGroup[0]
   }
 }

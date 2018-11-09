@@ -9,6 +9,9 @@ let store = new Store({
   mutations: {
     [mutations.api.setGroupList] (state, list) {
       state.groupList = list
+    },
+    [mutations.api.addGroup] (state, group) {
+      state.groupList.push(group)
     }
   },
   actions: {
@@ -48,6 +51,19 @@ let store = new Store({
           url: apis.api.update,
           data: api
         }).then(() => {
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    [actions.api.addGroup] (context, group) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.api.addGroup,
+          data: group
+        }).then(res => {
+          context.commit(mutations.api.addGroup, res.data)
           resolve()
         }).catch(err => {
           reject(err)

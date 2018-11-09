@@ -16,6 +16,7 @@ const actions = {
   },
   api: {
     queryGroup: '',
+    addGroup: '',
     getById: '',
     update: ''
   }

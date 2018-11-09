@@ -15,7 +15,8 @@ const apis = {
   api: {
     queryGroup: '/api/apiGroup/list',
     getById: '/api/{id}',
-    update: '/api/update'
+    update: '/api/update',
+    addGroup: '/api/apiGroup/add'
   }
 }
 

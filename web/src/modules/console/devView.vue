@@ -37,6 +37,7 @@
         api引导页
       </div>
     </div>
+    <group-dialog v-if="showCreateGroup" @submit="showCreateGroup = false" @cancel="showCreateGroup = false"></group-dialog>
   </div>
 </template>
 
@@ -45,13 +46,15 @@ import ApiDetail from './api'
 import {actions} from '../../store/constants'
 import {mapState} from 'vuex'
 import {util} from '../../util'
+import GroupDialog from './groupDialog'
 export default {
   name: 'devView',
-  components: {ApiDetail},
+  components: {GroupDialog, ApiDetail},
   data () {
     return {
       filter: '',
-      currentApi: null
+      currentApi: null,
+      showCreateGroup: false
     }
   },
   computed: {
@@ -85,7 +88,7 @@ export default {
       console.log('add api in group: ', group)
     },
     onAddGroup () {
-      console.log('add group')
+      this.showCreateGroup = true
     }
   }
 }

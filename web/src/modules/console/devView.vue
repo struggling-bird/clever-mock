@@ -9,7 +9,7 @@
                icon="mock-search"/>
       <div class="ctl-panel">
         <i class="btn-sort mock-sort-alpha-desc"></i>
-        <i class="btn-add mock-wenjianjia"></i>
+        <i class="btn-add mock-wenjianjia" @click="onAddGroup"></i>
       </div>
       <div class="api-list">
         <ul class="group" v-for="group in groupList" :key="group.id">
@@ -83,6 +83,9 @@ export default {
     },
     addApi (group) {
       console.log('add api in group: ', group)
+    },
+    onAddGroup () {
+      console.log('add group')
     }
   }
 }

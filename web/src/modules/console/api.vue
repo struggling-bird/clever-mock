@@ -79,7 +79,22 @@ export default {
         return {name: type}
       }),
       runType: {name: 'proxy'},
-      api: null,
+      api: {
+        autoUpdate: 0,
+        description: '',
+        groupId: '',
+        method: 'POST',
+        mockData: '',
+        mockScript: '',
+        name: '',
+        params: [],
+        path: '',
+        projectId: '',
+        proxyUrl: '',
+        resFormatScript: null,
+        resStructure: '',
+        runStyle: 'proxy'
+      },
       preApi: null,
       loading: true,
       reload: false

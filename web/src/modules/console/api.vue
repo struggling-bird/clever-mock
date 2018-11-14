@@ -72,7 +72,7 @@ export default {
   data () {
     return {
       methodName: {name: 'get'},
-      methodList: ['get', 'post', 'delete', 'put'].map(name => {
+      methodList: ['GET', 'POST', 'DELETE', 'PUT'].map(name => {
         return {name: name}
       }),
       runTypeList: ['staticMock', 'scriptMock', 'proxy', 'auto', 'test'].map(type => {
@@ -101,8 +101,15 @@ export default {
     }
   },
   computed: {
+    saveParam () {
+      return {
+        ...this.api,
+        method: this.methodName.name,
+        runStyle: this.runType.name
+      }
+    },
     saveAble () {
-      return !util.equal(this.api, this.preApi)
+      return !util.equal(this.saveParam, this.preApi)
     }
   },
   mounted () {
@@ -120,7 +127,7 @@ export default {
       this.$store.dispatch(actions.api.getById, this.apiId).then(api => {
         this.api = api
         this.preApi = util.clone(api)
-        this.methodName = {name: api.method.toLowerCase()}
+        this.methodName = {name: api.method}
         this.runType = {name: api.runStyle}
         this.loading = false
       }).catch(err => {
@@ -134,9 +141,9 @@ export default {
       })
     },
     onSave () {
-      this.$store.dispatch(actions.api.update, this.api).then(() => {
+      this.$store.dispatch(actions.api.update, this.saveParam).then(() => {
         console.log('更新成功')
-        this.preApi = util.clone(this.api)
+        this.preApi = util.clone(this.saveParam)
         this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
       }).catch(err => {
         this.$message({

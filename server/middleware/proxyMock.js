@@ -119,14 +119,27 @@ const handle = async function (req, res, next) {
           size += chunk.length
         })
         req.on('end', () => {
-          // todo 参数获取方式细化，支持get请求参数获取
           let param = Buffer.concat(data, size).toString()
+          try {
+            param = JSON.parse(param || null)
+          } catch (e) {
+            if (/[&=]/.test(param)) {
+              let p = {}
+              param.split('&').forEach(item => {
+                let arr = item.split('=')
+                p[arr[0]] = arr[1]
+              })
+              param = p
+            }
+          }
+          console.log('请求参数', param)
           switch (matchApi.runStyle) {
             case 'staticMock':
               res.json(JSON.parse(matchApi.mockData))
               break
             case 'scriptMock':
-              scriptMock(req, res, JSON.parse(param), matchApi.mockScript)
+              console.log('请求参数', param)
+              scriptMock(req, res, param, matchApi.mockScript)
               break
           }
         })

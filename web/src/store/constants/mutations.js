@@ -13,7 +13,8 @@ const mutations = {
   },
   api: {
     setGroupList: '',
-    addGroup: ''
+    addGroup: '',
+    updateGroup: ''
   }
 }
 

@@ -12,6 +12,13 @@ let store = new Store({
     },
     [mutations.api.addGroup] (state, group) {
       state.groupList.push(group)
+    },
+    [mutations.api.updateGroup] (state, group) {
+      state.groupList.forEach(item => {
+        if (item.id === group.id) {
+          item = group
+        }
+      })
     }
   },
   actions: {
@@ -64,6 +71,35 @@ let store = new Store({
           data: group
         }).then(res => {
           context.commit(mutations.api.addGroup, res.data)
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    [actions.api.updateGroup] (context, group) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.api.updateGroup,
+          data: group
+        }).then(() => {
+          context.commit(mutations.api.updateGroup, group)
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    [actions.api.delGroup] (context, param = {
+      id: '',
+      projectId: ''
+    }) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.api.deleteGroup,
+          data: param,
+          method: 'delete'
+        }).then(() => {
           resolve()
         }).catch(err => {
           reject(err)

@@ -16,7 +16,7 @@
           <li class="group-title">
             <i class="mock-folder"></i>
             <i class="btn-add mock-add" @click="addApi(group)"></i>
-            <span class="desc">{{group.name}}</span>
+            <span class="desc" @click="onEditGroup(group)">{{group.name}}</span>
           </li>
           <li v-for="api in group.apiList"
               :key="api.id"
@@ -37,7 +37,11 @@
         api引导页
       </div>
     </div>
-    <group-dialog v-if="showCreateGroup" @submit="showCreateGroup = false" @cancel="showCreateGroup = false"></group-dialog>
+    <group-dialog v-if="showCreateGroup"
+                  :group="currentGroup"
+                  @del="showCreateGroup = false"
+                  @submit="showCreateGroup = false"
+                  @cancel="showCreateGroup = false"></group-dialog>
   </div>
 </template>
 
@@ -54,7 +58,8 @@ export default {
     return {
       filter: '',
       currentApi: null,
-      showCreateGroup: false
+      showCreateGroup: false,
+      currentGroup: null
     }
   },
   computed: {
@@ -88,6 +93,10 @@ export default {
       console.log('add api in group: ', group)
     },
     onAddGroup () {
+      this.showCreateGroup = true
+    },
+    onEditGroup (group) {
+      this.currentGroup = group
       this.showCreateGroup = true
     }
   }

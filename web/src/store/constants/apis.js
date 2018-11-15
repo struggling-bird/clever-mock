@@ -16,7 +16,9 @@ const apis = {
     queryGroup: '/api/apiGroup/list',
     getById: '/api/{id}',
     update: '/api/update',
-    addGroup: '/api/apiGroup/add'
+    addGroup: '/api/apiGroup/add',
+    updateGroup: '/api/apiGroup/update',
+    deleteGroup: '/api/apiGroup/delete/{id}/{projectId}'
   }
 }
 

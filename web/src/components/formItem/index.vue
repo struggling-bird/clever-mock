@@ -1,6 +1,8 @@
 <template>
   <div class="form-item">
-    <label class="form-label" :style="style">{{label}}：</label>
+    <label class="form-label" :style="style">
+      {{label}}：
+    </label>
     <slot></slot>
   </div>
 </template>

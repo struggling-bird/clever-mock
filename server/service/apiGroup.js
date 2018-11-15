@@ -6,5 +6,11 @@ module.exports = {
   },
   async addGroup (group) {
     return await groupDao.addGroup(group)
+  },
+  async update (group) {
+    return await groupDao.update(group)
+  },
+  async del (groupId, projectId) {
+    return await groupDao.del(groupId, projectId)
   }
 }

@@ -1,5 +1,6 @@
 const db = require('./pool')
 const uuid = require('uuid/v1')
+const util = require('../utils/util')
 
 module.exports = {
   async queryByProjectId (projectId) {
@@ -35,10 +36,55 @@ module.exports = {
       }
     })
     if (matchApi.length) {
-      db.queryInTransaction(conn, `update api set group_id = ? where id in(${code.join(',')})`, [id, ...matchApi])
+      await db.queryInTransaction(conn, `update api set group_id = ? where id in(${code.join(',')})`, [id, ...matchApi])
     }
-    db.commit(conn)
-    const addedGroup = await db.queryInTransaction(conn, 'select * from apigroup where id = ?', [id])
-    return addedGroup[0]
+    try {
+      await db.commit(conn)
+      const addedGroup = await db.queryInTransaction(conn, 'select * from apigroup where id = ?', [id])
+      return addedGroup[0]
+    } catch (e) {
+      db.rollback(conn)
+      throw e
+    }
+  },
+  async update (group) {
+    let props = []
+    let vals = []
+    for (let key in group) {
+      if (key === 'id') continue
+      props.push(`${util.toUnderLine(key)}=?`)
+      vals.push(group[key])
+    }
+    vals.push(group.id)
+    const sql = `update apigroup set ${props.join(',')} where id=?`
+    return await db.query(sql, vals)
+  },
+  async del (id, projectId) {
+    const sql = {
+      queryApis: 'select * from api where group_id = ?',
+      queryGroups: 'select * from apigroup where project_id = ?',
+      updateBind: 'update api set group_id=? where id = ?',
+      delGroup: 'delete from apigroup where id = ?'
+    }
+    const conn = await db.beginTransaction()
+    const apiList = await db.queryInTransaction(conn, sql.queryApis, [id])
+    const groupList = await db.queryInTransaction(conn, sql.queryGroups, [projectId])
+    await Promise.all(apiList.map(api => {
+      for (let i = 0; i < groupList.length; i++) {
+        const group = groupList[i]
+        if (group.id === id) continue
+        if (new RegExp(group.reg).test(api.path)) {
+          return db.queryInTransaction(conn, sql.updateBind, [group.id, api.id])
+        }
+      }
+    }))
+    const res = await db.queryInTransaction(conn, sql.delGroup, [id])
+    try {
+      await db.commit(conn)
+      return res
+    } catch (e) {
+      db.rollback(conn)
+      throw e
+    }
   }
 }

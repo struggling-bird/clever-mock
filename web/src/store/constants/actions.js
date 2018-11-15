@@ -17,6 +17,8 @@ const actions = {
   api: {
     queryGroup: '',
     addGroup: '',
+    updateGroup: '',
+    delGroup: '',
     getById: '',
     update: ''
   }

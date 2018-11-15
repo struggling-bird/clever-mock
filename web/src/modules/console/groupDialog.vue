@@ -1,6 +1,6 @@
 <template>
   <div class="group-dialog">
-    <c-dialog title="创建分组" @confirm="onSubmit" @cancel="onCancel">
+    <c-dialog :title="group ? '编辑分组' : '创建分组'" :showFoot="false">
       <form-item label="名称">
         <c-input :width="300" v-model="name"/>
       </form-item>
@@ -12,6 +12,11 @@
           <textarea ref="desc" v-model="description"></textarea>
         </div>
       </form-item>
+      <div class="btns">
+        <c-button type="danger" v-if="group" @click="onDel">删除</c-button>
+        <c-button @click="onCancel">取消</c-button>
+        <c-button type="primary" @click="onSubmit">确定</c-button>
+      </div>
     </c-dialog>
   </div>
 </template>
@@ -24,13 +29,22 @@ import {mapState} from 'vuex'
 export default {
   name: 'groupDialog',
   components: {FormItem},
+  props: {
+    group: null
+  },
   data () {
-    return {
+    let data = {
       editor: null,
       name: '',
       reg: '',
       description: ''
     }
+    if (this.group) {
+      data.name = this.group.name
+      data.reg = this.group.reg
+      data.description = this.group.description
+    }
+    return data
   },
   computed: {
     ...mapState({
@@ -39,11 +53,15 @@ export default {
       }
     }),
     form () {
-      return {
+      let form = {
         name: this.name,
         reg: this.reg,
         projectId: this.project.id
       }
+      if (this.group) {
+        form.id = this.group.id
+      }
+      return form
     }
   },
   mounted () {
@@ -54,7 +72,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.$store.dispatch(actions.api.addGroup, {
+      this.$store.dispatch(this.group ? actions.api.updateGroup : actions.api.addGroup, {
         ...this.form,
         description: this.editor.value()
       }).then(() => {
@@ -70,6 +88,21 @@ export default {
     },
     onCancel () {
       this.$emit('cancel')
+    },
+    onDel () {
+      this.$store.dispatch(actions.api.delGroup, {
+        id: this.group.id,
+        projectId: this.group.projectId
+      }).then(() => {
+        this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
+        this.$emit('del')
+      }).catch(err => {
+        this.$message({
+          type: 'error',
+          message: '删除分组失败'
+        })
+        console.error('删除分组失败', err)
+      })
     }
   }
 }
@@ -85,4 +118,8 @@ export default {
   textarea
     width: 300px
     height: 150px
+  .btns
+    text-align: right
+    .c-button
+      margin-left: 10px
 </style>

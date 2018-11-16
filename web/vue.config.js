@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const path = require('path')
 let proxy = {}
 let routes = ['^/api']
 routes.forEach(route => {
@@ -10,6 +11,7 @@ routes.forEach(route => {
   }
 })
 module.exports = {
+  outputDir: path.resolve(__dirname, '../server/static'),
   devServer: {
     proxy: proxy
   },

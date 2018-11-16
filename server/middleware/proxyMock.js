@@ -4,6 +4,7 @@ const apiService = require('../service/api')
 const zlib = require('zlib')
 const pathToReg = require('path-to-regexp')
 const util = require('../utils/util')
+const mimeTypes = require('./mimeTypes')
 
 const proxy = async function (req, res, proxyConfig) {
   let proxyServer = httpProxy.createProxyServer(proxyConfig)
@@ -168,7 +169,13 @@ module.exports = function (req, res, next) {
   const path = req.url
   const host = util.getHost(req)
   console.log('got request: ', host, path, methodName)
-  if (/^\/api/.test(path)) { // 如果不是平台内部请求
+  let isStatic = false
+  mimeTypes.forEach(type => {
+    if (new RegExp(type).test(req.headers.accept)) {
+      isStatic = true
+    }
+  })
+  if (/^\/api/.test(path) || isStatic || /\.js(\.map)?$/.test(path)) { // 如果不是平台内部请求
     console.log('代理平台内部接口', path)
     next()
   } else {

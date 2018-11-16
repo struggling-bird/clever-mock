@@ -18,6 +18,9 @@ let output = new Router({
       path: '/',
       name: router.index,
       component: index,
+      redirect: {
+        name: router.project.manage
+      },
       children: [
         {
           path: 'login',

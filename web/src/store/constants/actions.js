@@ -7,7 +7,8 @@ const actions = {
   user: {
     login: '',
     logout: '',
-    getUser: ''
+    getUser: '',
+    addUser: ''
   },
   project: {
     query: '',

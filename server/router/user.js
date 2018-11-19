@@ -43,4 +43,19 @@ router.get('/getCurrent', (req, res) => {
   })
 })
 
+router.post('/add', (req, res) => {
+  userService.add(req.body).then(user => {
+    res.json({
+      code: constants.code.error,
+      data: user
+    })
+  }).catch(err => {
+    console.error('添加用户失败', err)
+    res.json({
+      code: constants.code.error,
+      msg: '添加用户失败'
+    })
+  })
+})
+
 module.exports = router

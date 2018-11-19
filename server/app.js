@@ -7,17 +7,8 @@ const path = require('path')
 const history = require('connect-history-api-fallback')
 require('./dao/pool')
 
-app.use(session({
-  name: 'cleverMock',
-  secret: 'cleverMock',
-  // store:
-  saveUninitialized: false,
-  resave: false,
-  cookie: {
-    maxAge: 24 * 60 * 60 * 1000 // 24小时
-  }
-}))
-app.use(require('./middleware/proxyMock'))
+app.use(session(config.session))
+app.use(require('./middleware/sys'))
 const api = require('./router/api')
 
 app.use(bodyParser.json()) // for parsing application/json
@@ -25,7 +16,6 @@ app.use(bodyParser.urlencoded({extended: true})) // parsing application/x-www-fo
 
 // todo 更新查询参数
 app.use('/api', api)
-
 app.use(history({
 }))
 app.use(express.static(path.resolve(__dirname, 'static')))

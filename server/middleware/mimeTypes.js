@@ -1,4 +1,4 @@
-module.exports = [
+const static = [
   'text/html',
   'text/css',
   'text/xml',
@@ -8,7 +8,7 @@ module.exports = [
   'application/atom+xml',
   'application/rss+xml',
   'text/mathml',
-  'text/plain',
+  // 'text/plain',
   'text/vnd.sun.j2me.app-descriptor',
   'text/vnd.wap.wml',
   'text/x-component',
@@ -22,7 +22,7 @@ module.exports = [
   'image/webp',
   'application/font-woff',
   'application/java-archive',
-  'application/json',
+  // 'application/json',
   'application/mac-binhex40',
   'application/msword',
   'application/pdf',
@@ -78,3 +78,9 @@ module.exports = [
   'video/x-ms-asf',
   'video/x-ms-wmv',
   'video/x-msvideo' ]
+module.exports = {
+  static,
+  isPage (req) {
+    return new RegExp('text/html').test(req.headers.accept)
+  }
+}

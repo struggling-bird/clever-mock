@@ -1,8 +1,45 @@
 const db = require('./pool')
+const uuid = require('uuid').v1()
+const util = require('../utils/util')
 
 module.exports = {
   getUser (username, password) {
     const sql = 'select user.id,user.name,user.email,user.group from user where name=? and password=?'
     return db.query(sql, [username, password])
+  },
+  async getById (id) {
+    const sql = 'select * from user where id=?'
+    const res = await db.query(sql, [id])
+    if (res.length) {
+      const user = res[0]
+      delete user.password
+      return user
+    } else {
+      throw new Error(`根据id:${id}获取用户信息失败`)
+    }
+  },
+  async add (user) {
+    let props = []
+    let vals = []
+    let code = ['?']
+    const id = uuid()
+    for (const key in user) {
+      props.push(util.toUnderLine(key))
+      vals.push(user[key])
+      code.push('?')
+    }
+    props.push('id')
+    vals.push(id)
+    let sql = `insert into user(${props.join(',')}) values (${code.join(',')})`
+    const conn = await db.beginTransaction()
+    await db.queryInTransaction(conn, sql, vals)
+    try {
+      await db.commit(conn)
+    } catch (e) {
+      db.rollback(conn)
+      throw e
+    }
+    
+    return await this.getById(id)
   }
 }

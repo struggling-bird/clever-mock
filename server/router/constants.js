@@ -4,6 +4,7 @@ module.exports = {
     error: 101,
     notLogin: 102,
     noPermission: 103,
-    paramError: 104
+    paramError: 104,
+    notInit: -101
   }
 }

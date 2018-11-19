@@ -17,7 +17,7 @@ module.exports = {
   }) {
     const sql = {
       addProject: 'INSERT INTO project (id, name, server_host, proxy_url, description, create_time) VALUES (?, ?, ?, ?, ?, ?)',
-      addLink: 'INSERT INTO user_project (user_id, project_id, is_admin) VALUES (?, ?, ?)',
+      addLink: 'INSERT INTO user_project (user_id, project_id) VALUES (?, ?)',
       addApiGroup: 'insert into apigroup (id, name, project_id, reg) values (?,?,?,?)'
     }
     return new Promise((resolve, reject) => {
@@ -28,7 +28,7 @@ module.exports = {
         return db.queryInTransaction(connection, sql.addProject,
           [projectId, project.name, project.serverHost, project.proxyUrl, project.desc, new Date().getTime()])
       }).then(() => {
-        return db.queryInTransaction(connection, sql.addLink, [userId, projectId, 1])
+        return db.queryInTransaction(connection, sql.addLink, [userId, projectId])
       }).then(() => {
         return db.queryInTransaction(connection, sql.addApiGroup, [uuid(), '未分组', projectId, '\\S*'])
       }).then(() => {

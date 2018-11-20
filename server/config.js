@@ -19,6 +19,6 @@ module.exports = {
     port: 3306,
     user: 'root',
     password: 'dongyongqiang',
-    database: 'mock_test'
+    database: 'clever_mock'
   }
 }

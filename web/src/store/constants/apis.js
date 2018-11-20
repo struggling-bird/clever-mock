@@ -11,7 +11,8 @@ const apis = {
   project: {
     query: '/api/project/query',
     getById: '/api/project/{id}',
-    create: '/api/project/add'
+    create: '/api/project/add',
+    del: '/api/project/del/{id}'
   },
   api: {
     queryGroup: '/api/apiGroup/list',

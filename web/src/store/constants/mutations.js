@@ -9,7 +9,8 @@ const mutations = {
   },
   project: {
     setList: '',
-    setCurrrent: ''
+    setCurrrent: '',
+    del: ''
   },
   api: {
     setGroupList: '',

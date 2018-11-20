@@ -13,6 +13,7 @@
           <i class="mock-package"></i>
           <span class="project-status running"></span>
         </div>
+        <i class="mock-error_filled btn-del" v-if="project.role === 0" @click.stop="onDel(project)"></i>
         <div class="project-desc">
           <c-tooltip placement="right" content="项目名称">{{project.name}}</c-tooltip><br/>
           <c-tooltip placement="right" content="创建人">{{project.username}}</c-tooltip><br/>
@@ -70,6 +71,15 @@ export default {
     timeFormat (time) {
       let date = new Date(time)
       return util.dateFormat(date) + ' ' + util.timeFormat(date, 'hh:mm')
+    },
+    onDel (project) {
+      this.$store.dispatch(actions.project.del, project.id).catch(err => {
+        this.$message({
+          type: 'error',
+          message: '删除项目失败'
+        })
+        console.error('删除项目失败', err)
+      })
     }
   }
 }

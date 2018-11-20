@@ -60,6 +60,22 @@ let store = new Store({
           reject(err)
         })
       })
+    },
+    [actions.project.del] (context, id) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.project.del,
+          data: {
+            id
+          },
+          method: 'get'
+        }).then(() => {
+          context.commit(mutations.project.del, id)
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
     }
   }
 })

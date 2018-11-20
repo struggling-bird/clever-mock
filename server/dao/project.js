@@ -3,7 +3,7 @@ const uuid = require('uuid/v1')
 
 module.exports = {
   query (userId) {
-    const sql = 'select p.*,u.name as "username" from project as p ' +
+    const sql = 'select p.*,u.name as "username",up.role from project as p ' +
       'left join user_project as up on p.id = up.project_id ' +
       'left join user as u on u.id = up.user_id ' +
       'where up.user_id = ?'
@@ -51,5 +51,14 @@ module.exports = {
   queryByHost (host) {
     const sql = 'select * from project where project.server_host = ?'
     return db.query(sql, [host])
+  },
+  delById (userId, id) {
+    /**
+     * 1.删除api调用记录
+     * 2.删除api
+     * 3.删除apiGroup
+     * 4.删除project与user的联系
+     * 5.删除project
+     */
   }
 }

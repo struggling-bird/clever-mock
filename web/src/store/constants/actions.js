@@ -13,7 +13,8 @@ const actions = {
   project: {
     query: '',
     getById: '',
-    create: ''
+    create: '',
+    del: ''
   },
   api: {
     queryGroup: '',

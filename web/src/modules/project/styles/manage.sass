@@ -27,18 +27,29 @@
       display: inline-block
       width: 200px
       height: 200px
-      border: 2px solid $color-border
+      box-shadow: $shadow-normal
       border-radius: $border-radius
       margin: 0 40px 20px 0
       text-align: center
       cursor: pointer
       transition: all ease .5s 0s
+      position: relative
       &:hover
-        border-color: $color-brand
+        border: none
         transform: translateY(-5px)
         box-shadow: 0 1px 4px $color-brand
         .project-logo
           color: $color-brand
+        .btn-del
+          display: inline-block
+      .btn-del
+        position: absolute
+        right: 10px
+        top: 10px
+        display: none
+        color: $color-font-icon
+        &:hover
+          color: $color-status-danger
       .project-logo
         font-size: 45px
         line-height: 110px

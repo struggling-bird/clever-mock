@@ -8,7 +8,7 @@
       <c-button size="large" type="primary" @click="onLogin">登录</c-button>
 
       <div class="ref-links">
-        还没有账号？立即<a href="">注册</a>
+        还没有账号？立即<a href="javascript:void(0)" @click="toReg">注册</a>
       </div>
     </div>
   </div>
@@ -40,6 +40,11 @@ export default {
           message: '用户名或密码错误'
         })
         console.error('登录失败', err)
+      })
+    },
+    toReg () {
+      this.$router.push({
+        name: router.register
       })
     }
   }

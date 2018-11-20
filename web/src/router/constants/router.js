@@ -16,7 +16,8 @@ let router = {
     devView: '',
     docView: ''
   },
-  login: ''
+  login: '',
+  register: ''
 }
 util.initializeConstants(router, 'router')
 export default router

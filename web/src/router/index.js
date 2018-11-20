@@ -9,6 +9,7 @@ import login from '../modules/login/index'
 import console from '../modules/console'
 import devView from '../modules/console/devView'
 import docView from '../modules/console/docView'
+import register from '../modules/register'
 
 Vue.use(Router)
 let output = new Router({
@@ -22,6 +23,11 @@ let output = new Router({
         name: router.project.manage
       },
       children: [
+        {
+          path: 'register',
+          name: router.register,
+          component: register
+        },
         {
           path: 'login',
           name: router.login,

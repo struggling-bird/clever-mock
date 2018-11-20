@@ -11,8 +11,7 @@ const resCode = {
   Error: 101,
   NO_PERMISSION: 103,
   NOT_LOGIN: 102,
-  PARAM_NULL: 104,
-  NOT_INIT: -101
+  PARAM_NULL: 104
 }
 let CancelToken = axios.CancelToken
 let preQueryOption
@@ -31,10 +30,6 @@ function resCodeFilter (res) {
     case resCode.NOT_LOGIN:
       flag = false
       location.href = `/login`
-      break
-    case resCode.NOT_INIT:
-      flag = false
-      location.href = '/system/guide'
       break
     case resCode.Error:
       flag = false

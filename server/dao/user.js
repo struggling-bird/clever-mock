@@ -1,5 +1,5 @@
 const db = require('./pool')
-const uuid = require('uuid').v1()
+const uuid = require('uuid/v1')
 const util = require('../utils/util')
 
 module.exports = {
@@ -18,6 +18,11 @@ module.exports = {
       throw new Error(`根据id:${id}获取用户信息失败`)
     }
   },
+  /**
+   * todo 名称和邮箱的重复性校验
+   * @param user
+   * @returns {Promise<*|void>}
+   */
   async add (user) {
     let props = []
     let vals = []

@@ -53,6 +53,18 @@ let store = new Store({
           reject(err)
         })
       })
+    },
+    [actions.user.addUser] (context, user) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.user.add,
+          data: user
+        }).then(() => {
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
     }
   }
 })

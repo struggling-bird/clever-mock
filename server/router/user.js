@@ -46,7 +46,7 @@ router.get('/getCurrent', (req, res) => {
 router.post('/add', (req, res) => {
   userService.add(req.body).then(user => {
     res.json({
-      code: constants.code.error,
+      code: constants.code.success,
       data: user
     })
   }).catch(err => {

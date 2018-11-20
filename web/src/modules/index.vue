@@ -16,7 +16,7 @@ export default {
   },
   beforeCreate () {
     // 检查登录状态
-    if (![router.login, router.sysGuide].includes(this.$route.name)) {
+    if (![router.login, router.register].includes(this.$route.name)) {
       this.$store.dispatch(actions.user.getUser).catch(err => {
         this.$router.push({
           name: router.login

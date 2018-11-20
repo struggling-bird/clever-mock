@@ -3,34 +3,47 @@
     <c-loading v-if="loading"></c-loading>
     <c-reload v-if="reload" @reload="getById"></c-reload>
     <template v-if="!loading && !reload">
-      <c-input v-model="api.name" placeholder="接口名称" clearAble :width="300" style="margin-bottom: 20px"/><br/>
-      <c-input v-model="api.proxyUrl" placeholder="代理地址" clearAble :width="300" style="margin-bottom: 20px"></c-input><br/>
-      <div class="url-line">
-        <c-selector
-            class="method-select"
-            size="big"
-            :width="80"
-            :store="methodList"
-            v-model="methodName"
-            label-field="name"
-            keyField="name">
-        </c-selector>
-        <c-input class="url-input"
-                 v-model="api.path"
-                 :width="400"
-                 clearAble
-                 autoFocus
-                 size="big"
-                 placeholder="URL"/>
-        <c-selector :store="runTypeList"
-                    class="run-type-select"
-                    v-model="runType"
-                    :width="120"
-                    size="big"
-                    keyField="name"
-                    labelField="name"></c-selector>
-        <c-button size="large" type="primary" theme="border" v-if="runType.name === 'test'">发送</c-button>
-        <c-button v-show="saveAble" size="large" type="primary" @click="onSave">保存</c-button>
+      <div class="api-base">
+        <form-item label="API名称">
+          <c-input v-model="api.name" clearAble :width="300"/>
+          <c-button type="danger" class="btn-del" size="normal" @click="onDel">删除</c-button>
+        </form-item>
+        <form-item label="自动更新">
+          <c-checkbox v-model="api.autoUpdate"></c-checkbox>
+        </form-item>
+        <form-item label="调用延时">
+          <c-input v-model="api.delay"/><span class="unit">s</span>
+        </form-item>
+        <form-item label="代理地址">
+          <c-input v-model="api.proxyUrl" placeholder="http://xxx.xxx.xxx" clearAble :width="300"></c-input>
+        </form-item>
+        <div class="url-line">
+          <c-selector
+              class="method-select"
+              size="big"
+              :width="80"
+              :store="methodList"
+              v-model="methodName"
+              label-field="name"
+              keyField="name">
+          </c-selector>
+          <c-input class="url-input"
+                   v-model="api.path"
+                   :width="400"
+                   clearAble
+                   autoFocus
+                   size="big"
+                   placeholder="URL"/>
+          <c-selector :store="runTypeList"
+                      class="run-type-select"
+                      v-model="runType"
+                      :width="120"
+                      size="big"
+                      keyField="name"
+                      labelField="name"></c-selector>
+          <c-button size="large" type="primary" theme="border" v-if="runType.name === 'test'">发送</c-button>
+          <c-button v-show="saveAble" size="large" type="primary" @click="onSave">保存</c-button>
+        </div>
       </div>
       <div class="api-config">
         <c-tabs>
@@ -63,9 +76,10 @@ import ApiDesc from './styles/apiDesc'
 import MockData from './mockData'
 import MockScript from './mockScript'
 import {util} from '../../util'
+import FormItem from '../../components/formItem/index'
 export default {
   name: 'apiDetail',
-  components: {MockScript, MockData, ApiDesc, ResView, ParamView},
+  components: {FormItem, MockScript, MockData, ApiDesc, ResView, ParamView},
   props: {
     apiId: null
   },
@@ -104,6 +118,7 @@ export default {
     saveParam () {
       return {
         ...this.api,
+        delay: Number(this.api.delay),
         method: this.methodName.name,
         runStyle: this.runType.name
       }
@@ -152,6 +167,9 @@ export default {
         })
         console.error('更新接口失败', err)
       })
+    },
+    onDel () {
+      console.log('del api')
     }
   }
 }

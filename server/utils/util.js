@@ -408,5 +408,12 @@ module.exports = {
   },
   getHost (req) {
     return `${req.headers['x-forwarded-proto']}://${req.headers['x-forwarded-host']}`
+  },
+  delay (time) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve()
+      }, time)
+    })
   }
 }

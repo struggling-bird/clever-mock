@@ -81,6 +81,7 @@ const handle = async function (req, res, next) {
     }
     const callTime = new Date().getTime()
     if (matchApi) { // 如果有匹配的api配置项，则按该配置项代理或mock数据
+      if (matchApi.delay) await util.delay(matchApi.delay * 1000)
       if (['proxy', 'auto', 'test'].includes(matchApi.runStyle)) { // 代理请求
         proxyConfig.target = matchApi.proxyUrl
         proxy(req, res, proxyConfig).then(result => {
@@ -96,7 +97,7 @@ const handle = async function (req, res, next) {
           })
           // 如果api配置为自动更新mock数据
           if (matchApi.autoUpdate) {
-            apiService.update({
+            apiService.set({
               id: matchApi.id,
               mockData: result.data
             })

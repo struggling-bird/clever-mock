@@ -46,25 +46,28 @@ module.exports = {
   async update (userId, api) {
     const haveProject = await db.query('select count(*) as count from user_project as up where up.user_id = ? and up.project_id = ?', [userId, api.projectId])
     if (haveProject[0].count > 0) {
-      let props = []
-      let params = []
-      for (let prop in api) {
-        if (prop !== 'id') {
-          props.push(`${util.toUnderLine(prop)} = ?`)
-          params.push(api[prop])
-        }
-      }
-      params.push(api.id)
-      const sql = `update api set ${props.join(',')} where api.id = ?`
-      return await db.query(sql, params)
+      return await this.set(api)
     } else {
       throw new Error('要修改的接口不存在或权限不足')
     }
   },
-  getById (id, userId) {
+  async set (api) {
+    let props = []
+    let params = []
+    for (let prop in api) {
+      if (prop !== 'id') {
+        props.push(`${util.toUnderLine(prop)} = ?`)
+        params.push(api[prop])
+      }
+    }
+    params.push(api.id)
+    const sql = `update api set ${props.join(',')} where api.id = ?`
+    return await db.query(sql, params)
+  },
+  async getById (id, userId) {
     const sql = 'select a.* from api as a ' +
       'left join user_project as up on up.project_id = a.project_id ' +
       'where a.id = ? and up.user_id = ?'
-    return db.query(sql, [id, userId])
+    return await db.query(sql, [id, userId])
   }
 }

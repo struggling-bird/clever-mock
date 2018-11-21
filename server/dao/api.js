@@ -7,7 +7,7 @@ module.exports = {
     let sql = 'select a.* from api as a where a.project_id = ?'
     return db.query(sql, [projectId])
   },
-  addLog (param = {
+  async addLog (param = {
     api, project, callTime, path, resCode, method
   }) {
     const currentTime = new Date().getTime()
@@ -21,27 +21,26 @@ module.exports = {
         'run_style, proxy_url, auto_update, group_id) values(?,?,?,?,?,?,?,?,?,?,?,?)',
       addLog: 'insert into call_history(api_id, call_time, duration, url, res_code) values(?,?,?,?,?)'
     }
-    let connection = null
-    db.beginTransaction().then(async conn => {
-      connection = conn
-      if (!param.api) {
-        let groupList = await db.queryInTransaction(connection, sql.queryGroup, [param.project.id])
-        let matchGroup = null
-        groupList.forEach(group => {
-          if (new RegExp(group.reg).test(param.path)) {
-            matchGroup = group
-          }
-        })
-        await db.queryInTransaction(connection, sql.addApi,
-          [apiId, param.path, param.method, currentTime, param.callTime, param.project.id,
-            param.resData,JSON.stringify(util.getStructure(JSON.parse(param.resData))), 'proxy', param.project.proxyUrl, 0, matchGroup ? matchGroup.id : null])
-      }
-      await db.queryInTransaction(connection, sql.addLog, [apiId, param.callTime, duration, param.path, param.resCode])
-      db.commit(connection)
-    }).catch(err => {
-      console.error('add api call history error', err)
+    let connection = await db.beginTransaction()
+    if (!param.api) {
+      let groupList = await db.queryInTransaction(connection, sql.queryGroup, [param.project.id])
+      let matchGroup = null
+      groupList.forEach(group => {
+        if (new RegExp(group.reg).test(param.path)) {
+          matchGroup = group
+        }
+      })
+      await db.queryInTransaction(connection, sql.addApi,
+        [apiId, param.path, param.method, currentTime, param.callTime, param.project.id,
+          param.resData,JSON.stringify(util.getStructure(JSON.parse(param.resData))), 'proxy', param.project.proxyUrl, 0, matchGroup ? matchGroup.id : null])
+    }
+    await db.queryInTransaction(connection, sql.addLog, [apiId, param.callTime, duration, param.path, param.resCode])
+    try {
+      await db.commit(connection)
+    } catch (e) {
       db.rollback(connection)
-    })
+      throw e
+    }
   },
   async update (userId, api) {
     const haveProject = await db.query('select count(*) as count from user_project as up where up.user_id = ? and up.project_id = ?', [userId, api.projectId])
@@ -62,7 +61,17 @@ module.exports = {
     }
     params.push(api.id)
     const sql = `update api set ${props.join(',')} where api.id = ?`
-    return await db.query(sql, params)
+    const res = await db.query(sql, params)
+    // 如果更新内容有proxyUrl，则要检查该代理地址是否被保存，没被保存的话进行存储
+    if (api.proxyUrl) {
+      let _ = await db.query('select * from api where id = ?', [api.id])
+      const projectId = _[0].projectId
+      let proxy = await db.query('select * from proxy_server where project_id = ? and url = ?', [projectId, api.proxyUrl])
+      if (!proxy.length) {
+        db.query('insert into proxy_server(id,url, project_id) values(?,?,?)', [uuid(), api.proxyUrl, projectId])
+      }
+    }
+    return res
   },
   async getById (id, userId) {
     const sql = 'select a.* from api as a ' +

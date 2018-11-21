@@ -86,6 +86,7 @@ export default {
   },
   beforeCreate () {
     this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
+    this.$store.dispatch(actions.project.queryProxyServer, this.$route.params.id)
   },
   methods: {
     pathFormat (path) {

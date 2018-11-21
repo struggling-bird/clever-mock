@@ -15,7 +15,17 @@
           <c-input v-model="api.delay"/><span class="unit">s</span>
         </form-item>
         <form-item label="代理地址">
-          <c-input v-model="api.proxyUrl" placeholder="http://xxx.xxx.xxx" clearAble :width="300"></c-input>
+          <c-selector theme="tag"
+                      :store="proxyList"
+                      v-model="proxyUrl"
+                      :max="1"
+                      :width="300"
+                      key-field="url"
+                      labelField="url">
+            <template slot-scope="{data}">
+              <span :title="data.url">{{data.name || data.url}}</span>
+            </template>
+          </c-selector>
         </form-item>
         <div class="url-line">
           <c-selector
@@ -77,6 +87,7 @@ import MockData from './mockData'
 import MockScript from './mockScript'
 import {util} from '../../util'
 import FormItem from '../../components/formItem/index'
+import {mapState} from 'vuex'
 export default {
   name: 'apiDetail',
   components: {FormItem, MockScript, MockData, ApiDesc, ResView, ParamView},
@@ -93,6 +104,7 @@ export default {
         return {name: type}
       }),
       runType: {name: 'proxy'},
+      proxyUrl: null,
       api: {
         autoUpdate: 0,
         description: '',
@@ -120,12 +132,18 @@ export default {
         ...this.api,
         delay: Number(this.api.delay),
         method: this.methodName.name,
-        runStyle: this.runType.name
+        runStyle: this.runType.name,
+        proxyUrl: this.proxyUrl ? this.proxyUrl.url : ''
       }
     },
     saveAble () {
       return !util.equal(this.saveParam, this.preApi)
-    }
+    },
+    ...mapState({
+      proxyList (state) {
+        return state.project.proxyServerList
+      }
+    })
   },
   mounted () {
     this.getById()
@@ -144,6 +162,7 @@ export default {
         this.preApi = util.clone(api)
         this.methodName = {name: api.method}
         this.runType = {name: api.runStyle}
+        this.proxyUrl = {url: api.proxyUrl}
         this.loading = false
       }).catch(err => {
         this.loading = false

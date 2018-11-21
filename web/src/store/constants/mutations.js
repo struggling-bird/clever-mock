@@ -10,7 +10,8 @@ const mutations = {
   project: {
     setList: '',
     setCurrrent: '',
-    del: ''
+    del: '',
+    setProxyServerList: ''
   },
   api: {
     setGroupList: '',

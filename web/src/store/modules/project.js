@@ -5,6 +5,7 @@ import {ajax} from '../../util'
 let store = new Store({
   state: {
     list: [], // 列表每次进入项目管理页面都查询
+    proxyServerList: [],
     currentProject: null // 保存当前项目，是为了方便数据处理,跟列表没啥关系
   },
   mutations: {
@@ -20,6 +21,9 @@ let store = new Store({
           state.list.splice(i, 1)
         }
       })
+    },
+    [mutations.project.setProxyServerList] (state, list) {
+      state.proxyServerList = list
     }
   },
   actions: {
@@ -78,6 +82,22 @@ let store = new Store({
           method: 'delete'
         }).then(res => {
           context.commit(mutations.project.del, id)
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    [actions.project.queryProxyServer] (context, projectId) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.project.queryProxyServer,
+          method: 'get',
+          data: {
+            projectId
+          }
+        }).then(res => {
+          context.commit(mutations.project.setProxyServerList, res.data)
           resolve()
         }).catch(err => {
           reject(err)

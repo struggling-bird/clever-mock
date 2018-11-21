@@ -2,6 +2,7 @@ const router = require('express').Router()
 const user = require('./user')
 const project = require('./project')
 const apiGroup = require('./apiGroup')
+const proxyServer = require('./proxyServer')
 const apiService = require('../service/api')
 const constant = require('./constants')
 
@@ -10,6 +11,7 @@ router.use(require('../middleware/auth'))
 router.use('/user', user)
 router.use('/project', project)
 router.use('/apiGroup', apiGroup)
+router.use('/proxy', proxyServer)
 
 router.get('/:id', (req, res) => {
   const user = req.session.currentUser

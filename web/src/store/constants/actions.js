@@ -14,7 +14,8 @@ const actions = {
     query: '',
     getById: '',
     create: '',
-    del: ''
+    del: '',
+    queryProxyServer: ''
   },
   api: {
     queryGroup: '',

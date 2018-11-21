@@ -11,7 +11,9 @@ app.use(session(config.session))
 app.use(require('./middleware/sys'))
 const api = require('./router/api')
 
-app.use(bodyParser.json()) // for parsing application/json
+app.use(bodyParser.json({
+  limit: '100mb'
+})) // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})) // parsing application/x-www-form-urlencoded
 
 // todo 更新查询参数

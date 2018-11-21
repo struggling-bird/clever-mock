@@ -13,6 +13,13 @@ let store = new Store({
     },
     [mutations.project.setCurrrent] (state, project) {
       state.currentProject = project
+    },
+    [mutations.project.del] (state, id) {
+      state.list.forEach((project, i) => {
+        if (project.id === id) {
+          state.list.splice(i, 1)
+        }
+      })
     }
   },
   actions: {
@@ -68,8 +75,8 @@ let store = new Store({
           data: {
             id
           },
-          method: 'get'
-        }).then(() => {
+          method: 'delete'
+        }).then(res => {
           context.commit(mutations.project.del, id)
           resolve()
         }).catch(err => {

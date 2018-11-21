@@ -52,7 +52,7 @@ module.exports = {
     const sql = 'select * from project where project.server_host = ?'
     return db.query(sql, [host])
   },
-  delById (userId, id) {
+  async delById (userId, id) {
     /**
      * 1.删除api调用记录
      * 2.删除api
@@ -60,5 +60,38 @@ module.exports = {
      * 4.删除project与user的联系
      * 5.删除project
      */
+    // 1. 判断当前用户是否有删除项目的权限
+    const conn = await db.beginTransaction()
+    const list = await db.queryInTransaction(conn, 'select p.* from project as p ' +
+      'left join user_project as up on p.id = up.project_id ' +
+      'where p.id = ? and up.user_id = ? and up.role = 0', [id, userId])
+    if (!list.length) {
+      db.rollback(conn)
+      throw new Error('noPermission')
+    }
+    // 2.查询项目下所有的API
+    const apiList = await db.queryInTransaction(conn, 'select * from api where project_id = ?', [id])
+    // 3. 删除API关联的所有日志
+    let idList = []
+    let codeList = []
+    await Promise.all(apiList.map(api => {
+      idList.push(api.id)
+      codeList.push('?')
+      return db.queryInTransaction(conn, 'delete from call_history where api_id = ?', [api.id])
+    }))
+    // 4. 删除项目下所有的API
+    if (apiList.length) await db.queryInTransaction(conn, `delete from api where id in(${codeList.join(',')})`, idList)
+    // 5. 删除apiGroup
+    await db.queryInTransaction(conn, 'delete from apigroup where project_id = ?', [id])
+    // 6. 删除project与user的联系
+    await db.queryInTransaction(conn, 'delete from user_project where project_id = ?', [id])
+    // 7. 删除project
+    await db.queryInTransaction(conn, 'delete from project where id = ?', [id])
+    try {
+      db.commit(conn)
+    } catch (e) {
+      db.rollback(conn)
+      throw e
+    }
   }
 }

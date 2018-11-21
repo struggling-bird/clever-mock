@@ -18,5 +18,8 @@ module.exports = {
   async queryByHost (host) {
     let list = await projectDao.queryByHost(host)
     return list[0]
+  },
+  async delById (userId, id) {
+    return await projectDao.delById(userId, id)
   }
 }

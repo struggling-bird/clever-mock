@@ -50,4 +50,25 @@ router.get('/:id', (req, res) => {
     })
   })
 })
+
+router.delete('/del/:id', (req, res) => {
+  projectService.delById(req.session.currentUser.id, req.params.id).then(() => {
+    res.json({
+      code: constants.code.success
+    })
+  }).catch(err => {
+    if (err.message === 'noPermission') {
+      res.json({
+        code: constants.code.noPermission,
+        msg: '权限不足'
+      })
+    } else {
+      res.json({
+        code: constants.code.error,
+        msg: '删除项目失败'
+      })
+    }
+    console.error('删除项目失败', err)
+  })
+})
 module.exports = router

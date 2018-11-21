@@ -169,7 +169,15 @@ export default {
       })
     },
     onDel () {
-      console.log('del api')
+      this.$store.dispatch(actions.api.del, this.api.id).then(() => {
+        this.$emit('del')
+      }).catch(err => {
+        this.$message({
+          type: 'error',
+          message: '删除API失败'
+        })
+        console.error('删除API失败', err)
+      })
     }
   }
 }

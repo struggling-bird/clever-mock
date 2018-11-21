@@ -32,7 +32,9 @@
       </div>
     </div>
     <div class="api-detail-panel">
-      <api-detail v-if="currentApi" :api-id="currentApi.id"></api-detail>
+      <api-detail v-if="currentApi"
+                  @del="onDelApi"
+                  :api-id="currentApi.id"></api-detail>
       <div v-else class="empty-tip">
         api引导页
       </div>
@@ -98,6 +100,9 @@ export default {
     onEditGroup (group) {
       this.currentGroup = group
       this.showCreateGroup = true
+    },
+    onDelApi () {
+      this.currentApi = null
     }
   }
 }

@@ -30,5 +30,8 @@ module.exports = {
     } else {
       throw new Error('未查到id为' + id + '的api数据')
     }
+  },
+  async delById (id, userId) {
+    return await apiDao.delById(id, userId)
   }
 }

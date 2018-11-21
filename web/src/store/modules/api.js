@@ -19,6 +19,15 @@ let store = new Store({
           item = group
         }
       })
+    },
+    [mutations.api.del] (state, id) {
+      state.groupList.forEach(group => {
+        group.apiList.forEach((api, i) => {
+          if (api.id === id) {
+            group.apiList.splice(i, 1)
+          }
+        })
+      })
     }
   },
   actions: {
@@ -100,6 +109,22 @@ let store = new Store({
           data: param,
           method: 'delete'
         }).then(() => {
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    [actions.api.del] (context, id) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.api.del,
+          method: 'delete',
+          data: {
+            id
+          }
+        }).then(() => {
+          context.commit(mutations.api.del, id)
           resolve()
         }).catch(err => {
           reject(err)

@@ -20,7 +20,8 @@ const apis = {
     update: '/api/update',
     addGroup: '/api/apiGroup/add',
     updateGroup: '/api/apiGroup/update',
-    deleteGroup: '/api/apiGroup/delete/{id}/{projectId}'
+    deleteGroup: '/api/apiGroup/delete/{id}/{projectId}',
+    del: '/api/del/{id}'
   }
 }
 

@@ -69,5 +69,25 @@ module.exports = {
       'left join user_project as up on up.project_id = a.project_id ' +
       'where a.id = ? and up.user_id = ?'
     return await db.query(sql, [id, userId])
+  },
+  async delById (id, userId) {
+    /**
+     * 1.todo 检查当前用户是否拥有API的删除权限
+     * 1.删除日志
+     * 2.删除API
+     */
+    const sql = {
+      clearLog: 'delete from call_history where api_id = ?',
+      delApi: 'delete from api where id = ?'
+    }
+    const conn = await db.beginTransaction()
+    await db.queryInTransaction(conn, sql.clearLog, [id])
+    await db.queryInTransaction(conn, sql.delApi, [id])
+    try {
+      return await db.commit(conn)
+    } catch (e) {
+      db.rollback(conn)
+      throw e
+    }
   }
 }

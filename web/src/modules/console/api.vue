@@ -179,6 +179,7 @@ export default {
         console.log('更新成功')
         this.preApi = util.clone(this.saveParam)
         this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
+        this.$store.dispatch(actions.project.queryProxyServer, this.$route.params.id)
       }).catch(err => {
         this.$message({
           type: 'error',

@@ -9,37 +9,36 @@ module.exports = {
       'where up.user_id = ?'
     return db.query(sql, [userId])
   },
-  add (userId, project = {
+  async add (userId, project = {
     name: '',
     proxyUrl: '',
-    serverHost: '',
     desc: ''
   }) {
     const sql = {
-      addProject: 'INSERT INTO project (id, name, server_host, proxy_url, description, create_time) VALUES (?, ?, ?, ?, ?, ?)',
+      addProject: 'INSERT INTO project (id, name, proxy_url, description, create_time, secret_key) VALUES (?, ?, ?, ?, ?, ?)',
       addLink: 'INSERT INTO user_project (user_id, project_id) VALUES (?, ?)',
-      addApiGroup: 'insert into apigroup (id, name, project_id, reg) values (?,?,?,?)'
+      addApiGroup: 'insert into apigroup (id, name, project_id, reg) values (?,?,?,?)',
+      proxy: 'insert into proxy_server (id, url, project_id) values(?,?,?)'
     }
-    return new Promise((resolve, reject) => {
-      let projectId = uuid()
-      let connection = null
-      db.beginTransaction().then(conn => {
-        connection = conn
-        return db.queryInTransaction(connection, sql.addProject,
-          [projectId, project.name, project.serverHost, project.proxyUrl, project.desc, new Date().getTime()])
-      }).then(() => {
-        return db.queryInTransaction(connection, sql.addLink, [userId, projectId])
-      }).then(() => {
-        return db.queryInTransaction(connection, sql.addApiGroup, [uuid(), '未分组', projectId, '\\S*'])
-      }).then(() => {
-        return db.commit(connection)
-      }).then(() => {
-        resolve(projectId)
-      }).catch(err => {
-        db.rollback(connection)
-        reject(err)
-      })
-    })
+    const conn = await db.beginTransaction()
+    let projectId = uuid()
+    let key = uuid()
+    // 添加project
+    await db.queryInTransaction(conn, sql.addProject,
+      [projectId, project.name, project.proxyUrl, project.desc, new Date().getTime(), key])
+    // 添加与用户的关联
+    await db.queryInTransaction(conn, sql.addLink, [userId, projectId])
+    // 添加默认分组
+    await db.queryInTransaction(conn, sql.addApiGroup, [uuid(), '未分组', projectId, '\\S*'])
+    // 提取proxyUrl
+    await db.queryInTransaction(conn, sql.proxy, [uuid(), project.proxyUrl, projectId])
+    try {
+      await db.commit(conn)
+      return projectId
+    } catch (e) {
+      db.rollback(conn)
+      throw e
+    }
   },
   getById (userId, id) {
     const sql = 'select p.* from project as p ' +
@@ -48,18 +47,11 @@ module.exports = {
       'where up.user_id = ? and p.id = ?'
     return db.query(sql, [userId, id])
   },
-  queryByHost (host) {
-    const sql = 'select * from project where project.server_host = ?'
-    return db.query(sql, [host])
+  queryByKey (key) {
+    const sql = 'select * from project where project.secret_key = ?'
+    return db.query(sql, [key])
   },
   async delById (userId, id) {
-    /**
-     * 1.删除api调用记录
-     * 2.删除api
-     * 3.删除apiGroup
-     * 4.删除project与user的联系
-     * 5.删除project
-     */
     // 1. 判断当前用户是否有删除项目的权限
     const conn = await db.beginTransaction()
     const list = await db.queryInTransaction(conn, 'select p.* from project as p ' +
@@ -85,6 +77,8 @@ module.exports = {
     await db.queryInTransaction(conn, 'delete from apigroup where project_id = ?', [id])
     // 6. 删除project与user的联系
     await db.queryInTransaction(conn, 'delete from user_project where project_id = ?', [id])
+    // 7. 删除proxyServer记录
+    await db.queryInTransaction(conn, 'delete from proxy_server where project_id = ?', [id])
     // 7. 删除project
     await db.queryInTransaction(conn, 'delete from project where id = ?', [id])
     try {

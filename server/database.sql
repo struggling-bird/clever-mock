@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.17)
 # Database: clever_mock
-# Generation Time: 2018-11-19 02:03:20 +0000
+# Generation Time: 2018-11-21 08:48:56 +0000
 # ************************************************************
 
 
@@ -49,24 +49,6 @@ CREATE TABLE `api` (
   KEY `project_id` (`project_id`),
   CONSTRAINT `api_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `apigroup` (`id`),
   CONSTRAINT `api_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table api_user
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `api_user`;
-
-CREATE TABLE `api_user` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(100) NOT NULL DEFAULT '',
-  `api_id` varchar(100) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `api_id` (`api_id`),
-  CONSTRAINT `api_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `api_user_ibfk_2` FOREIGN KEY (`api_id`) REFERENCES `api` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -120,9 +102,26 @@ CREATE TABLE `project` (
   `description` varchar(1000) DEFAULT NULL,
   `create_time` bigint(20) DEFAULT NULL,
   `running_status` int(1) DEFAULT NULL,
-  `server_host` varchar(1000) DEFAULT NULL,
   `auto_add` int(1) DEFAULT NULL COMMENT '是否自动检测并添加api配置',
+  `secret_key` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table proxy_server
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `proxy_server`;
+
+CREATE TABLE `proxy_server` (
+  `id` varchar(100) NOT NULL DEFAULT '',
+  `name` varchar(20) DEFAULT NULL,
+  `url` varchar(100) DEFAULT '',
+  `project_id` varchar(100) DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  CONSTRAINT `proxy_server_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -134,15 +133,10 @@ DROP TABLE IF EXISTS `role`;
 
 CREATE TABLE `role` (
   `id` int(2) NOT NULL,
-  `name` varchar(100) DEFAULT '',
+  `name` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `role` VALUES (0, '管理员');
-INSERT INTO `role` VALUES (1, '前端开发');
-INSERT INTO `role` VALUES (2, '后端开发');
-INSERT INTO `role` VALUES (3, '测试');
-INSERT INTO `role` VALUES (4, '运维');
 
 
 # Dump of table status_code

@@ -62,7 +62,12 @@ const scriptMock = function (req, res, requestParam, mockScript) {
 const handle = async function (req, res, next) {
   // todo 数据做缓存维护，避免高频次操作数据库
   const path = req.url
-  const project = await projectService.queryByHost(util.getHost(req))
+  const key = req.headers['clever-mock']
+  if (!key) {
+    next()
+    return
+  }
+  const project = await projectService.queryByKey(key)
   if (project) { // 查询是否有匹配项目
     const apiList = await apiService.queryByProjectId(project.id)
     let matchApi = null

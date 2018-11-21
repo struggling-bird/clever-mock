@@ -1,6 +1,6 @@
 <template>
   <div class="console-top">
-    <span class="logo">cleverMock</span>
+    <span class="logo" @click="toIndex">cleverMock</span>
     <span class="project-name">{{project.name}}</span>
 
     <div class="tab-bar">
@@ -63,6 +63,11 @@ export default {
           message: '退出账号失败'
         })
         console.error('退出账号失败', err)
+      })
+    },
+    toIndex () {
+      this.$router.push({
+        name: router.project.manage
       })
     }
   }

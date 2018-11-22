@@ -6,7 +6,7 @@
       <div class="api-base">
         <form-item label="API名称">
           <c-input v-model="api.name" clearAble :width="300"/>
-          <c-button type="danger" class="btn-del" size="normal" @click="onDel">删除</c-button>
+          <c-button v-if="api.id" type="danger" class="btn-del" size="normal" @click="onDel">删除</c-button>
         </form-item>
         <form-item label="自动更新">
           <c-checkbox v-model="api.autoUpdate"></c-checkbox>

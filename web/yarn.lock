@@ -1672,9 +1672,9 @@ clean-css@4.2.x:
   dependencies:
     source-map "~0.6.0"
 
-clever-ui@^1.0.53:
-  version "1.0.53"
-  resolved "https://registry.npmjs.org/clever-ui/-/clever-ui-1.0.53.tgz#2b7eb1ec623612a870b32fcf4d4762d55fd8a1d2"
+clever-ui@^1.0.54:
+  version "1.0.54"
+  resolved "https://registry.npmjs.org/clever-ui/-/clever-ui-1.0.54.tgz#c5d2d4b13de6f511ac16bb6c1cf711a0df1aad9b"
 
 cli-cursor@^2.1.0:
   version "2.1.0"

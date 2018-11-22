@@ -20,6 +20,7 @@
                       v-model="proxyUrl"
                       :max="1"
                       :width="300"
+                      :splitStrFormat="{maxLength: 42}"
                       key-field="url"
                       labelField="url">
             <template slot-scope="{data}">

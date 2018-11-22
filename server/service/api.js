@@ -2,6 +2,15 @@ const apiDao = require('../dao/api')
 const beautify = require('../utils/beautify')
 const util = require('../utils/util')
 module.exports = {
+  async add (api, projectId, userId) {
+    if (api.params &&  !util.isString(api.params)) api.params = JSON.stringify(api.params)
+    const res = await apiDao.add(api, projectId, userId)
+    res[0].mockData = beautify.js(res[0].mockData)
+    res[0].resStructure = beautify.js(res[0].resStructure)
+    res[0].params = JSON.parse(res[0].params)
+    res[0].autoUpdate = Boolean(res[0].autoUpdate)
+    return res[0]
+  },
   async queryByProjectId (projectId) {
     return await apiDao.queryByProjectId(projectId)
   },

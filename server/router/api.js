@@ -13,6 +13,21 @@ router.use('/project', project)
 router.use('/apiGroup', apiGroup)
 router.use('/proxy', proxyServer)
 
+router.post('/add', (req, res) => {
+  apiService.add(req.body.api, req.body.projectId, req.session.currentUser.id).then(api => {
+    res.json({
+      code: constant.code.success,
+      data: api
+    })
+  }).catch(err => {
+    res.json({
+      code: constant.code.error,
+      msg: '添加API失败'
+    })
+    console.error('添加API失败', err)
+  })
+})
+
 router.get('/:id', (req, res) => {
   const user = req.session.currentUser
   apiService.getById(req.params.id, user.id).then(api => {

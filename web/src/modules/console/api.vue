@@ -93,11 +93,15 @@ export default {
   name: 'apiDetail',
   components: {FormItem, MockScript, MockData, ApiDesc, ResView, ParamView},
   props: {
-    apiId: null
+    apiId: null,
+    addMode: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
-      methodName: {name: 'get'},
+      methodName: {name: 'GET'},
       methodList: ['GET', 'POST', 'DELETE', 'PUT'].map(name => {
         return {name: name}
       }),
@@ -107,7 +111,7 @@ export default {
       runType: {name: 'proxy'},
       proxyUrl: null,
       api: {
-        autoUpdate: 0,
+        autoUpdate: false,
         description: '',
         groupId: '',
         method: 'POST',
@@ -120,10 +124,11 @@ export default {
         proxyUrl: '',
         resFormatScript: null,
         resStructure: '',
-        runStyle: 'proxy'
+        runStyle: 'proxy',
+        delay: 0
       },
       preApi: null,
-      loading: true,
+      loading: this.addMode ? false : true,
       reload: false
     }
   },
@@ -147,7 +152,7 @@ export default {
     })
   },
   mounted () {
-    this.getById()
+    if (!this.addMode) this.getById()
   },
   watch: {
     apiId () {
@@ -176,8 +181,30 @@ export default {
       })
     },
     onSave () {
+      if (this.addMode) {
+        this.add()
+      } else {
+        this.update()
+      }
+    },
+    add () {
+      this.$store.dispatch(actions.api.add, {
+        api: this.saveParam,
+        projectId: this.$route.params.id
+      }).then(api => {
+        this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
+        this.$store.dispatch(actions.project.queryProxyServer, this.$route.params.id)
+        this.$emit('afterAdd', api)
+      }).catch(err => {
+        this.$message({
+          type: 'error',
+          message: '添加接口失败'
+        })
+        console.error('添加接口失败', err)
+      })
+    },
+    update () {
       this.$store.dispatch(actions.api.update, this.saveParam).then(() => {
-        console.log('更新成功')
         this.preApi = util.clone(this.saveParam)
         this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
         this.$store.dispatch(actions.project.queryProxyServer, this.$route.params.id)

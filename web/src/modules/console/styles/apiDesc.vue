@@ -21,7 +21,9 @@ export default {
       element: this.$refs.dom,
       autofocus: true
     })
+    console.log(this.editor)
     this.editor.value(this.value || '')
+    if (this.value) this.editor.togglePreview()
     this.editor.codemirror.on('change', () => {
       this.$emit('input', this.editor.value())
     })

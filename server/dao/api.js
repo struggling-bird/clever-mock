@@ -7,6 +7,44 @@ module.exports = {
     let sql = 'select a.* from api as a where a.project_id = ?'
     return db.query(sql, [projectId])
   },
+  async add (api, projectId, userId) {
+    const conn = await db.beginTransaction()
+    
+    // 1. 查询所有的API分组
+    let sql = 'select * from apigroup where project_id = ?'
+    const groupList = await db.queryInTransaction(conn, sql, [projectId])
+    // 2. 为api关联分组
+    let matchGroup = null
+    for (let i = 0; i < groupList.length; i++) {
+      const group = groupList[i]
+      if (new RegExp(group.reg).test(api.path)) {
+        matchGroup = group
+      }
+    }
+    // 3. 添加api
+    let props = []
+    let codes = []
+    let values = []
+    let apiId = uuid()
+    api.id = apiId
+    api.projectId = projectId
+    api.createTime = new Date().getTime()
+    api.groupId = matchGroup.id
+    for (const prop in api) {
+      props.push(util.toUnderLine(prop))
+      codes.push('?')
+      values.push(api[prop])
+    }
+    sql = `insert into api(${props.join(',')}) values(${codes.join(',')})`
+    await db.queryInTransaction(conn, sql, values)
+    try {
+      await db.commit(conn)
+    } catch (e) {
+      db.rollback(conn)
+      throw e
+    }
+    return await db.query('select * from api where id = ?', [apiId])
+  },
   async addLog (param = {
     api, project, callTime, path, resCode, method
   }) {

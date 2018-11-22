@@ -29,7 +29,7 @@ export default {
   watch: {
     response (res) {
       this.code = Prism.highlight(res, Prism.languages.json, 'json')
-      this.$emit('input', this.res)
+      this.$emit('input', res)
     }
   }
 }

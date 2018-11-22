@@ -32,9 +32,11 @@
       </div>
     </div>
     <div class="api-detail-panel">
-      <api-detail v-if="currentApi"
+      <api-detail v-if="currentApi || addApiMode"
                   @del="onDelApi"
-                  :api-id="currentApi.id"></api-detail>
+                  @afterAdd="afterAdd"
+                  :addMode="addApiMode"
+                  :api-id="currentApi ? currentApi.id : null"></api-detail>
       <div v-else class="empty-tip">
         <span class="title">接入方式</span>
         <div class="section">
@@ -68,7 +70,8 @@ export default {
       filter: '',
       currentApi: null,
       showCreateGroup: false,
-      currentGroup: null
+      currentGroup: null,
+      addApiMode: false
     }
   },
   computed: {
@@ -89,6 +92,10 @@ export default {
     this.$store.dispatch(actions.project.queryProxyServer, this.$route.params.id)
   },
   methods: {
+    afterAdd (api) {
+      this.addApiMode = false
+      this.currentApi = api
+    },
     pathFormat (path) {
       return util.strMiddleSplit(path, {
         maxLength: 30,
@@ -105,8 +112,8 @@ export default {
         return true
       }
     },
-    addApi (group) {
-      console.log('add api in group: ', group)
+    addApi () {
+      this.addApiMode = true
     },
     onAddGroup () {
       this.showCreateGroup = true

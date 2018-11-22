@@ -24,6 +24,7 @@ const actions = {
     delGroup: '',
     getById: '',
     update: '',
+    add: '',
     del: ''
   }
 }

@@ -64,6 +64,7 @@ const handle = async function (req, res, next) {
   const path = req.url
   const key = req.headers['clever-mock']
   if (!key) {
+    console.log('proxy failed because request header of "clever-mock" not found')
     next()
     return
   }
@@ -163,6 +164,7 @@ const handle = async function (req, res, next) {
       })
     }
   } else {
+    console.log('proxy failed because project not found')
     next()
   }
 }

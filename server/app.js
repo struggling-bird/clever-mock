@@ -5,10 +5,19 @@ const session = require('express-session')
 const express = require('express')
 const path = require('path')
 const history = require('connect-history-api-fallback')
-const cors = require('cors')
 require('./dao/pool')
 
-app.use(cors())
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, clever-mock')
+  res.header('Access-Control-Allow-Credentials', true)
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE')//设置方法
+  if (req.method == 'OPTIONS') {
+    res.send(200) // 意思是，在正常的请求之前，会发送一个验证，是否可以请求。
+  } else {
+    next()
+  }
+})
 app.use(session(config.session))
 app.use(require('./middleware/sys'))
 const api = require('./router/api')

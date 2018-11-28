@@ -14,8 +14,10 @@ module.exports = function (req, res, next) {
     }
   })
   if (isStatic || /\.js(\.map)?$/.test(path)) { // 静态资源请求
+    console.log('request is static')
     next()
   } else {
+    console.log('try to proxy request')
     proxy(req, res, next)
   }
 }

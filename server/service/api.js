@@ -42,5 +42,8 @@ module.exports = {
   },
   async delById (id, userId) {
     return await apiDao.delById(id, userId)
+  },
+  async updateList (api, userId) {
+    return await apiDao.updateList(api, userId)
   }
 }

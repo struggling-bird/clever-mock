@@ -136,5 +136,27 @@ module.exports = {
       db.rollback(conn)
       throw e
     }
+  },
+  async updateList (api, userId) {
+    // step1.检查是否有更新权限
+    let sql = 'select a.* from api as a ' +
+      'left join user_project as up ' +
+      ' on a.project_id = up.project_id ' +
+      'where up.user_id = ? and up.project_id = ?'
+    const res = await db.query(sql, [userId, api.projectId])
+    if (!res.length) {
+      throw new Error('no permission')
+    }
+    // step2.更新API
+    let props = []
+    let vals = []
+    for (let prop in api) {
+      if (['projectId'].includes(prop)) continue
+      props.push(`${util.toUnderLine(prop)}=?`)
+      vals.push(api[prop])
+    }
+    vals.push(api.projectId)
+    sql = `update api set ${props.join(',')} where project_id=?`
+    return await db.query(sql, vals)
   }
 }

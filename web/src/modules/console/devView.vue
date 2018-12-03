@@ -113,6 +113,7 @@ export default {
       }
     },
     addApi () {
+      this.currentApi = null
       this.addApiMode = true
     },
     onAddGroup () {

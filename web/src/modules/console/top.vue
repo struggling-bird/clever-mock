@@ -29,7 +29,7 @@ export default {
   data () {
     let arr = this.$route.name.split('-')
     return {
-      mode: arr[arr.length -1]
+      mode: arr[arr.length - 1]
     }
   },
   computed: {

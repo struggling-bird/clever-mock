@@ -86,7 +86,7 @@ export default {
       },
       ready (state) {
         return this.currentProject && state.project.ready.proxyServerList
-      },
+      }
     }),
     project () {
       return {
@@ -101,7 +101,8 @@ export default {
       return {
         autoUpdate: this.autoUpdate,
         delay: this.delay,
-        runStyle: this.runType ? this.runType.name : null
+        runStyle: this.runType ? this.runType.name : null,
+        projectId: this.currentProject ? this.currentProject.id : null
       }
     }
   },
@@ -122,7 +123,9 @@ export default {
   methods: {
     onSaveProject () {
       this.$store.dispatch(actions.project.update, this.project).then(() => {
-        console.log('update success')
+        this.$message({
+          message: '更新成功'
+        })
       }).catch(err => {
         this.$message({
           type: 'error',
@@ -132,7 +135,17 @@ export default {
       })
     },
     onUpdateApiList () {
-      console.log('update apis')
+      this.$store.dispatch(actions.api.updateList, this.api).then(() => {
+        this.$message({
+          message: '更新成功'
+        })
+      }).catch(err => {
+        this.$message({
+          type: 'error',
+          message: '批量更新API失败'
+        })
+        console.error('批量更新API失败', err)
+      })
     }
   }
 }

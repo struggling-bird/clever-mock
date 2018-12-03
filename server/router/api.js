@@ -72,4 +72,17 @@ router.delete('/del/:id', (req, res) => {
     console.error('删除API失败', err)
   })
 })
+router.post('/update/list', (req, res) => {
+  apiService.updateList(req.body, req.session.currentUser.id).then(() => {
+    res.json({
+      code: constant.code.success
+    })
+  }).catch(err => {
+    res.json({
+      code: constant.code.error,
+      msg: '批量更新API失败'
+    })
+    console.error('批量更新API失败', err)
+  })
+})
 module.exports = router

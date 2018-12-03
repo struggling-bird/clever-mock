@@ -26,7 +26,8 @@ const actions = {
     getById: '',
     update: '',
     add: '',
-    del: ''
+    del: '',
+    updateList: ''
   }
 }
 

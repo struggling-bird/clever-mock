@@ -102,7 +102,7 @@ module.exports = {
     await db.queryInTransaction(conn, sql, [project.name, project.proxyUrl, project.description, project.id])
     // step3.查询代理地址，如果要修改的代理地址为新地址，则保存代理地址
     sql = 'select * from proxy_server where project_id = ? and url = ?'
-    const proxyServers = db.queryInTransaction(conn, sql, [project.id, project.proxyUrl])
+    const proxyServers = await db.queryInTransaction(conn, sql, [project.id, project.proxyUrl])
     if (!proxyServers.length) {
       sql = 'insert into proxy_server(id,url, project_id) values(?,?,?)'
       await db.queryInTransaction(conn, sql, [uuid(), project.proxyUrl, project.id])

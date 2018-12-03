@@ -100,31 +100,7 @@ export default {
     }
   },
   data () {
-    return {
-      methodName: {name: 'GET'},
-      runType: {name: 'proxy'},
-      proxyUrl: null,
-      api: {
-        autoUpdate: false,
-        description: '',
-        groupId: '',
-        method: 'POST',
-        mockData: '',
-        mockScript: '',
-        name: '',
-        params: [],
-        path: '',
-        projectId: '',
-        proxyUrl: '',
-        resFormatScript: null,
-        resStructure: '',
-        runStyle: 'proxy',
-        delay: 0
-      },
-      preApi: null,
-      loading: this.addMode ? false : true,
-      reload: false
-    }
+    return this.getData()
   },
   computed: {
     saveParam () {
@@ -155,11 +131,45 @@ export default {
     if (!this.addMode) this.getById()
   },
   watch: {
-    apiId () {
-      this.getById()
+    apiId (id) {
+      if (id) {
+        this.getById()
+      } else {
+        let data = this.getData()
+        for (let prop in data) {
+          this[prop] = data[prop]
+        }
+      }
     }
   },
   methods: {
+    getData () {
+      return {
+        methodName: {name: 'GET'},
+        runType: {name: 'proxy'},
+        proxyUrl: null,
+        api: {
+          autoUpdate: false,
+          description: '',
+          groupId: '',
+          method: 'POST',
+          mockData: '',
+          mockScript: '',
+          name: '',
+          params: [],
+          path: '',
+          projectId: '',
+          proxyUrl: '',
+          resFormatScript: null,
+          resStructure: '',
+          runStyle: 'proxy',
+          delay: 0
+        },
+        preApi: null,
+        loading: !this.addMode,
+        reload: false
+      }
+    },
     getById () {
       this.loading = true
       this.reload = false

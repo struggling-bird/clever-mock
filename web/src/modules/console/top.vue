@@ -8,6 +8,10 @@
             @click="redirect('dev')"><i class="mock-tiaoshi"></i>开发模式</span>
       <span :class="{'btn-tab': true, active: mode === 'doc'}"
             @click="redirect('doc')"><i class="mock-wendang"></i>文档模式</span>
+      <span :class="{'btn-tab': true, active: mode === 'setting'}"
+            @click="redirect('setting')">
+        <i class="mock-setting"></i>设置
+      </span>
     </div>
 
     <span class="logout" @click="onLogout">
@@ -23,8 +27,9 @@ import {router} from '../../router/constants'
 export default {
   name: 'consoleTop',
   data () {
+    let arr = this.$route.name.split('-')
     return {
-      mode: this.$route.name === router.console.devView ? 'dev' : 'doc' // dev doc
+      mode: arr[arr.length -1]
     }
   },
   computed: {
@@ -39,14 +44,15 @@ export default {
   },
   watch: {
     '$route' (route) {
-      this.mode = route.name === router.console.devView ? 'dev' : 'doc'
+      let arr = route.name.split('-')
+      this.mode = arr[arr.length - 1]
     }
   },
   methods: {
     redirect (mode) {
       if (mode === this.mode) return
       this.$router.push({
-        name: mode === 'dev' ? router.console.devView : router.console.docView,
+        name: router.console[mode],
         params: {
           id: this.$route.params.id
         }

@@ -9,9 +9,9 @@ require('./dao/pool')
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', req.headers.origin || '*')
-  res.header('Access-Control-Allow-Headers', 'Content-Type, clever-mock')
+  res.header('Access-Control-Allow-Headers', req.headers['access-control-request-headers'])
   res.header('Access-Control-Allow-Credentials', true)
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE')//设置方法
+  res.header('Access-Control-Allow-Methods', req.method)//设置方法
   if (req.method == 'OPTIONS') {
     res.send(200) // 意思是，在正常的请求之前，会发送一个验证，是否可以请求。
   } else {

@@ -10,6 +10,7 @@ import console from '../modules/console'
 import devView from '../modules/console/devView'
 import docView from '../modules/console/docView'
 import register from '../modules/register'
+import setting from '../modules/setting/index'
 
 Vue.use(Router)
 let output = new Router({
@@ -48,18 +49,23 @@ let output = new Router({
           name: router.console.index,
           component: console,
           redirect: {
-            name: router.console.devView
+            name: router.console.dev
           },
           children: [
             {
               path: 'dev',
-              name: router.console.devView,
+              name: router.console.dev,
               component: devView
             },
             {
               path: 'doc',
-              name: router.console.docView,
+              name: router.console.doc,
               component: docView
+            },
+            {
+              path: 'setting',
+              name: router.console.setting,
+              component: setting
             }
           ]
         }

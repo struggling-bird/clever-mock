@@ -13,8 +13,9 @@ let router = {
   },
   console: {
     index: '',
-    devView: '',
-    docView: ''
+    dev: '',
+    doc: '',
+    setting: ''
   },
   login: '',
   register: ''

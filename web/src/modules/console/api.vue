@@ -102,12 +102,6 @@ export default {
   data () {
     return {
       methodName: {name: 'GET'},
-      methodList: ['GET', 'POST', 'DELETE', 'PUT'].map(name => {
-        return {name: name}
-      }),
-      runTypeList: ['staticMock', 'scriptMock', 'proxy', 'auto', 'test'].map(type => {
-        return {name: type}
-      }),
       runType: {name: 'proxy'},
       proxyUrl: null,
       api: {
@@ -146,6 +140,12 @@ export default {
       return !util.equal(this.saveParam, this.preApi)
     },
     ...mapState({
+      runTypeList (state) {
+        return state.common.runTypeList
+      },
+      methodList (state) {
+        return state.common.methodList
+      },
       proxyList (state) {
         return state.project.proxyServerList
       }

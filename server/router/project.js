@@ -71,4 +71,27 @@ router.delete('/del/:id', (req, res) => {
     console.error('删除项目失败', err)
   })
 })
+
+router.post('/update', (req, res) => {
+  let project = req.body
+  if (!project.id) {
+    res.json({
+      code: constants.code.error,
+      msg: 'project id is null'
+    })
+  } else {
+    projectService.update(project, req.session.currentUser.id).then(project => {
+      res.json({
+        code: constants.code.success,
+        data: project
+      })
+    }).catch(err => {
+      res.json({
+        code: constants.code.error,
+        msg: '更新项目失败'
+      })
+      console.error('更新项目失败', err)
+    })
+  }
+})
 module.exports = router

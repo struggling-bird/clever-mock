@@ -21,5 +21,8 @@ module.exports = {
   },
   async delById (userId, id) {
     return await projectDao.delById(userId, id)
+  },
+  async update (project, userId) {
+    return await projectDao.update(project, userId)
   }
 }

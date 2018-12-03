@@ -87,5 +87,40 @@ module.exports = {
       db.rollback(conn)
       throw e
     }
+  },
+  async update (project, userId) {
+    const conn = await db.beginTransaction()
+    // step1.检查当前用户是否有权限修改工程
+    let sql = 'select p.* from project as p ' +
+      'left join user_project as up ' +
+      ' on p.id = up.project_id ' +
+      'where up.user_id = ? and up.project_id = ?'
+    const projectList = await db.queryInTransaction(conn, sql, [userId, project.id])
+    if (!projectList.length) throw new Error('no permission')
+    // step2.修改项目基本信息
+    sql = `update project set name=?,proxy_url=?,description=? where id = ?`
+    await db.queryInTransaction(conn, sql, [project.name, project.proxyUrl, project.description, project.id])
+    // step3.查询代理地址，如果要修改的代理地址为新地址，则保存代理地址
+    sql = 'select * from proxy_server where project_id = ? and url = ?'
+    const proxyServers = db.queryInTransaction(conn, sql, [project.id, project.proxyUrl])
+    if (!proxyServers.length) {
+      sql = 'insert into proxy_server(id,url, project_id) values(?,?,?)'
+      await db.queryInTransaction(conn, sql, [uuid(), project.proxyUrl, project.id])
+    }
+    // step4.批量修改代理
+    if (project.global) {
+      sql = 'update api set proxy_url = ? where project_id = ?'
+      await db.queryInTransaction(conn, sql, [project.proxyUrl, project.id])
+    }
+    // step5.查询项目详情
+    sql = 'select * from project where id = ?'
+    const res = await db.queryInTransaction(conn, sql, [project.id])
+    try {
+      await db.commit(conn)
+    } catch (e) {
+      db.rollback(conn)
+      throw e
+    }
+    return res[0]
   }
 }

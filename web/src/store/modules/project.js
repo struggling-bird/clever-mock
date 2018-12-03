@@ -12,7 +12,7 @@ let store = new Store({
     [mutations.project.setList] (state, list) {
       state.list = list
     },
-    [mutations.project.setCurrrent] (state, project) {
+    [mutations.project.setCurrent] (state, project) {
       state.currentProject = project
     },
     [mutations.project.del] (state, id) {
@@ -53,7 +53,7 @@ let store = new Store({
             id: id
           }
         }).then(res => {
-          context.commit(mutations.project.setCurrrent, res.data)
+          context.commit(mutations.project.setCurrent, res.data)
           resolve()
         }).catch(err => {
           reject(err)
@@ -90,6 +90,8 @@ let store = new Store({
     },
     [actions.project.queryProxyServer] (context, projectId) {
       return new Promise((resolve, reject) => {
+        store.setReady(context, 'proxyServerList', false)
+        store.setError(context, 'proxyServerList', false)
         ajax({
           url: apis.project.queryProxyServer,
           method: 'get',
@@ -98,6 +100,21 @@ let store = new Store({
           }
         }).then(res => {
           context.commit(mutations.project.setProxyServerList, res.data)
+          store.setReady(context, 'proxyServerList', true)
+          resolve()
+        }).catch(err => {
+          store.setError(context, 'proxyServerList', true)
+          reject(err)
+        })
+      })
+    },
+    [actions.project.update] (context, project) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.project.update,
+          data: project
+        }).then(res => {
+          context.commit(mutations.project.setCurrent, res.data)
           resolve()
         }).catch(err => {
           reject(err)

@@ -13,7 +13,8 @@ const apis = {
     getById: '/api/project/{id}',
     create: '/api/project/add',
     del: '/api/project/del/{id}',
-    queryProxyServer: '/api/proxy/{projectId}'
+    queryProxyServer: '/api/proxy/{projectId}',
+    update: '/api/project/update'
   },
   api: {
     queryGroup: '/api/apiGroup/list',

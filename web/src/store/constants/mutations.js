@@ -9,7 +9,7 @@ const mutations = {
   },
   project: {
     setList: '',
-    setCurrrent: '',
+    setCurrent: '',
     del: '',
     setProxyServerList: ''
   },

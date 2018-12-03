@@ -407,7 +407,7 @@ module.exports = {
     return output
   },
   getHost (req) {
-    return `${req.headers['x-forwarded-proto']}://${req.headers['x-forwarded-host']}`
+    return req.headers.origin || `${req.headers['x-forwarded-proto']}://${req.headers['x-forwarded-host']}`
   },
   delay (time) {
     return new Promise(resolve => {

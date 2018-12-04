@@ -1,0 +1,33 @@
+@import "../../../assets/constants"
+.doc-view
+  height: 100%
+  overflow: auto
+  background: $color-bg-normal
+  margin: 20px
+  padding: 20px
+  .api-doc
+    width: 700px
+    margin: 10px auto
+    padding: 10px
+    font-size: $size-font-content-medium
+    color: $color-font-content
+    &>*
+      margin-bottom: 10px
+    .api-method
+      font-size: $size-font-mark
+      background: $color-font-content
+      color: $color-white
+      display: inline-block
+      padding: 1px 5px
+      border-radius: $border-radius
+      margin-right: 10px
+      &.post
+        background: $color-status-normal
+      &.get
+        background: $color-status-warning
+      &.delete
+        background: $color-status-danger
+    .c-tab-panel
+      overflow-x: hidden
+      white-space: normal
+      word-break: break-word

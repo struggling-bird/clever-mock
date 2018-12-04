@@ -2,6 +2,9 @@ module.exports = {
   type (obj) {
     return Object.prototype.toString.call(obj)
   },
+  getType (obj) {
+    return this.type(obj).match(/([A-Za-z]+)/g)[1]
+  },
   isObject (obj) {
     return this.type(obj) === '[object Object]'
   },
@@ -386,21 +389,25 @@ module.exports = {
     }
     return ''
   },
-  getStructure (data) {
+  /**
+   * 获取传入对象或数组的最小结构
+   * @param data
+   */
+  getSimpleData (data) {
     let output = {}
     if (this.isObject(data)) {
       for (let key in data) {
         const value = data[key]
         if (this.isArray(value)) {
-          output[key] = [this.getStructure(value[0])]
+          output[key] = [this.getSimpleData(value[0])]
         } else if (this.isObject(value)) {
-          output[key] = this.getStructure(value)
+          output[key] = this.getSimpleData(value)
         } else {
           output[key] = value
         }
       }
     } else if (this.isArray(data)) {
-      output = data.length ? [this.getStructure(data[0])] : []
+      output = data.length ? [this.getSimpleData(data[0])] : []
     } else {
       output = data
     }
@@ -415,5 +422,32 @@ module.exports = {
         resolve()
       }, time)
     })
+  },
+  getStructure (input) {
+    let objectType = this.getType(input)
+    let res = {
+      name: null,
+      type: objectType,
+      value: null,
+      required: false,
+      desc: '',
+      children: []
+    }
+    if (objectType === 'Object') {
+      for (let prop in input) {
+        let val = input[prop]
+        let config = this.getStructure(val)
+        config.name = prop
+        if (['Number', 'String', 'Boolean'].includes(this.getType(val))) {
+          config.value = val
+        }
+        res.children.push(config)
+      }
+    } else if (objectType === 'Array') {
+      res.children.push(this.getStructure(input[0]))
+    } else {
+      res.value = input
+    }
+    return res
   }
 }

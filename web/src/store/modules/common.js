@@ -9,6 +9,9 @@ let store = new Store({
     }),
     runTypeList: ['staticMock', 'scriptMock', 'proxy', 'auto', 'test'].map(type => {
       return {name: type}
+    }),
+    fieldType: ['String', 'Number', 'Boolean', 'Object', 'Array'].map(type => {
+      return {name: type}
     })
   },
   mutations: {

@@ -4,6 +4,7 @@ const project = require('./project')
 const apiGroup = require('./apiGroup')
 const proxyServer = require('./proxyServer')
 const apiService = require('../service/api')
+const file = require('./file')
 const constant = require('./constants')
 
 router.use(require('../middleware/auth'))
@@ -12,6 +13,7 @@ router.use('/user', user)
 router.use('/project', project)
 router.use('/apiGroup', apiGroup)
 router.use('/proxy', proxyServer)
+router.use('/file', file)
 
 router.post('/add', (req, res) => {
   apiService.add(req.body.api, req.body.projectId, req.session.currentUser.id).then(api => {

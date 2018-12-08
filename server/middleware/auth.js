@@ -3,7 +3,7 @@
  */
 const constants = require('../router/constants')
 module.exports = function (req, res, next) {
-  if (!['/user/login', '/user/add'].includes(req.path)) {
+  if (!['/user/login', '/user/add', '/file'].includes(req.path)) {
     // 检查登录状态
     if (!req.session.currentUser) {
       res.json({

@@ -29,12 +29,10 @@
 <script>
 import {actions} from '../../store/constants'
 import {mapState} from 'vuex'
-import JsonView from '../../components/jsonView/'
+import JsonView from '../../components/jsonView/index'
 export default {
   name: 'docView',
-  components: {
-    JsonView
-  },
+  components: {JsonView},
   data () {
     return {
       msg: 'doc'

@@ -18,7 +18,7 @@
         </c-tabs>
         <c-tabs>
           <c-tab-panel title="返回结构">
-            {{api.resStructure}}
+            <json-view :store="api.resStructure"></json-view>
           </c-tab-panel>
         </c-tabs>
       </div>
@@ -29,8 +29,12 @@
 <script>
 import {actions} from '../../store/constants'
 import {mapState} from 'vuex'
+import JsonView from '../../components/jsonView/'
 export default {
   name: 'docView',
+  components: {
+    JsonView
+  },
   data () {
     return {
       msg: 'doc'

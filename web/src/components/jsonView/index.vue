@@ -2,22 +2,34 @@
   <div class="json-view">
     <div class="json-line">
       <span class="json-key" v-if="json.name">{{json.name}}: </span>
-      <span class="json-kh" v-if="['Object', 'Array'].includes(type)">{{type === 'Object' ? '{' : '['}}</span>
-      <span class="json-val">
-          <template v-if="type === 'String'">"</template>
-          {{json.value}}
-          <template v-if="type === 'String'">"</template>
+      <template v-if="['Object', 'Array'].includes(type)">
+        <span class="json-kh">{{type === 'Object' ? '{' : '['}}</span>
+        <span class="json-collapse" @click="collapse = !collapse">{{collapse ? '+' : '-'}}</span>
+      </template>
+      <template v-else>
+        <span class="json-val">
+          {{JSON.stringify(json.value)}}
         </span>
-      <span class="json-annotate" v-if="!['Object', 'Array'].includes(type)">
+        <span class="json-annotate">
           <span class="json-xg">//</span>
-          <span class="json-annotation" v-if="showRequired"><span class="json-annotation_">@required</span> {{json.required}}</span>
-          <span class="json-annotation" v-if="json.type"><span class="json-annotation_">@type</span> {{json.type}}</span>
-          <span class="json-annotation" v-if="json.desc"><span class="json-annotation_">@desc</span>{{json.desc}}</span>
+          <span class="json-annotation" v-if="showRequired">
+            <span class="json-annotation_">@required</span> {{json.required}}
+          </span>
+          <span class="json-annotation" v-if="json.type">
+            <span class="json-annotation_">@type</span> {{json.type}}
+          </span>
+          <span class="json-annotation" v-if="json.desc">
+            <span class="json-annotation_">@desc</span>{{json.desc}}
+          </span>
         </span>
+      </template>
     </div>
-    <div class="json-children" v-if="json.children && json.children.length">
-      <json-view v-for="field in json.children" :store="field"></json-view>
+    <div class="json-children" v-if="json.children && json.children.length && !collapse">
+      <json-view v-for="(field, i) in json.children"
+                 :key="id + '_' + field + '_' + i"
+                 :store="field"></json-view>
     </div>
+    <div class="json-line" v-show="collapse">...</div>
     <div class="json-line" v-if="['Object', 'Array'].includes(type)">
       <span class="json-kh">{{type === 'Object' ? '}' : ']'}}</span>
     </div>
@@ -37,6 +49,8 @@ export default {
   },
   data () {
     return {
+      id: util.guid(),
+      collapse: false,
       json: util.isString(this.store) ? JSON.parse(this.store) : this.store
     }
   },

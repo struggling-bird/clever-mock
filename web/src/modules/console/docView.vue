@@ -1,28 +1,40 @@
 <template>
   <div class="doc-view">
-    <template v-for="group in groupList">
-      <div class="api-doc" v-for="api in group.apiList" :key="api.id">
-        <h3 v-if="api.name">{{api.name}}</h3>
-        <div class="api-url">
-          <span class="api-method" :class="api.method.toLowerCase()">{{api.method}}</span>{{api.path}}
+    <div class="doc-guide">
+      <tree-menu :store="groupList"
+                 :onChoose="onClickApi"
+                 width="300"
+                 key-field="id"
+                 children-field="apiList"
+                 label="name"
+                 alias-label="path"></tree-menu>
+    </div>
+    <div class="doc-main" ref="docList">
+      <template v-for="group in groupList">
+        <div v-for="api in group.apiList" :key="api.id"
+             :class="{'api-doc': true, active: currentApi && currentApi.id === api.id}">
+          <h3># {{api.name || api.path}} <input :ref="api.id" type="text" style="width: 0;height: 0;border: none"/></h3>
+          <div class="api-url">
+            <span class="api-method" :class="api.method.toLowerCase()">{{api.method}}</span>{{api.path}}
+          </div>
+          <c-tabs v-if="api.description">
+            <c-tab-panel title="描述">
+              {{api.description}}
+            </c-tab-panel>
+          </c-tabs>
+          <c-tabs>
+            <c-tab-panel title="参数">
+              {{api.params}}
+            </c-tab-panel>
+          </c-tabs>
+          <c-tabs>
+            <c-tab-panel title="返回结构">
+              <json-view :store="api.resStructure"></json-view>
+            </c-tab-panel>
+          </c-tabs>
         </div>
-        <c-tabs v-if="api.description">
-          <c-tab-panel title="描述">
-            {{api.description}}
-          </c-tab-panel>
-        </c-tabs>
-        <c-tabs>
-          <c-tab-panel title="参数">
-            {{api.params}}
-          </c-tab-panel>
-        </c-tabs>
-        <c-tabs>
-          <c-tab-panel title="返回结构">
-            <json-view :store="api.resStructure"></json-view>
-          </c-tab-panel>
-        </c-tabs>
-      </div>
-    </template>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -30,12 +42,13 @@
 import {actions} from '../../store/constants'
 import {mapState} from 'vuex'
 import JsonView from '../../components/jsonView/index'
+import TreeMenu from '../../components/treeMenu/index'
 export default {
   name: 'docView',
-  components: {JsonView},
+  components: {TreeMenu, JsonView},
   data () {
     return {
-      msg: 'doc'
+      currentApi: null
     }
   },
   computed: {
@@ -47,6 +60,13 @@ export default {
   },
   beforeCreate () {
     this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
+  },
+  methods: {
+    onClickApi (api) {
+      let ele = this.$refs[api.id][0]
+      this.currentApi = api
+      ele.focus()
+    }
   }
 }
 </script>

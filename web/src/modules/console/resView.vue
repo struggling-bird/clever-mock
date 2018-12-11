@@ -1,29 +1,21 @@
 <template>
   <div class="res-view">
-    <div class="preview">
-      <div>
-        <pre class="language-json">
-          <code v-html="code"></code>
-        </pre>
-      </div>
-    </div>
-    <div class="code-view">
-      <textarea v-model="response"></textarea>
-    </div>
+    <json-view :store="store" edit-mode></json-view>
   </div>
 </template>
 
 <script>
 import Prism from 'prismjs'
+import JsonView from '../../components/jsonView/index'
 export default {
   name: 'resView',
+  components: {JsonView},
   props: {
-    value: null
+    structure: null
   },
   data () {
     return {
-      response: this.value,
-      code: Prism.highlight(this.value || '', Prism.languages.json, 'json')
+      store: this.structure
     }
   },
   watch: {

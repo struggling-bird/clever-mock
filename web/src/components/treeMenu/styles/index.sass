@@ -1,0 +1,27 @@
+@import "../../../assets/constants"
+.tree-menu
+  font-size: $size-font-content-medium
+  .tree-node
+    color: $color-font-content
+    .tree-banner
+      height: 35px
+      line-height: 35px
+      text-overflow: ellipsis
+      overflow: hidden
+      padding-right: 15px
+      cursor: pointer
+      border-radius: $border-radius
+      &:hover,&.__checked
+        color: $color-status-normal
+      &.__expand
+        background: $color-status-normal
+        color: $color-white
+      &.__have-children
+        &:hover
+          background: $color-status-normal
+          color: $color-white
+      .tree-collapse
+        float: right
+        margin-right: 10px
+      .tree-node-label
+    .tree-menu

@@ -62,7 +62,7 @@
             <param-view v-model="api.params"></param-view>
           </c-tab-panel>
           <c-tab-panel title="返回结构">
-            <res-view v-model="api.resStructure"></res-view>
+            <res-view :structure="api.resStructure"></res-view>
           </c-tab-panel>
           <c-tab-panel title="接口描述">
             <api-desc v-model="api.description"></api-desc>

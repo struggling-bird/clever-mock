@@ -5,6 +5,15 @@
       <template v-if="['Object', 'Array'].includes(type)">
         <span class="json-kh">{{type === 'Object' ? '{' : '['}}</span>
         <span class="json-collapse" @click="collapse = !collapse">{{collapse ? '+' : '-'}}</span>
+        <span class="json-annotate">
+          <span class="json-xg">//</span>
+          <span class="json-annotation" v-if="showRequired">
+            <span class="json-annotation_">@required</span> {{json.required}}
+          </span>
+          <span class="json-annotation" v-if="json.desc">
+            <span class="json-annotation_">@desc</span>{{json.desc}}
+          </span>
+        </span>
       </template>
       <template v-else>
         <span class="json-val">
@@ -42,6 +51,10 @@ export default {
   name: 'jsonView',
   props: {
     store: null,
+    editMode: {
+      type: Boolean,
+      default: false
+    },
     showRequired: {
       type: Boolean,
       default: false

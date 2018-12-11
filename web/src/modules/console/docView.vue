@@ -13,7 +13,7 @@
       <template v-for="group in groupList">
         <div v-for="api in group.apiList" :key="api.id"
              :class="{'api-doc': true, active: currentApi && currentApi.id === api.id}">
-          <h3># {{api.name || api.path}} <input :ref="api.id" type="text" style="width: 0;height: 0;border: none"/></h3>
+          <h3 :ref="api.id"># {{api.name || api.path}}</h3>
           <div class="api-url">
             <span class="api-method" :class="api.method.toLowerCase()">{{api.method}}</span>{{api.path}}
           </div>
@@ -63,9 +63,10 @@ export default {
   },
   methods: {
     onClickApi (api) {
-      let ele = this.$refs[api.id][0]
       this.currentApi = api
-      ele.focus()
+      let ele = this.$refs[api.id][0]
+      let docList = this.$refs.docList
+      docList.scrollTop = ele.offsetTop - 130
     }
   }
 }

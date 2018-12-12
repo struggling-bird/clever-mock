@@ -3,12 +3,21 @@
   font-size: $size-font-content-medium
   line-height: $size-font-subtitle-small
   .json-children
-    margin-left: 15px
+    //margin-left: 15px
   .json-line
+    border-radius: $border-radius
+    position: relative
+    &:hover
+      background: $color-status-normal-light
+    .json-row-num
+      display: inline-block
+      position: absolute
+      left: 0
+      font-size: $size-font-mark
+      color: $color-font-tip
     .json-collapse
       display: inline-block
       margin-left: 10px
-      margin-right: 10px
       cursor: pointer
       border: 1px dashed $color-border
       width: 15px
@@ -28,6 +37,7 @@
     .json-xg
       font-weight: bolder
       margin-right: 3px
+      margin-left: 10px
     .json-annotation
       margin-right: 10px
       .json-annotation_

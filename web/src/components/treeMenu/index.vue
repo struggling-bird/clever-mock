@@ -8,7 +8,8 @@
                :key-field="keyField"
                :children-field="childrenField"
                :alias-label="aliasLabel"
-               :onChoose="onChoose"
+               :onChoose="onClickNode"
+               :chosenNode="chosenNode || currentNode"
                :key="node[keyField]">
     </tree-node>
   </div>
@@ -50,10 +51,12 @@ export default {
     },
     onChoose: {
       type: Function
-    }
+    },
+    chosenNode: null
   },
   data () {
     return {
+      currentNode: null
     }
   },
   computed: {
@@ -61,6 +64,12 @@ export default {
       return {
         width: this.width + 'px'
       }
+    }
+  },
+  methods: {
+    onClickNode (node) {
+      this.currentNode = node
+      this.onChoose(node)
     }
   }
 }

@@ -3,7 +3,6 @@
     <div :class="nodeClass"
          @click="onClick">
         <span class="tree-node-label"
-              v-click-outside="onClickOther"
               :title="node[label] || node[aliasLabel]"
               :style="nodeStyle">{{node[label] || node[aliasLabel]}}</span>
       <i v-if="haveChildren" class="mock-pulldown tree-collapse"></i>
@@ -16,6 +15,7 @@
                :key-field="keyField"
                :children-field="childrenField"
                :alias-label="aliasLabel"
+               :chosenNode="chosenNode"
                :store="node[childrenField]"></tree-menu>
   </div>
 </template>
@@ -54,15 +54,18 @@ export default {
     },
     onChoose: {
       type: Function
-    }
+    },
+    chosenNode: null
   },
   data () {
     return {
-      expand: true,
-      checked: false
+      expand: true
     }
   },
   computed: {
+    checked () {
+      return this.chosenNode === this.node
+    },
     nodeClass () {
       return {
         'tree-banner': true,
@@ -83,14 +86,10 @@ export default {
   methods: {
     onClick () {
       if (!this.haveChildren && this.onChoose && !this.checked) {
-        this.checked = true
         this.onChoose(this.node)
       } else {
         this.expand = !this.expand
       }
-    },
-    onClickOther () {
-      this.checked = false
     }
   }
 }

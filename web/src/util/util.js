@@ -279,6 +279,17 @@ let util = {
   getWheelEventName () {
     return 'onwheel' in document.createElement('div') ? 'wheel'
       : (document.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll')
+  },
+  treeLoop (root, config = {
+    callback: () => {},
+    childrenField: 'children'
+  }) {
+    config.callback(root)
+    if (root[config.childrenField].length) {
+      root[config.childrenField].forEach(item => {
+        this.treeLoop(item, config)
+      })
+    }
   }
 }
 

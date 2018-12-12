@@ -3,7 +3,6 @@
   font-size: $size-font-content-medium
   line-height: $size-font-subtitle-small
   .json-children
-    //margin-left: 15px
   .json-line
     border-radius: $border-radius
     position: relative
@@ -43,3 +42,25 @@
       .json-annotation_
         color: $color-font-icon
         margin-right: 3px
+  &.json-edit-mode
+    .json-line
+      margin: 5px 0
+      .json-btn-del
+        font-size: $size-font-mark
+        color: $color-status-danger
+        margin-left: 10px
+        cursor: pointer
+      .json-btn-add
+        font-size: $size-font-mark
+        color: $color-status-normal
+        margin-left: 10px
+        cursor: pointer
+      .json-btn-add_
+        font-size: $size-font-mark
+        margin-left: 10px
+        height: 22px
+        line-height: 22px
+    select
+      height: 22px
+      &:focus
+        border-style: dashed

@@ -62,6 +62,11 @@ export default {
   beforeCreate () {
     this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
   },
+  mounted () {
+    setTimeout(() => {
+      this.$refs.docList.scrollTop = 0
+    })
+  },
   methods: {
     onClickApi (api) {
       this.currentApi = api

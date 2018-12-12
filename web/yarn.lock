@@ -6269,9 +6269,9 @@ shell-quote@^1.6.1:
     array-reduce "~0.0.0"
     jsonify "~0.0.0"
 
-showdown@^1.8.7:
-  version "1.8.7"
-  resolved "https://registry.npmjs.org/showdown/-/showdown-1.8.7.tgz#c4ccf300063adb0ef75a1b94b29a6cb6f7c36008"
+showdown@^1.9.0:
+  version "1.9.0"
+  resolved "http://registry.npm.taobao.org/showdown/download/showdown-1.9.0.tgz#d49d2a0b6db21b7c2e96ef855f7b3b2a28ef46f4"
   dependencies:
     yargs "^10.0.3"
 

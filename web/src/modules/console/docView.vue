@@ -19,7 +19,7 @@
           </div>
           <c-tabs v-if="api.description">
             <c-tab-panel title="描述">
-              {{api.description}}
+              <div class="doc-md" v-html="getDesc(api)"></div>
             </c-tab-panel>
           </c-tabs>
           <c-tabs>
@@ -43,6 +43,7 @@ import {actions} from '../../store/constants'
 import {mapState} from 'vuex'
 import JsonView from '../../components/jsonView/index'
 import TreeMenu from '../../components/treeMenu/index'
+import showDown from 'showdown'
 export default {
   name: 'docView',
   components: {TreeMenu, JsonView},
@@ -67,6 +68,15 @@ export default {
       let ele = this.$refs[api.id][0]
       let docList = this.$refs.docList
       docList.scrollTop = ele.offsetTop - 130
+    },
+    getDesc (api) {
+      let converter = new showDown.Converter({
+        openLinksInNewWindow: true,
+        emoji: true
+      })
+      converter.setFlavor('github')
+      let md = converter.makeHtml(api.description)
+      return md
     }
   }
 }

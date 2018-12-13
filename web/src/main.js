@@ -8,6 +8,12 @@ import store from './store'
 import cleverUI from 'clever-ui'
 import 'clever-ui/lib/theme-default/main.css'
 
+import 'simplemde/dist/simplemde.min.css'
+
+import 'codemirror/mode/javascript/javascript'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/theme/darcula.css'
+
 Vue.use(cleverUI)
 
 Vue.config.productionTip = false

@@ -74,12 +74,7 @@
         </c-tabs>
         <c-tabs>
           <c-tab-panel title="mock数据">
-            <mock-data v-model="api.mockData"></mock-data>
-          </c-tab-panel>
-        </c-tabs>
-        <c-tabs>
-          <c-tab-panel title="mock脚本">
-            <mock-script v-model="api.mockScript"></mock-script>
+            <mock-data :text="api.mockData" @change="onChangeMockData"></mock-data>
           </c-tab-panel>
         </c-tabs>
       </div>
@@ -93,13 +88,12 @@ import ParamView from './paramView'
 import ResView from './resView'
 import ApiDesc from './apiDesc'
 import MockData from './mockData'
-import MockScript from './mockScript'
 import {util} from '../../util'
 import FormItem from '../../components/formItem/index'
 import {mapState} from 'vuex'
 export default {
   name: 'apiDetail',
-  components: {FormItem, MockScript, MockData, ApiDesc, ResView, ParamView},
+  components: {FormItem, MockData, ApiDesc, ResView, ParamView},
   props: {
     apiId: null,
     addMode: {
@@ -266,6 +260,9 @@ export default {
         })
       }
       this.api.resStructure = json ? JSON.stringify(json) : null
+    },
+    onChangeMockData (data) {
+      this.api.mockData = data
     }
   }
 }

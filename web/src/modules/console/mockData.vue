@@ -1,36 +1,31 @@
 <template>
-  <div class="mock-data">
-    <div class="preview">
-      <div>
-        <pre class="language-json">
-          <code v-html="code"></code>
-        </pre>
-      </div>
-    </div>
-    <div class="code-view">
-      <textarea v-model="mockData"></textarea>
-    </div>
+  <div class="mock-data" ref="main">
   </div>
 </template>
 
 <script>
-import Prism from 'prismjs'
+import codeMirror from 'codemirror'
 export default {
   name: 'mockData',
   props: {
-    value: null
+    text: null
   },
   data () {
     return {
-      mockData: this.value,
-      code: Prism.highlight(this.value || '', Prism.languages.json, 'json')
+      editor: null
     }
   },
-  watch: {
-    mockData (res) {
-      this.code = Prism.highlight(res, Prism.languages.json, 'json')
-      this.$emit('input', res)
-    }
+  mounted () {
+    this.editor = codeMirror(this.$refs.main, {
+      mode: 'javascript',
+      theme: 'darcula',
+      lineNumbers: true,
+      line: true,
+      value: this.text
+    })
+    this.editor.on('change', editor => {
+      this.$emit('change', editor.getValue())
+    })
   }
 }
 </script>

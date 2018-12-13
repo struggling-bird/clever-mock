@@ -1,4 +1,4 @@
-const webpack = require('webpack')
+// const webpack = require('webpack')
 const path = require('path')
 let proxy = {}
 let routes = ['^/api']
@@ -16,18 +16,5 @@ module.exports = {
     proxy: proxy
   },
   configureWebpack: {
-    plugins: [
-      new webpack.DefinePlugin((() => {
-        if (process.env.NODE_ENV === 'production') {
-          return {
-            API_BASE_URL: JSON.stringify('http://192.168.131.193:8080/')
-          }
-        } else {
-          return {
-            API_BASE_URL: JSON.stringify('http://192.168.131.193:8080/')
-          }
-        }
-      })())
-    ]
   }
 }

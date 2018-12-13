@@ -42,7 +42,7 @@
         <div class="section">
           <span class="desc">请求头信息中，增加：</span>
           <pre class="language-javascript">
-            <code v-html="guideCode"></code>
+            clever-mock: '{{project.secretKey}}'
           </pre>
         </div>
       </div>
@@ -61,7 +61,6 @@ import {actions} from '../../store/constants'
 import {mapState} from 'vuex'
 import {util} from '../../util'
 import GroupDialog from './groupDialog'
-import Prism from 'prismjs'
 export default {
   name: 'devView',
   components: {GroupDialog, ApiDetail},
@@ -82,10 +81,7 @@ export default {
       project (state) {
         return state.project.currentProject || {}
       }
-    }),
-    guideCode () {
-      return Prism.highlight(`clever-mock: '${this.project.secretKey}'`, Prism.languages.javascript, 'javascript')
-    }
+    })
   },
   beforeCreate () {
     this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)

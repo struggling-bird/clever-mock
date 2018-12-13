@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.17)
 # Database: clever_mock
-# Generation Time: 2018-11-21 08:48:56 +0000
+# Generation Time: 2018-12-13 06:02:00 +0000
 # ************************************************************
 
 
@@ -28,20 +28,20 @@ DROP TABLE IF EXISTS `api`;
 CREATE TABLE `api` (
   `id` varchar(100) NOT NULL DEFAULT '',
   `name` varchar(1000) DEFAULT '',
-  `description` varchar(2000) DEFAULT '',
+  `description` longtext,
   `path` varchar(1000) DEFAULT '' COMMENT '接口路径，支持正则表达式',
   `method` varchar(100) DEFAULT '',
-  `params` varchar(3000) DEFAULT '[]',
-  `res_structure` varchar(3000) DEFAULT '',
+  `params` longtext,
+  `res_structure` longtext,
   `group_id` varchar(100) DEFAULT NULL,
   `create_time` bigint(20) DEFAULT NULL COMMENT '创建时间',
+  `res_format_script` text COMMENT '响应结果的格式化脚本',
   `last_call_time` bigint(20) DEFAULT NULL COMMENT '上次调用时间',
   `project_id` varchar(100) DEFAULT NULL,
   `mock_data` longtext COMMENT 'mock数据',
-  `mock_script` text COMMENT 'mock脚本',
+  `mock_script` longtext COMMENT 'mock脚本',
   `run_style` varchar(100) DEFAULT '' COMMENT '运行方式:mock还是代理还是怎样',
   `proxy_url` varchar(1000) DEFAULT '' COMMENT '代理服务地址，比project配置的优先级高',
-  `res_format_script` text COMMENT '响应结果的格式化脚本',
   `auto_update` int(1) DEFAULT '1' COMMENT '是否自动更新请求参数和响应结果',
   `delay` int(100) DEFAULT '0' COMMENT '接口代理延时',
   PRIMARY KEY (`id`),

@@ -17,19 +17,19 @@
           <div class="api-url">
             <span class="api-method" :class="api.method.toLowerCase()">{{api.method}}</span>{{api.path}}
           </div>
-          <c-tabs v-if="api.description">
-            <c-tab-panel title="描述">
-              <div class="doc-md" v-html="getDesc(api)"></div>
-            </c-tab-panel>
-          </c-tabs>
           <c-tabs>
             <c-tab-panel title="参数">
-              {{api.params}}
+              <json-view :store="api.params"></json-view>
             </c-tab-panel>
           </c-tabs>
           <c-tabs>
             <c-tab-panel title="返回结构">
               <json-view :store="api.resStructure"></json-view>
+            </c-tab-panel>
+          </c-tabs>
+          <c-tabs v-if="api.description">
+            <c-tab-panel title="描述">
+              <div class="doc-md" v-html="getDesc(api)"></div>
             </c-tab-panel>
           </c-tabs>
         </div>

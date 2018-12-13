@@ -59,17 +59,25 @@
       <div class="api-config">
         <c-tabs>
           <c-tab-panel title="参数结构">
-            <param-view v-model="api.params"></param-view>
+            <param-view :store="api.params" @change="onChangeParams"></param-view>
           </c-tab-panel>
+        </c-tabs>
+        <c-tabs>
           <c-tab-panel title="返回结构">
-            <res-view :structure="api.resStructure"></res-view>
+            <res-view :structure="api.resStructure" @change="onChangeRes"></res-view>
           </c-tab-panel>
+        </c-tabs>
+        <c-tabs>
           <c-tab-panel title="接口描述">
             <api-desc v-model="api.description"></api-desc>
           </c-tab-panel>
+        </c-tabs>
+        <c-tabs>
           <c-tab-panel title="mock数据">
             <mock-data v-model="api.mockData"></mock-data>
           </c-tab-panel>
+        </c-tabs>
+        <c-tabs>
           <c-tab-panel title="mock脚本">
             <mock-script v-model="api.mockScript"></mock-script>
           </c-tab-panel>
@@ -236,6 +244,28 @@ export default {
         })
         console.error('删除API失败', err)
       })
+    },
+    onChangeParams (json) {
+      if (json) {
+        util.treeLoop(json, {
+          childrenField: 'children',
+          callback (item) {
+            delete item.id
+          }
+        })
+      }
+      this.api.params = json ? JSON.stringify(json) : null
+    },
+    onChangeRes (json) {
+      if (json) {
+        util.treeLoop(json, {
+          childrenField: 'children',
+          callback (item) {
+            delete item.id
+          }
+        })
+      }
+      this.api.resStructure = json ? JSON.stringify(json) : null
     }
   }
 }

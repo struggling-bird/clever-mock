@@ -1,12 +1,12 @@
 <template>
   <div class="res-view">
-    <json-view :store="store" edit-mode></json-view>
+    <json-view :store="store" edit-mode @change="onChange"></json-view>
   </div>
 </template>
 
 <script>
-import Prism from 'prismjs'
 import JsonView from '../../components/jsonView/index'
+import {util} from '../../util'
 export default {
   name: 'resView',
   components: {JsonView},
@@ -18,10 +18,9 @@ export default {
       store: this.structure
     }
   },
-  watch: {
-    response (res) {
-      this.code = Prism.highlight(res, Prism.languages.json, 'json')
-      this.$emit('input', res)
+  methods: {
+    onChange (json) {
+      this.$emit('change', json ? util.clone(json) : null)
     }
   }
 }

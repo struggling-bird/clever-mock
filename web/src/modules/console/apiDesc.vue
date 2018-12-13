@@ -18,11 +18,9 @@ export default {
   },
   mounted () {
     this.editor = new SimpleMDE({
-      element: this.$refs.dom,
-      autofocus: true
+      element: this.$refs.dom
     })
     this.editor.value(this.value || '')
-    if (this.value) this.editor.togglePreview()
     this.editor.codemirror.on('change', () => {
       this.$emit('input', this.editor.value())
     })

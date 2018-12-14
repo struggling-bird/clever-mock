@@ -37,9 +37,17 @@ router.get('/logout', (req, res) => {
 })
 
 router.get('/getCurrent', (req, res) => {
-  res.json({
-    code: constants.code.success,
-    data: req.session.currentUser
+  userService.getById(req.session.currentUser.id).then(user => {
+    res.json({
+      code: constants.code.success,
+      data: user
+    })
+  }).catch(err => {
+    res.json({
+      code: constants.code.error,
+      msg: '获取用户信息失败'
+    })
+    console.error('获取用户信息失败', err)
   })
 })
 

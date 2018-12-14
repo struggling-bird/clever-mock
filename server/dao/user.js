@@ -3,9 +3,16 @@ const uuid = require('uuid/v1')
 const util = require('../utils/util')
 
 module.exports = {
-  getUser (username, password) {
-    const sql = 'select user.id,user.name,user.email,user.group from user where name=? and password=?'
-    return db.query(sql, [username, password])
+  async getUser (username, password) {
+    const sql = 'select user.* from user where name=? and password=?'
+    const res = await db.query(sql, [username, password])
+    if (res.length) {
+      const user = res[0]
+      delete user.password
+      return user
+    } else {
+      throw new Error(`根据用户名密码获取用户信息失败`)
+    }
   },
   async getById (id) {
     const sql = 'select * from user where id=?'

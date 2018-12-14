@@ -164,6 +164,19 @@ export default {
     }
   },
   watch: {
+    store (store) {
+      let json = null
+      if (store) {
+        json = util.isString(store) ? JSON.parse(store) : store
+        util.treeLoop(json, {
+          childrenField: 'children',
+          callback: item => {
+            if (!item.id) item.id = util.guid()
+          }
+        })
+      }
+      this.json = json
+    },
     json: {
       handler: function (json) {
         this.$emit('change', json)

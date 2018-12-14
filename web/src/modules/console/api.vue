@@ -56,7 +56,7 @@
           <c-button v-show="saveAble" size="large" type="primary" @click="onSave">保存</c-button>
         </div>
       </div>
-      <div class="api-config">
+      <div class="api-config" :key="'api-config-' + apiId">
         <c-tabs>
           <c-tab-panel title="参数结构">
             <param-view :store="api.params" @change="onChangeParams"></param-view>
@@ -158,12 +158,12 @@ export default {
           mockData: '',
           mockScript: '',
           name: '',
-          params: [],
+          params: null,
           path: '',
           projectId: '',
           proxyUrl: '',
           resFormatScript: null,
-          resStructure: '',
+          resStructure: null,
           runStyle: 'proxy',
           delay: 0
         },
@@ -176,6 +176,7 @@ export default {
       this.loading = true
       this.reload = false
       this.$store.dispatch(actions.api.getById, this.apiId).then(api => {
+        if (api.resStructure) api.resStructure = JSON.parse(api.resStructure)
         this.api = api
         this.preApi = util.clone(api)
         this.methodName = {name: api.method}

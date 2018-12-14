@@ -9,7 +9,6 @@
     background: $color-brand-dark
     overflow: auto
     padding: 15px 10px
-    text-align: center
     display: flex
     flex-direction: column
     .api-search
@@ -22,7 +21,7 @@
       text-align: right
       font-size: 18px
       i
-        margin-right: 20px
+        margin-right: 30px
         cursor: pointer
         &:hover
           color: $color-status-normal
@@ -31,50 +30,15 @@
     .api-list
       flex: 1
       overflow: auto
-      color: $color-white
-      font-size: $size-font-content-medium
-      .group
-        line-height: 35px
-        background: $color-font-content
-        border-radius: $border-radius
-        .group-title
-          padding: 0 15px
-          height: 35px
-          i
-            float: left
-          .desc
-            float: right
-            cursor: pointer
-          .btn-add
-            float: right
-            margin-left: 10px
-            cursor: pointer
-            &:hover
-              color: $color-status-normal
-        .api
-          height: 30px
-          line-height: 30px
-          text-align: left
-          padding: 0 10px
-          background: $color-font-tip
-          border-radius: $border-radius
-          margin: 5px 0
-          cursor: pointer
-          .method
-            display: inline-block
-            padding: 3px 10px
-            font-size: $size-font-mark
-            line-height: $size-font-mark
-            border-radius: 20px
-            float: right
-            margin-top: 7px
-            background: $color-font-content
-            &.post
-              background: $color-status-normal
-            &.get
-              background: $color-status-warning
-            &.delete
-              background: $color-status-danger
+      .api-group
+        .mock-folder
+          float: left
+          margin-left: 20px
+          margin-right: 15px
+        .btn-add
+          float: right
+      .tree-node
+        color: $color-white
   .api-detail-panel
     flex: 1
     overflow: auto

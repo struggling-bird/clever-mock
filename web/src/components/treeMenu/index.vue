@@ -11,6 +11,7 @@
                :onChoose="onClickNode"
                :chosenNode="chosenNode || currentNode"
                :key="node[keyField]">
+      <slot :node="node"></slot>
     </tree-node>
   </div>
 </template>

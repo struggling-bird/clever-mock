@@ -12,23 +12,19 @@
         <i class="btn-add mock-wenjianjia" @click="onAddGroup"></i>
       </div>
       <div class="api-list">
-        <ul class="group" v-for="group in groupList" :key="group.id">
-          <li class="group-title">
+        <tree-menu :store="groupList"
+                   :onChoose="toEditApi"
+                   width="300"
+                   key-field="id"
+                   children-field="apiList"
+                   label="name"
+                   alias-label="path">
+          <div slot-scope="{node}" class="api-group">
             <i class="mock-folder"></i>
-            <i class="btn-add mock-add" @click="addApi(group)"></i>
-            <span class="desc" @click="onEditGroup(group)">{{group.name}}</span>
-          </li>
-          <li v-for="api in group.apiList"
-              :key="api.id"
-              :class="{api: true, active: currentApi === api}"
-              v-if="apiVisible(api)"
-              @click="currentApi = api">
-            <c-tooltip :content="api.path" placement="right">
-              <span class="url">{{pathFormat(api.name || api.path)}}</span>
-            </c-tooltip>
-            <span :class="{method: true, [api.method.toLowerCase()]: true}">{{api.method}}</span>
-          </li>
-        </ul>
+            <i class="btn-add mock-add" @click.stop="addApi(node)"></i>
+            <span class="desc" @click.stop="onEditGroup(node)">{{node.name}}</span>
+            </div>
+        </tree-menu>
       </div>
     </div>
     <div class="api-detail-panel">
@@ -61,9 +57,10 @@ import {actions} from '../../store/constants'
 import {mapState} from 'vuex'
 import {util} from '../../util'
 import GroupDialog from './groupDialog'
+import TreeMenu from '../../components/treeMenu/index'
 export default {
   name: 'devView',
-  components: {GroupDialog, ApiDetail},
+  components: {TreeMenu, GroupDialog, ApiDetail},
   data () {
     return {
       filter: '',
@@ -121,6 +118,9 @@ export default {
     },
     onDelApi () {
       this.currentApi = null
+    },
+    toEditApi (api) {
+      this.currentApi = api
     }
   }
 }

@@ -2,10 +2,12 @@
   <div class="tree-node" :key="node[keyField]">
     <div :class="nodeClass"
          @click="onClick">
-        <span class="tree-node-label"
-              :title="node[label] || node[aliasLabel]"
-              :style="nodeStyle">{{node[label] || node[aliasLabel]}}</span>
-      <i v-if="haveChildren" class="mock-pulldown tree-collapse"></i>
+        <slot :node="node">
+          <span class="tree-node-label"
+                :title="node[label] || node[aliasLabel]"
+                :style="nodeStyle">{{node[label] || node[aliasLabel]}}</span>
+          <i v-if="haveChildren" class="mock-pulldown tree-collapse"></i>
+        </slot>
     </div>
     <tree-menu v-if="haveChildren && expand"
                :width="width"
@@ -16,7 +18,8 @@
                :children-field="childrenField"
                :alias-label="aliasLabel"
                :chosenNode="chosenNode"
-               :store="node[childrenField]"></tree-menu>
+               :store="node[childrenField]">
+    </tree-menu>
   </div>
 </template>
 

@@ -8,7 +8,8 @@ const actions = {
     login: '',
     logout: '',
     getUser: '',
-    addUser: ''
+    addUser: '',
+    update: ''
   },
   project: {
     query: '',

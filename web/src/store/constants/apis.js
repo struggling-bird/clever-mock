@@ -6,7 +6,8 @@ const apis = {
     login: '/api/user/login',
     logout: '/api/user/logout',
     getCurrent: '/api/user/getCurrent',
-    add: '/api/user/add'
+    add: '/api/user/add',
+    update: '/api/user/update'
   },
   project: {
     query: '/api/project/query',

@@ -66,4 +66,17 @@ router.post('/add', (req, res) => {
   })
 })
 
+router.post('/update', (req, res) => {
+  userService.update(req.body).then(user => {
+    res.json({
+      code: constants.code.success,
+      data: user
+    })
+  }).catch(err => {
+    res.json({
+      code: constants.code.error,
+      msg: '更新用户信息失败'
+    })
+  })
+})
 module.exports = router

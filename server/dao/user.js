@@ -53,5 +53,17 @@ module.exports = {
     }
     
     return await this.getById(id)
+  },
+  async update (user) {
+    let props = []
+    let values = []
+    for (let prop in user) {
+      props.push(`${util.toUnderLine(prop)}=?`)
+      values.push(user[prop])
+    }
+    values.push(user.id)
+    let sql = `update user set ${props.join(',')} where id = ?`
+    await db.query(sql, values)
+    return await this.getById(user.id)
   }
 }

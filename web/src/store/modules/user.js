@@ -9,6 +9,9 @@ let store = new Store({
   mutations: {
     [mutations.user.setUser] (state, user) {
       state.user = user
+    },
+    [mutations.user.update] (state, user) {
+      state.user = user
     }
   },
   actions: {
@@ -60,6 +63,19 @@ let store = new Store({
           url: apis.user.add,
           data: user
         }).then(() => {
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    [actions.user.update] (context, user) {
+      return new Promise((resolve, reject) => {
+        ajax({
+          url: apis.user.update,
+          data: user
+        }).then(res => {
+          context.commit(mutations.user.update, res.data)
           resolve()
         }).catch(err => {
           reject(err)

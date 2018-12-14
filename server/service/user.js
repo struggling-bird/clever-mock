@@ -10,5 +10,8 @@ module.exports = {
   },
   async getById (userId) {
     return await userDao.getById(userId)
+  },
+  async update (user) {
+    return await userDao.update(user)
   }
 }

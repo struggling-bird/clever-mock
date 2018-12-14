@@ -8,12 +8,12 @@
                placeholder="搜索"
                icon="mock-search"/>
       <div class="ctl-panel">
-        <i class="btn-sort mock-sort-alpha-desc"></i>
         <i class="btn-add mock-wenjianjia" @click="onAddGroup"></i>
       </div>
       <div class="api-list">
         <tree-menu :store="groupList"
                    :onChoose="toEditApi"
+                   :filter="filter"
                    width="300"
                    key-field="id"
                    children-field="apiList"

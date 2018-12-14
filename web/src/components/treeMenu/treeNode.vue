@@ -1,6 +1,7 @@
 <template>
   <div class="tree-node" :key="node[keyField]">
     <div :class="nodeClass"
+         v-show="haveChildren || (new RegExp(filter).test(node[label]) || new RegExp(filter).test(node[aliasLabel]))"
          @click="onClick">
         <slot :node="node">
           <span class="tree-node-label"
@@ -17,6 +18,7 @@
                :key-field="keyField"
                :children-field="childrenField"
                :alias-label="aliasLabel"
+               :filter="filter"
                :chosenNode="chosenNode"
                :store="node[childrenField]">
     </tree-menu>
@@ -58,7 +60,10 @@ export default {
     onChoose: {
       type: Function
     },
-    chosenNode: null
+    chosenNode: null,
+    filter: {
+      type: String
+    }
   },
   data () {
     return {

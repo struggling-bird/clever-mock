@@ -106,13 +106,20 @@ export default {
   },
   computed: {
     saveParam () {
-      return {
+      let api = {
         ...this.api,
         delay: Number(this.api.delay),
         method: this.methodName.name,
         runStyle: this.runType.name,
         proxyUrl: this.proxyUrl ? this.proxyUrl.url : ''
       }
+      if (api.resStructure && !util.isString(api.resStructure)) {
+        api.resStructure = JSON.stringify(api.resStructure)
+      }
+      if (api.params && !util.isString(api.params)) {
+        api.params = JSON.stringify(api.params)
+      }
+      return api
     },
     saveAble () {
       return !util.equal(this.saveParam, this.preApi)

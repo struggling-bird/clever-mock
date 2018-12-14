@@ -8,6 +8,7 @@
                :key-field="keyField"
                :children-field="childrenField"
                :alias-label="aliasLabel"
+               :filter="filter"
                :onChoose="onClickNode"
                :chosenNode="chosenNode || currentNode"
                :key="node[keyField]">
@@ -53,7 +54,10 @@ export default {
     onChoose: {
       type: Function
     },
-    chosenNode: null
+    chosenNode: null,
+    filter: {
+      type: String
+    }
   },
   data () {
     return {

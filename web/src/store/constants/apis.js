@@ -7,7 +7,10 @@ const apis = {
     logout: '/api/user/logout',
     getCurrent: '/api/user/getCurrent',
     add: '/api/user/add',
-    update: '/api/user/update'
+    update: '/api/user/update',
+    query: '/api/user/query',
+    invite: '/api/user/invite',
+    removeMember: '/api/user/removeMember'
   },
   project: {
     query: '/api/project/query',

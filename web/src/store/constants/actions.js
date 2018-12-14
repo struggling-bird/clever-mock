@@ -9,7 +9,10 @@ const actions = {
     logout: '',
     getUser: '',
     addUser: '',
-    update: ''
+    update: '',
+    query: '',
+    invite: '',
+    removeMember: ''
   },
   project: {
     query: '',

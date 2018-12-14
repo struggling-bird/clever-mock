@@ -4,19 +4,17 @@ const constants = require('./constants')
 
 router.post('/login', (req, res) => {
   userService.login(req.body.username, req.body.password).then(user => {
-    if (user) {
-      req.session.currentUser = user
-      res.json({
-        code: constants.code.success,
-        data: user
-      })
-    } else {
-      res.json({
-        code: constants.code.error,
-        msg: '用户名或密码错误'
-      })
-    }
-    
+    req.session.currentUser = user
+    res.json({
+      code: constants.code.success,
+      data: user
+    })
+  }).catch(err => {
+    res.json({
+      code: constants.code.error,
+      msg: '用户名或密码错误'
+    })
+    console.error('登录失败', err)
   })
 })
 
@@ -77,6 +75,50 @@ router.post('/update', (req, res) => {
       code: constants.code.error,
       msg: '更新用户信息失败'
     })
+  })
+})
+
+router.post('/query', (req, res) => {
+  userService.query(req.session.currentUser.id, req.body.projectId).then(list => {
+    res.json({
+      code: constants.code.success,
+      data: list
+    })
+  }).catch(err => {
+    res.json({
+      code: constants.code.error,
+      msg: '获取用户列表失败'
+    })
+    console.log('获取用户列表失败', err)
+  })
+})
+
+router.post('/invite', (req, res) => {
+  userService.invite(req.body).then(user => {
+    res.json({
+      code: constants.code.success,
+      data: user
+    })
+  }).catch(err => {
+    res.json({
+      code: constants.code.error,
+      msg: '邀请失败'
+    })
+    console.error('邀请成员失败', err)
+  })
+})
+
+router.post('/removeMember', (req, res) => {
+  userService.removeMember(req.session.currentUser.id, req.body.projectId, req.body.userId).then(() => {
+    res.json({
+      code: constants.code.success
+    })
+  }).catch(err => {
+    res.json({
+      code: constants.code.error,
+      msg: '删除成员失败'
+    })
+    console.error('删除成员失败', err)
   })
 })
 module.exports = router

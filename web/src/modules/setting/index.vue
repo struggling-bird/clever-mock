@@ -44,12 +44,13 @@
             </form-item>
 
             <div class="setting-handle">
-              <!--<c-button size="normal">取消</c-button>-->
               <c-button type="primary" size="normal" @click="onUpdateApiList">保存</c-button>
             </div>
           </div>
         </c-tab-panel>
-        <c-tab-panel title="成员管理"></c-tab-panel>
+        <c-tab-panel title="成员管理">
+          <member-manage></member-manage>
+        </c-tab-panel>
         <c-tab-panel title="个人设置">
           <personal-setting></personal-setting>
         </c-tab-panel>
@@ -63,9 +64,10 @@ import FormItem from '../../components/formItem/index'
 import {mapState} from 'vuex'
 import {actions} from '../../store/constants'
 import PersonalSetting from './personal'
+import MemberManage from './member'
 export default {
   name: 'setting',
-  components: {PersonalSetting, FormItem},
+  components: {MemberManage, PersonalSetting, FormItem},
   data () {
     return {
       proxyUrl: null,
@@ -96,6 +98,9 @@ export default {
       },
       ready (state) {
         return this.currentProject && state.project.ready.proxyServerList
+      },
+      currentUser (state) {
+        return state.user.user
       }
     }),
     project () {

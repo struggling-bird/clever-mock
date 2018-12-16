@@ -4,7 +4,7 @@ const util = require('../utils/util')
 
 module.exports = {
   queryByProjectId (projectId) {
-    let sql = 'select a.* from api as a where a.project_id = ?'
+    let sql = 'select distinct a.* from api as a where a.project_id = ?'
     return db.query(sql, [projectId])
   },
   async add (api, projectId, userId) {
@@ -112,7 +112,7 @@ module.exports = {
     return res
   },
   async getById (id, userId) {
-    const sql = 'select a.* from api as a ' +
+    const sql = 'select distinct a.* from api as a ' +
       'left join user_project as up on up.project_id = a.project_id ' +
       'where a.id = ? and up.user_id = ?'
     return await db.query(sql, [id, userId])
@@ -139,7 +139,7 @@ module.exports = {
   },
   async updateList (api, userId) {
     // step1.检查是否有更新权限
-    let sql = 'select a.* from api as a ' +
+    let sql = 'select distinct a.* from api as a ' +
       'left join user_project as up ' +
       ' on a.project_id = up.project_id ' +
       'where up.user_id = ? and up.project_id = ?'

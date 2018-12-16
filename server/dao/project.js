@@ -3,7 +3,7 @@ const uuid = require('uuid/v1')
 
 module.exports = {
   query (userId) {
-    const sql = 'select p.*,u.name as "username",up.role from project as p ' +
+    const sql = 'select distinct p.*,u.name as "username",up.role from project as p ' +
       'left join user_project as up on p.id = up.project_id ' +
       'left join user as u on u.id = up.user_id ' +
       'where up.user_id = ?'
@@ -41,7 +41,7 @@ module.exports = {
     }
   },
   getById (userId, id) {
-    const sql = 'select p.*,up.role from project as p ' +
+    const sql = 'select distinct p.*,up.role from project as p ' +
       'left join user_project as up ' +
       'on p.id = up.project_id ' +
       'where up.user_id = ? and p.id = ?'
@@ -54,7 +54,7 @@ module.exports = {
   async delById (userId, id) {
     // 1. 判断当前用户是否有删除项目的权限
     const conn = await db.beginTransaction()
-    const list = await db.queryInTransaction(conn, 'select p.* from project as p ' +
+    const list = await db.queryInTransaction(conn, 'select distinct p.* from project as p ' +
       'left join user_project as up on p.id = up.project_id ' +
       'where p.id = ? and up.user_id = ? and up.role = 0', [id, userId])
     if (!list.length) {
@@ -91,7 +91,7 @@ module.exports = {
   async update (project, userId) {
     const conn = await db.beginTransaction()
     // step1.检查当前用户是否有权限修改工程
-    let sql = 'select p.* from project as p ' +
+    let sql = 'select distinct p.* from project as p ' +
       'left join user_project as up ' +
       ' on p.id = up.project_id ' +
       'where up.user_id = ? and up.project_id = ?'

@@ -30,7 +30,7 @@ function resCodeFilter (res) {
     case resCode.NOT_LOGIN:
       flag = false
       if (!/\/login/.test(window.location.href)) {
-        location.href = `/login`
+        // location.href = `/login`
       }
       break
     case resCode.Error:

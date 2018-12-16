@@ -4,7 +4,7 @@ const util = require('../utils/util')
 
 module.exports = {
   async queryByProjectId (projectId) {
-    let sql = 'select g.* from apigroup as g where g.project_id = ?'
+    let sql = 'select distinct g.* from apigroup as g where g.project_id = ?'
     let groupList = await db.query(sql, [projectId])
     
     sql = 'select a.id,a.name,a.path,a.method,a.group_id,a.description,a.params,a.res_structure from api as a where a.project_id = ?'

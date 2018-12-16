@@ -89,7 +89,7 @@ module.exports = {
   },
   async query (adminId, projectId) {
     // todo 校验用户权限
-    let sql = 'select u.*,r.id as role_id, r.name as role_name from user as u ' +
+    let sql = 'select distinct u.*,r.id as role_id, r.name as role_name from user as u ' +
       'left join user_project as up ' +
       ' on u.id = up.user_id ' +
       'left join role as r' +

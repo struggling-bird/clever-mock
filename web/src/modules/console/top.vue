@@ -15,7 +15,7 @@
     </div>
 
     <span class="logout" @click="onLogout">
-      {{user.name}}<i class="mock-logout"></i>
+      {{user.name || user.email}}<i class="mock-logout"></i>
     </span>
   </div>
 </template>

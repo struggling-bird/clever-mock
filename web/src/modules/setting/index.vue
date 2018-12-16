@@ -48,7 +48,7 @@
             </div>
           </div>
         </c-tab-panel>
-        <c-tab-panel title="成员管理">
+        <c-tab-panel title="成员管理" v-if="currentProject.role === 0">
           <member-manage></member-manage>
         </c-tab-panel>
         <c-tab-panel title="个人设置">

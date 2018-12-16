@@ -38,7 +38,7 @@ export default {
   computed: {
     ...mapState({
       currentUser (state) {
-        let user = state.user.user
+        let user = state.user.user || {}
         this.name = user.name
         this.email = user.email
         this.wechat = user.wechat

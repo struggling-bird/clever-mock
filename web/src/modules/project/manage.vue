@@ -1,9 +1,11 @@
 <template>
   <div class="project-manage">
-    <span class="brand">cleverMock</span>
     <div class="title-panel">
       <div class="title">项目列表</div>
       <c-button type="primary" size="large" @click="onCreateProject">创建项目</c-button>
+      <span class="logout" @click="onLogout">
+        {{currentUser.name || currentUser.email}}<i class="mock-logout"></i>
+      </span>
     </div>
     <div class="project-list">
       <div class="project-item"
@@ -45,6 +47,9 @@ export default {
       },
       loading (state) {
         return !state.project.ready.list
+      },
+      currentUser (state) {
+        return state.user.user || {}
       }
     })
   },
@@ -79,6 +84,19 @@ export default {
           message: '删除项目失败'
         })
         console.error('删除项目失败', err)
+      })
+    },
+    onLogout () {
+      this.$store.dispatch(actions.user.logout).then(() => {
+        this.$router.push({
+          name: router.login
+        })
+      }).catch(err => {
+        this.$message({
+          type: 'error',
+          message: '退出账号失败'
+        })
+        console.error('退出账号失败', err)
       })
     }
   }

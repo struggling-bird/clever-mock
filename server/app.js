@@ -29,7 +29,6 @@ app.use(bodyParser.json({
 })) // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})) // parsing application/x-www-form-urlencoded
 
-// todo 更新查询参数
 app.use('/api', api)
 app.use(history({
 }))

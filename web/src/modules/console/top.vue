@@ -1,7 +1,8 @@
 <template>
   <div class="console-top">
-    <span class="logo" @click="toIndex">cleverMock</span>
+    <span class="logo" @click="toIndex">CleverMock</span>
     <span class="project-name">{{project.name}}</span>
+    <a class="doc-link" href="https://clevertools.gitbook.io/mock/" target="_blank"><i class="mock-info"></i></a>
 
     <div class="tab-bar">
       <span :class="{'btn-tab': true, active: mode === 'dev'}"

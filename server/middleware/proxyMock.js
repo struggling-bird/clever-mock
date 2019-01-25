@@ -12,6 +12,22 @@ const proxy = async function (req, res, proxyConfig) {
     proxyServer.on('proxyRes', function (proxyRes, req, res) { // 代理完成
       let arr = []
       let size = 0
+      // 对服务器端写入的cookie，去除Secure的限制（只支持https）
+      let responseCookies = proxyRes.headers['set-cookie']
+      if (responseCookies) {
+        let newCookies = []
+        responseCookies.forEach(cookie => {
+          let newCookie = []
+          cookie.split(';').forEach(item => {
+            if (!/Secure/.test(item)) {
+              newCookie.push(item)
+            }
+          })
+          newCookies.push(newCookie.join(';'))
+        })
+        proxyRes.headers['set-cookie'] = newCookies
+      }
+      
       proxyRes.on('data', function (chunk) {
         arr.push(chunk)
         size += chunk.length

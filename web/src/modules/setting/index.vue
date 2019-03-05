@@ -2,7 +2,7 @@
   <div class="setting">
     <c-loading v-if="!ready"></c-loading>
     <template v-else>
-      <c-tabs>
+      <c-tabs clean-mode>
         <c-tab-panel title="项目设置">
           <div class="setting-form">
             <form-item label="项目名称">
@@ -65,6 +65,7 @@ import {mapState} from 'vuex'
 import {actions} from '../../store/constants'
 import PersonalSetting from './personal'
 import MemberManage from './member'
+// import {util} from '../../util'
 export default {
   name: 'setting',
   components: {MemberManage, PersonalSetting, FormItem},

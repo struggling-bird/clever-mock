@@ -28,6 +28,7 @@ module.exports = {
   query (sql, params = []) {
     return new Promise((resolve, reject) => {
       printSql(sql, params)
+      console.log('数据库连接数', pool._allConnections.length)
       pool.query(sql, params, function (err, results) {
         if (err) {
           console.error('执行sql错误', err)

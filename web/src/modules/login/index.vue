@@ -8,7 +8,10 @@
       <c-button size="large" type="primary" @click="onLogin">登录</c-button>
 
       <div class="ref-links">
-        还没有账号？立即<a href="javascript:void(0)" @click="toReg">注册</a>
+        还没有账号？立即<a href="javascript:void(0)" @click="toReg">注册</a><br/>
+        <a href="http://www.miitbeian.gov.cn"
+           target="_blank"
+           style="display: block; text-align: center;margin-top: 20px">冀ICP备18028016号-1</a>
       </div>
     </div>
   </div>

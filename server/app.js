@@ -15,7 +15,7 @@ app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Methods', req.method)//设置方法
   if (req.method == 'OPTIONS') {
     console.log('got options request: ', util.getHost(req))
-    res.send(200) // 意思是，在正常的请求之前，会发送一个验证，是否可以请求。
+    res.send(204) // 意思是，在正常的请求之前，会发送一个验证，是否可以请求。
   } else {
     next()
   }

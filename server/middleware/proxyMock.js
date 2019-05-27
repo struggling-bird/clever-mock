@@ -7,7 +7,7 @@ const util = require('../utils/util')
 
 const proxy = async function (req, res, proxyConfig) {
   let proxyServer = httpProxy.createProxyServer(proxyConfig)
-  console.log('执行代理请求', req.url)
+  console.log('执行代理请求', `${proxyConfig.target}/${req.url}`)
   return new Promise((resolve, reject) => {
     proxyServer.on('proxyRes', function (proxyRes, req, res) { // 代理完成
       let arr = []
@@ -78,7 +78,7 @@ const scriptMock = function (req, res, requestParam, mockScript) {
 const handle = async function (req, res, next) {
   // todo 数据做缓存维护，避免高频次操作数据库
   const path = req.url
-  const key = req.headers['clever-mock']
+  const key = req.headers['clever-mock'] || req.query['clever-mock']
   if (!key) {
     console.log('proxy failed because request header of "clever-mock" not found')
     next()
@@ -107,6 +107,7 @@ const handle = async function (req, res, next) {
       if (['proxy', 'auto', 'test'].includes(matchApi.runStyle)) { // 代理请求
         proxyConfig.target = matchApi.proxyUrl
         proxy(req, res, proxyConfig).then(result => {
+          if (!/^2/.test(result.code)) return
           // 代理结束 记录请求日志
           apiService.addLog({
             api: matchApi,
@@ -169,6 +170,7 @@ const handle = async function (req, res, next) {
       }
     } else { // 没有匹配的api配置项，则直接开始代理
       proxy(req, res, proxyConfig).then(result => {
+        if (!/^2/.test(result.code)) return
         apiService.addLog({
           method: req.method,
           project,

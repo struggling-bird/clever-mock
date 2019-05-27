@@ -68,9 +68,19 @@ module.exports = {
           matchGroup = group
         }
       })
+      
       await db.queryInTransaction(connection, sql.addApi,
-        [apiId, param.path, param.method, currentTime, param.callTime, param.project.id,
-          param.resData,JSON.stringify(util.getStructure(util.getSimpleData(JSON.parse(param.resData)))), 'proxy', param.project.proxyUrl, 0, matchGroup ? matchGroup.id : null])
+        [apiId, param.path,
+          param.method,
+          currentTime,
+          param.callTime,
+          param.project.id,
+          param.resData,
+          JSON.stringify(util.getStructure(util.getSimpleData(JSON.parse(param.resData)))),
+          'proxy',
+          param.project.proxyUrl,
+          0,
+          matchGroup ? matchGroup.id : null])
     }
     await db.queryInTransaction(connection, sql.addLog, [apiId, param.callTime, duration, param.path, param.resCode])
     try {

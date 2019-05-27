@@ -13,6 +13,12 @@ module.exports = function (req, res, next) {
       isStatic = true
     }
   })
+  // todo 增加方式判断是否为socket.io连接
+  if (/socket/.test(path)) {
+    console.log('socket.io 连接')
+    next()
+    return
+  }
   if (isStatic || /\.js(\.map)?$/.test(path)) { // 静态资源请求
     console.log('request is static')
     next()

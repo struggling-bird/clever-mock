@@ -4,7 +4,7 @@
   "description": "",
   "main": "config.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "pm2 start --env production"
   },
   "author": "",
   "license": "ISC",

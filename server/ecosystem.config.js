@@ -2,7 +2,7 @@ module.exports = {
   apps : [
     {
       name: 'cleverMock',
-      script: './server/app.js',
+      script: './app.js',
   
       // Options reference: https://pm2.io/doc/en/runtime/reference/ecosystem-file/
       // args: 'one two',

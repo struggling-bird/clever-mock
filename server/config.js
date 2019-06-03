@@ -15,7 +15,7 @@ module.exports = {
   },
   db: {
     connectionLimit: 1000,
-    host: '127.0.0.1',
+    host: '111.231.195.117',
     port: 3306,
     user: 'root',
     password: 'dongyongqiang',

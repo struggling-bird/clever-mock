@@ -23,16 +23,20 @@
       color: $color-font-content
       background: $color-bg-light
       border-radius: $border-radius
-      &.active
-        animation-duration: 1.5s
-        animation-fill-mode: both
-        animation-name: api-shine
+      box-shadow: 0 1px 4px rgba(53, 64, 82, .5)
+      //&:active
+      //  animation-duration: 1.5s
+      //  animation-fill-mode: both
+      //  animation-name: api-shine
+      &>*
+        margin-bottom: 10px
+      h3
+        word-break: break-word
       .api-url
         background: $color-bg-dark
         border-radius: $border-radius
         padding: 5px
-      &>*
-        margin-bottom: 10px
+        word-break: break-word
       .api-method
         font-size: $size-font-mark
         background: $color-font-content

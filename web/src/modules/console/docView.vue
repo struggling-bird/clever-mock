@@ -1,5 +1,6 @@
 <template>
   <div class="doc-view">
+    <c-loading v-if="loading" tip="文档加载中"></c-loading>
     <div class="doc-guide">
       <tree-menu :store="groupList"
                  :onChoose="onClickApi"
@@ -49,7 +50,8 @@ export default {
   components: {TreeMenu, JsonView},
   data () {
     return {
-      currentApi: null
+      currentApi: null,
+      loading: true
     }
   },
   computed: {
@@ -59,8 +61,10 @@ export default {
       }
     })
   },
-  beforeCreate () {
-    this.$store.dispatch(actions.api.queryGroup, this.$route.params.id)
+  beforeMount () {
+    this.$store.dispatch(actions.api.queryGroup, this.$route.params.id).finally(() => {
+      this.loading = false
+    })
   },
   mounted () {
     setTimeout(() => {

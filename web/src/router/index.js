@@ -11,6 +11,7 @@ import devView from '../modules/console/devView'
 import docView from '../modules/console/docView'
 import register from '../modules/register'
 import setting from '../modules/setting/index'
+import doc from '../modules/doc/index'
 
 Vue.use(Router)
 let output = new Router({
@@ -68,6 +69,11 @@ let output = new Router({
               component: setting
             }
           ]
+        },
+        {
+          path: '/doc/:id',
+          name: router.doc,
+          component: doc
         }
       ]
     }

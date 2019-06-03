@@ -17,6 +17,7 @@ let router = {
     doc: '',
     setting: ''
   },
+  doc: '',
   login: '',
   register: ''
 }

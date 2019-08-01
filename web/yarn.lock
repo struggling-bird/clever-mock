@@ -1668,9 +1668,10 @@ clean-css@4.2.x:
   dependencies:
     source-map "~0.6.0"
 
-clever-ui@^1.1.7:
-  version "1.1.7"
-  resolved "http://registry.npm.taobao.org/clever-ui/download/clever-ui-1.1.7.tgz#ea3d5a110626d7e1a1f40b8c117b35e1bb217e80"
+clever-ui@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.npm.taobao.org/clever-ui/download/clever-ui-1.2.2.tgz#b9e8cd13494da0ea06ef5de4e757927479f33e08"
+  integrity sha1-uejNE0lNoOoG713k51eSdHnzPgg=
 
 cli-cursor@^2.1.0:
   version "2.1.0"

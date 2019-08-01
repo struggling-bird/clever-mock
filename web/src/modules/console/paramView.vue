@@ -1,6 +1,6 @@
 <template>
   <div class="param-view">
-    <json-view :store="store" edit-mode @change="onChange"></json-view>
+    <json-view :store="store_" edit-mode @change="onChange"></json-view>
   </div>
 </template>
 
@@ -14,7 +14,9 @@ export default {
     store: null
   },
   data () {
-    return {}
+    return {
+      store_: this.store
+    }
   },
   methods: {
     onChange (json) {

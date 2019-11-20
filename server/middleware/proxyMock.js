@@ -77,7 +77,7 @@ const scriptMock = function (req, res, requestParam, mockScript) {
 
 const handle = async function (req, res, next) {
   // todo 数据做缓存维护，避免高频次操作数据库
-  const path = req.url
+  const path = req.url.split('?')[0]
   const key = req.headers['clever-mock'] || req.query['clever-mock']
   if (!key) {
     console.log('proxy failed because request header of "clever-mock" not found')
@@ -170,7 +170,7 @@ const handle = async function (req, res, next) {
       }
     } else { // 没有匹配的api配置项，则直接开始代理
       proxy(req, res, proxyConfig).then(result => {
-        if (!/^2/.test(result.code)) return
+        // if (!/^2/.test(result.code)) return
         apiService.addLog({
           method: req.method,
           project,

@@ -15,10 +15,10 @@ module.exports = {
   },
   db: {
     connectionLimit: 1000,
-    host: '111.231.195.117',
+    host: '127.0.0.1',
     port: 3306,
     user: 'root',
-    password: 'dongyongqiang',
+    password: 'Dong_1013501639',
     database: 'clever_mock'
   }
 }

@@ -7,7 +7,7 @@ const util = require('../utils/util')
 
 const proxy = async function (req, res, proxyConfig) {
   let proxyServer = httpProxy.createProxyServer(proxyConfig)
-  console.log('执行代理请求', `${proxyConfig.target}/${req.url}`)
+  console.log('执行代理请求', `${proxyConfig.target}/${req.url.replace(/^\//, '')}`)
   return new Promise((resolve, reject) => {
     proxyServer.on('proxyRes', function (proxyRes, req, res) { // 代理完成
       let arr = []
@@ -57,7 +57,10 @@ const proxy = async function (req, res, proxyConfig) {
       reject(e)
     })
     proxyServer.web(req, res, e => {
-      reject(e)
+      if (e) {
+        console.log('代理失败', `${proxyConfig.target}/${req.url.replace(/^\//, '')}`)
+        reject(e)
+      }
     })
   })
 }

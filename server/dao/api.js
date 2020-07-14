@@ -69,6 +69,12 @@ module.exports = {
         }
       })
       
+      const resData = {}
+      try {
+        resData = JSON.parse(param.resData || '{}')
+      } catch (e) {
+        console.log('响应内容不是合法json', param.resData)
+      }
       await db.queryInTransaction(connection, sql.addApi,
         [apiId, param.path,
           param.method,
@@ -76,7 +82,7 @@ module.exports = {
           param.callTime,
           param.project.id,
           param.resData,
-          JSON.stringify(util.getStructure(util.getSimpleData(JSON.parse(param.resData)))),
+          JSON.stringify(util.getStructure(util.getSimpleData(resData))),
           'proxy',
           param.project.proxyUrl,
           0,

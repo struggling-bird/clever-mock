@@ -45,8 +45,8 @@ io.on('connection', (socket) => {
     client.emit(event, data)
   })
 })
-app.use(session(config.session))
 app.use(require('./middleware/sys'))
+app.use(session(config.session))
 const api = require('./router/api')
 
 app.use(bodyParser.json({

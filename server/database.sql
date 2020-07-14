@@ -10,18 +10,44 @@
 # Generation Time: 2018-12-13 06:02:00 +0000
 # ************************************************************
 
+DROP TABLE IF EXISTS `user`;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE TABLE `user` (
+  `id` varchar(100) NOT NULL DEFAULT '',
+  `name` varchar(200) DEFAULT NULL,
+  `email` varchar(200) DEFAULT NULL,
+  `password` varchar(200) DEFAULT NULL,
+  `group` varchar(200) DEFAULT NULL,
+  `wechat` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `project`;
 
-# Dump of table api
-# ------------------------------------------------------------
+CREATE TABLE `project` (
+  `id` varchar(100) NOT NULL DEFAULT '',
+  `name` varchar(200) DEFAULT NULL,
+  `proxy_url` varchar(1000) DEFAULT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  `create_time` bigint(20) DEFAULT NULL,
+  `running_status` int(1) DEFAULT NULL,
+  `auto_add` int(1) DEFAULT NULL COMMENT '是否自动检测并添加api配置',
+  `secret_key` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `apigroup`;
+
+CREATE TABLE `apigroup` (
+  `id` varchar(100) NOT NULL DEFAULT '',
+  `name` varchar(1000) DEFAULT NULL,
+  `reg` varchar(1000) DEFAULT NULL,
+  `project_id` varchar(100) NOT NULL DEFAULT '',
+  `description` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  CONSTRAINT `apigroup_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `api`;
 
@@ -51,29 +77,6 @@ CREATE TABLE `api` (
   CONSTRAINT `api_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-
-# Dump of table apigroup
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `apigroup`;
-
-CREATE TABLE `apigroup` (
-  `id` varchar(100) NOT NULL DEFAULT '',
-  `name` varchar(1000) DEFAULT NULL,
-  `reg` varchar(1000) DEFAULT NULL,
-  `project_id` varchar(100) NOT NULL DEFAULT '',
-  `description` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `project_id` (`project_id`),
-  CONSTRAINT `apigroup_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table call_history
-# ------------------------------------------------------------
-
 DROP TABLE IF EXISTS `call_history`;
 
 CREATE TABLE `call_history` (
@@ -88,30 +91,6 @@ CREATE TABLE `call_history` (
   CONSTRAINT `call_history_ibfk_1` FOREIGN KEY (`api_id`) REFERENCES `api` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-
-# Dump of table project
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `project`;
-
-CREATE TABLE `project` (
-  `id` varchar(100) NOT NULL DEFAULT '',
-  `name` varchar(200) DEFAULT NULL,
-  `proxy_url` varchar(1000) DEFAULT NULL,
-  `description` varchar(1000) DEFAULT NULL,
-  `create_time` bigint(20) DEFAULT NULL,
-  `running_status` int(1) DEFAULT NULL,
-  `auto_add` int(1) DEFAULT NULL COMMENT '是否自动检测并添加api配置',
-  `secret_key` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table proxy_server
-# ------------------------------------------------------------
-
 DROP TABLE IF EXISTS `proxy_server`;
 
 CREATE TABLE `proxy_server` (
@@ -124,11 +103,6 @@ CREATE TABLE `proxy_server` (
   CONSTRAINT `proxy_server_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-
-# Dump of table role
-# ------------------------------------------------------------
-
 DROP TABLE IF EXISTS `role`;
 
 CREATE TABLE `role` (
@@ -136,11 +110,6 @@ CREATE TABLE `role` (
   `name` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table status_code
-# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `status_code`;
 
@@ -153,28 +122,6 @@ CREATE TABLE `status_code` (
   KEY `project_id` (`project_id`),
   CONSTRAINT `status_code_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table user
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `user`;
-
-CREATE TABLE `user` (
-  `id` varchar(100) NOT NULL DEFAULT '',
-  `name` varchar(200) DEFAULT NULL,
-  `email` varchar(200) DEFAULT NULL,
-  `password` varchar(200) DEFAULT NULL,
-  `group` varchar(200) DEFAULT NULL,
-  `wechat` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table user_project
-# ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `user_project`;
 
@@ -189,13 +136,3 @@ CREATE TABLE `user_project` (
   CONSTRAINT `user_project_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`),
   CONSTRAINT `user_project_ibfk_3` FOREIGN KEY (`role`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

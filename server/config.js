@@ -1,4 +1,8 @@
-module.exports = {
+const path = require("path");
+const fs = require("fs");
+const beautify = require("js-beautify");
+const configPath = path.resolve(__dirname, '.config');
+let globalConfig = {
   port: 3000,
   session: {
     name: 'cleverMock',
@@ -21,4 +25,15 @@ module.exports = {
     password: 'Dong_1013501639',
     database: 'clever_mock'
   }
+};
+try {
+    fs.statSync(configPath);
+    globalConfig = JSON.parse(fs.readFileSync(configPath).toString());
 }
+catch (e) {
+    fs.writeFileSync(configPath, beautify.js(JSON.stringify(globalConfig), {
+        'indent_size': 2
+    }));
+}
+
+module.exports = globalConfig

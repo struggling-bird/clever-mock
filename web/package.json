@@ -19,7 +19,7 @@
     "@vue/eslint-config-standard": "^3.0.5",
     "axios": "^0.18.0",
     "clever-ui": "^1.2.2",
-    "codemirror": "^5.42.0",
+    "codemirror": "^5.58.2",
     "js-cookie": "^2.2.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
